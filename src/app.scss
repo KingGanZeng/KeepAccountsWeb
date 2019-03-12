@@ -1,0 +1,54 @@
+$border_color: "#333333";
+
+body {
+  background-color: #f5f5f5;
+}
+
+.same-border {
+  position: absolute;
+  z-index: 10;
+  content: "";
+  background-color: $border_color;
+  -webkit-transform: scale(1, 0.5);
+  transform: scale(1, 0.5);
+}
+
+.half-border-bottom, .half-border-top, .half-border-left, .half-border-right{
+  position: relative;
+}
+
+.half-border-bottom::after {
+  bottom: 0;
+  right: 0;
+  left: 0;
+  height: 1px;
+  @extend .same-border;
+}
+
+.half-border-top::before {
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 1px;
+  @extend .same-border;
+}
+
+.half-border-left::before {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  @extend .same-border;
+}
+
+.half-border-right:after {
+  bottom: 0;
+  right: 0;
+  width: 1px;
+  @extend .same-border;
+}
+
+.border-shadow {
+  -webkit-box-shadow: 0 10px 16px rgba(32, 33, 36, 0.28);
+  box-shadow: 0 10px 16px rgba(32, 33, 36, 0.28);
+}

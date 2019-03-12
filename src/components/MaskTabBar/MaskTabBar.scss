@@ -1,0 +1,40 @@
+
+.fx-MaskTabBar-wrap {
+  width: 100%;
+  .diagram-mask {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 20;
+    visibility: visible;
+    -webkit-transition: visibility 300ms cubic-bezier(0.36, 0.66, 0.04, 1);
+    -o-transition: visibility 300ms cubic-bezier(0.36, 0.66, 0.04, 1);
+    transition: visibility 300ms cubic-bezier(0.36, 0.66, 0.04, 1);
+    background-color:rgba(255, 255, 255, 0.8);
+  }
+  .fx-TabBar-wrap {
+    z-index: 21;
+    background-color: rgb(213, 224, 255);
+    .left-button, .center-button, .right-button {
+      position: absolute;
+      color: #fff;
+      top: -110px;
+      border-radius: 50%;
+      background-color: #2c63fd;
+      padding: 25px;
+      font-size: 33px;
+    }
+    .left-button {
+      left: -40px;
+    }
+    .center-button {
+      left: 60px;
+      top: -157px;
+    }
+    .right-button {
+      left: 160px;
+    }
+  }
+ }
