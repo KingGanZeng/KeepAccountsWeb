@@ -1,0 +1,62 @@
+
+.fx-BookList-wrap {
+  margin-top: 15px;
+
+  .scroll-view {
+    white-space: nowrap;
+  }
+  .card-wrapper {
+    box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+  }
+  .book-item {
+    position: relative;
+    display: inline-block;
+    width: 180px;
+    height: 230px;
+    border-radius: 5px 15px 15px 5px;
+    margin-right: 5%;
+    text-align: center;
+    color: #ffffff;
+    font-weight: bold;
+    padding-top: 30px;
+    box-sizing: border-box;
+    box-shadow: 2px 0 6px 2px rgba(32, 33, 36, 0.28);
+    background-color:rgb(39,130,215)
+  }
+  .empty-wrapper {
+    line-height: 130px;
+    width: 100%;
+    text-align: center;
+    color: #999999;
+  }
+  .note-wrapper {
+    position: absolute;
+    bottom: 30px;
+    left: 0;
+    right: 0;
+    font-size: 22px;
+    color: rgba(255,255,255,0.8);
+    line-height: 32px;
+  }
+  .dayLife-book {
+    background-color: #ff5a5b;
+  }
+  .travelPart-book {
+    background-color: #6dc9ee;
+  }
+  .homeDecoration-book {
+    background-color: #f3a97c;
+  }
+  .socialRelation-book {
+    background-color: #b1ade7;
+  }
+  .moneyManagement-book {
+    background-color: #87cfd8;
+  }
+  .rent-book {
+    background-color: #9acf9f;
+  }
+  .others-book {
+    background-color: #6ac9c1;
+  }
+ }

@@ -19,8 +19,8 @@ const store = dvaApp.getStore();
 class App extends Component {
   config: Config = {
     pages: [ // 在这里配置page，不然是访问不到的
-      'pages/index/index',
       'pages/accountBook/accountBook', // 首页
+      'pages/index/index',
       'pages/newBook/newBook',
       'pages/chargeToAccount/chargeToAccount'
     ],
