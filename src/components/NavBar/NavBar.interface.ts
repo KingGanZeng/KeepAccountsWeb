@@ -6,7 +6,9 @@
  * @interface NavBarState
  */
 export interface NavBarState {
-  date: string
+  date: string,
+  income: number,
+  expense: number,
 }
 
 /**
@@ -18,4 +20,8 @@ export interface NavBarState {
 export interface NavBarProps {
   yearMonthStr: string, // 从父元素传来的year-month字符串
   onDateState?: any, // 父组件监听事件
+  navBarData: {
+    incomeCount: number, // 收入额
+    expenseCount: number, // 支出额
+  }
 }

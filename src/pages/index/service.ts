@@ -1,7 +1,7 @@
 import Api from '../../utils/request'
 
-export const getBookData = (data) => {
-  return Api.getBookData(data)
+export const getRecordData = (data) => {
+  return Api.getRecordData(data)
 }
 
 export const getNavBarData = (data) => {

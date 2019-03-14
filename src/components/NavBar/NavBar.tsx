@@ -6,17 +6,23 @@ import { addZero } from '../../utils/common'
 
 class NavBar extends Component<NavBarProps,NavBarState > {
   constructor(props: NavBarProps) {
-    super(props)
+    super(props);
     this.state = {
       date: this.props.yearMonthStr,
+      income: this.props.navBarData.incomeCount,
+      expense: this.props.navBarData.expenseCount,
     }
   }
   static options = {
     addGlobalClass: true
-  }
+  };
   static defaultProps:NavBarProps = {
     yearMonthStr: '2019-02',
-  }
+    navBarData: {
+      incomeCount: 0,
+      expenseCount: 0,
+    }
+  };
 
   /**
    * 日期选择器
@@ -28,7 +34,7 @@ class NavBar extends Component<NavBarProps,NavBarState > {
     }, () => {
       this.props.onDateState(this.state.date)
     })
-  }
+  };
 
   /**
    * 账本编辑按钮事件
@@ -43,9 +49,9 @@ class NavBar extends Component<NavBarProps,NavBarState > {
 
   render() {
     // 设置时间
-    const bookYear = this.state.date.split('-')[0]
-    let bookMonth= this.state.date.split('-')[1]
-    bookMonth = addZero(bookMonth)
+    const bookYear = this.state.date.split('-')[0];
+    let bookMonth= this.state.date.split('-')[1];
+    bookMonth = addZero(bookMonth);
 
     return (
       <View className='fx-NavBar-wrap'>
@@ -77,15 +83,15 @@ class NavBar extends Component<NavBarProps,NavBarState > {
         <View className='at-row footer-wrapper'>
           <View className='at-col navBar-footer half-border-right border-test'>
             <View className='footer-title'>收入</View>
-            <View className='footer-content book-expense'>200.00元</View>
+            <View className='footer-content book-expense'>{this.state.income.toFixed(2)}元</View>
           </View>
           <View className='at-col navBar-footer half-border-right border-test'>
             <View className='footer-title'>支出</View>
-            <View className='footer-content book-income'>230.00元</View>
+            <View className='footer-content book-income'>{this.state.expense.toFixed(2)}元</View>
           </View>
           <View className='at-col navBar-footer'>
             <View className='footer-title'>结余</View>
-            <View className='footer-content'>100.00元</View>
+            <View className='footer-content'>{(this.state.income-this.state.expense).toFixed(2)}元</View>
           </View>
         </View>
       </View>

@@ -3,30 +3,27 @@ import { View } from '@tarojs/components'
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import { ContentProps, ContentState } from './Content.interface'
 import './Content.scss'
+// @ts-ignore
 import { DailyContent } from '../DailyContent/DailyContent'
 
 class Content extends Component<ContentProps,ContentState > {
   constructor(props: ContentProps) {
-    super(props)
+    super(props);
     this.state = {
       current: 0,
       dailyObj: { // 假数据
-        incomeArr: [
-          {date: '2019-03-12', rowArr: [{type: 'food', money: 20}, {type: 'shopping', money: 300}], total: 320},
-          {date: '2019-03-11', rowArr: [{type: 'food', money: 200.42}, {type: 'shopping', money: 100}], total: 300.42},
-          {date: '2019-03-7', rowArr: [{type: 'food', money: 200.42}, {type: 'shopping', money: 100}], total: 300.42}
-        ],
-        expenseArr: [
-          {date: '2019-03-5', rowArr: [{type: 'salary', money: 2000}], total: 2000},
-          {date: '2019-03-25', rowArr: [{type: 'salary', money: 2000}], total: 2000},
-        ],
+        incomeObj: this.props.income,
+        expenseObj: this.props.expense,
       }
     }
   }
   static options = {
     addGlobalClass: true
-  }
-  static defaultProps:ContentProps = {}
+  };
+  static defaultProps:ContentProps = {
+    income: {},
+    expense: {},
+  };
 
   handleClick (value) {
     this.setState({
@@ -35,19 +32,11 @@ class Content extends Component<ContentProps,ContentState > {
   }
 
   render() {
-    const tabList = [{ title: '支出' }, { title: '收入' }]
-    const { dailyObj } = this.state
-    const incomeContent = dailyObj.incomeArr.map((item, index) => {
-      return (
-        // native component
-        <DailyContent
-          taroKey={String(index)}
-          dailyDetail={item}
-        />
-      )
-    })
+    const tabList = [{ title: '支出' }, { title: '收入' }];
+    const { dailyObj } = this.state;
 
-    const expenseContent = dailyObj.expenseArr.map((item, index) => {
+    const incomeArr = Object.values(dailyObj.incomeObj);
+    const incomeContent = incomeArr.map((item, index) => {
       return (
         // native component
         <DailyContent
@@ -55,7 +44,18 @@ class Content extends Component<ContentProps,ContentState > {
           dailyDetail={item}
         />
       )
-    })
+    });
+
+    const expenseArr = Object.values(dailyObj.expenseObj);
+    const expenseContent = expenseArr.map((item, index) => {
+      return (
+        // native component
+        <DailyContent
+          taroKey={String(index)}
+          dailyDetail={item}
+        />
+      )
+    });
 
     return (
       <View className='fx-Content-wrap'>
@@ -68,13 +68,13 @@ class Content extends Component<ContentProps,ContentState > {
             current={this.state.current}
             index={0}
           >
-            {incomeContent}
+            {expenseContent}
           </AtTabsPane>
           <AtTabsPane
             current={this.state.current}
             index={1}
           >
-            {expenseContent}
+            {incomeContent}
           </AtTabsPane>
         </AtTabs>
       </View>

@@ -6,7 +6,17 @@
  * @interface DailyContentState
  */
 export interface DailyContentState {
-  dailyDetail: Object
+  dailyDetail?: any
+}
+
+/**
+ * rowArr的格式
+ */
+export interface rowArrFormat {
+  type: string,
+  money: number,
+  name: string,
+  category: string
 }
 
 /**

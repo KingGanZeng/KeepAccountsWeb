@@ -22,19 +22,42 @@ export const addZero = month => {
     `0${month}` : month
 };
 
+/**
+ * 收支信息预处理
+ * @param arr
+ */
 export const objArrReduce = arr => {
-  let hashMap = {} // 用于存储同一天的消费
-  const newArr = arr.reduce((preVal, curVal) => {
-    if (hashMap[curVal.date]) {
-      const tmpObj = {
-        type: 'food',
-        money: 200,
+  let hashMap = {}; // 用于存储同一天的消费
+  let totalMoney = 0;
+  arr.forEach((curItem) => {
+    const tmpObj = {
+      type: curItem.record_type,
+      money: curItem.money,
+      name: curItem.username,
+      category: curItem.category
+    };
+    totalMoney += curItem.money;
+    if (hashMap[curItem.date]) {
+      let originObj = hashMap[curItem.date];
+      let total = originObj.total;
+      total = total + curItem.money;
+      // 数据填充
+      originObj.rowArr.push(tmpObj);
+      originObj.total = total;
+      // 数据重装回hashMap
+      hashMap[curItem.date] = originObj;
+    } else {
+      hashMap[curItem.date] = {
+        date: curItem.date,
+        rowArr: [tmpObj],
+        total: curItem.money,
       }
-      hashMap[curVal.date].push(tmpObj)
     }
-    hash[curVal.id] ? '' : hash[curVal.id] = true && preVal.push(curVal);
-    return preVal
-  }, [])
+  });
+  return {
+    recordList: hashMap,
+    moneyAll: totalMoney
+  };
 };
 
 export const globalData: any = {}; // 全局公共变量
