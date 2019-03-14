@@ -3,7 +3,7 @@ export default {
     host: 'http://a.b.com:8000',
     url: '/api/post',
   },
-  getBannerData: {
+  getNavBarData: {
     host: 'http://a.b.com:8000',
     url: '/api/banner'
   },

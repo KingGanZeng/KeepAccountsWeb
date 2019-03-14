@@ -10,9 +10,9 @@ export default {
   },
 
   effects: {
-    * getBannerData({ payload }, { select, call, put }) {
+    * getNavBarData({ payload }, { select, call, put }) {
       const { key, v } = yield select(state => state.index)
-      const result = yield call(indexApi.getBannerData, {
+      const result = yield call(indexApi.getNavBarData, {
         key,
         v,
         ...payload
@@ -21,14 +21,14 @@ export default {
         yield put({
           type: 'updateState',
           payload: {
-            bannerData: result[0]
+            navBarData: result[0]
           }
         })
       } else {
         yield put({
           type: 'updateState',
           payload: {
-            bannerData: []
+            navBarData: []
           }
         })
       }

@@ -39,7 +39,6 @@ class TabBar extends Component<TabBarProps,TabBarState > {
    * 关闭组件时将状态重置
    */
   onClose() {
-    console.log(111);
     this.setState({
       showLeftBar: false,
     })

@@ -5,14 +5,7 @@
  * @interface IndexState
  */
 export interface IndexState {
-  current: number,
-  dateSel: string,
-  month: number,
-  day: number,
-  bookNum: string,
-  bookType: string,
-  bookId: number,
-  user_name: string
+  yearMonth: string, // 用于日期选择器
 }
 
 export interface DataInterface {
@@ -57,6 +50,6 @@ export interface BookProps {
 export interface IndexProps {
   dispatch?: any,
   data?: Array<DataInterface>,
-  bannerData?: Array<BannerProps>,
+  navBarData?: Array<BannerProps>,
   bookData?: Array<BookProps>
 }

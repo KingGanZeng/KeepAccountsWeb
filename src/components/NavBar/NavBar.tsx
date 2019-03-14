@@ -7,15 +7,16 @@ import { addZero } from '../../utils/common'
 class NavBar extends Component<NavBarProps,NavBarState > {
   constructor(props: NavBarProps) {
     super(props)
-    const thisDate = new Date()
     this.state = {
-      date: `${thisDate.getFullYear()}-${thisDate.getMonth()}`,
+      date: this.props.yearMonthStr,
     }
   }
   static options = {
     addGlobalClass: true
   }
-  static defaultProps:NavBarProps = {}
+  static defaultProps:NavBarProps = {
+    yearMonthStr: '2019-02',
+  }
 
   /**
    * 日期选择器
@@ -25,7 +26,7 @@ class NavBar extends Component<NavBarProps,NavBarState > {
     this.setState({
       date: e.detail.value
     }, () => {
-      console.log(this.state.date)
+      this.props.onDateState(this.state.date)
     })
   }
 
@@ -33,8 +34,11 @@ class NavBar extends Component<NavBarProps,NavBarState > {
    * 账本编辑按钮事件
    */
   jumpToEdit() {
-    // TODO: 跳转到账本编辑页面
-    console.log('jump to')
+    const bookId = this.$router.params.bookId;
+    const bookType = this.$router.params.bookType;
+    Taro.navigateTo({
+      url: '/pages/newBook/newBook?book_id=' + bookId + '&book_type=' + bookType
+    })
   }
 
   render() {
@@ -58,6 +62,7 @@ class NavBar extends Component<NavBarProps,NavBarState > {
               mode='date'
               fields='month'
               onChange={this.onDateChange}
+              value={this.state.date}
             >
               <View className='at-row'>
                 <View className='at-col at-col-1 at-col--auto'>
@@ -84,7 +89,7 @@ class NavBar extends Component<NavBarProps,NavBarState > {
           </View>
         </View>
       </View>
-    )
+    );
   }
 }
 

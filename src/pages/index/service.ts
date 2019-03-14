@@ -4,6 +4,6 @@ export const getBookData = (data) => {
   return Api.getBookData(data)
 }
 
-export const getBannerData = (data) => {
-  return Api.getBannerData(data)
+export const getNavBarData = (data) => {
+  return Api.getNavBarData(data)
 }
