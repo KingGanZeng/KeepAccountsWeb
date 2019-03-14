@@ -2,7 +2,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { Request } from '../../utils/request'
+// import { Request } from '../../utils/request'
 import { IndexProps, IndexState } from './index.interface'
 import Tips from '../../utils/tips'
 import { addZero, objArrReduce } from "../../utils/common";
@@ -88,10 +88,6 @@ class Index extends Component<IndexProps,IndexState > {
 
   // 页面挂载时执行
   componentDidMount() {
-    Request.login()
-      .then((result) => {
-        console.log(result);
-      });
     this.getDateData(this.state.yearMonth)
   }
 
