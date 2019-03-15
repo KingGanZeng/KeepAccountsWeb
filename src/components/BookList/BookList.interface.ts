@@ -6,7 +6,7 @@
  * @interface BookListState
  */
 export interface BookListState {
-  title: string,
+  bookTitle: string,
   bookList: any
 }
 

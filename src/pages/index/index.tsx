@@ -26,7 +26,7 @@ class Index extends Component<IndexProps,IndexState > {
     super(props);
     const nowDate = new Date();
     const year = nowDate.getFullYear();
-    const month = addZero((nowDate.getMonth() + 1).toString());
+    const month = addZero((nowDate.getMonth()+1).toString());
     this.state = {
       yearMonth: `${year}-${month}`, // 用于存储日期，并传递给NavBar
     }
@@ -44,22 +44,9 @@ class Index extends Component<IndexProps,IndexState > {
     })
   }
 
-
-  // 获取NavBar数据
-  async getNavBarData(month: number, year: number, book_id: string) {
-    return await this.props.dispatch({
-      type: 'index/getNavBarData',
-      payload: {
-        month: month,
-        year: year,
-        user_name: 'zenggan', // 这里需要localstorage中获取
-        book_id: book_id
-      }
-    })
-  }
-
   // 获取Content账单数据
   async getRecordData(month: number, year: number, book_id: string) {
+    console.log(month, year, book_id)
     return await this.props.dispatch({
       type: 'index/getRecordData',
       payload: {
@@ -80,14 +67,14 @@ class Index extends Component<IndexProps,IndexState > {
     const m = date.split('-')[1];
     const book_id = this.$router.params.myBookId;
     Tips.loading();
-    this.getNavBarData(m, y, book_id);
-    this.getRecordData(m, y, book_id);
-    Tips.loaded();
+    this.getRecordData(m, y, book_id)
     this.render()
+    Tips.loaded();
   }
 
   // 页面挂载时执行
   componentDidMount() {
+    console.log(this.state.yearMonth)
     this.getDateData(this.state.yearMonth)
   }
 
@@ -97,6 +84,9 @@ class Index extends Component<IndexProps,IndexState > {
     //处理收支数据
     let incomeList = [];
     let expenseList = [];
+    let incomeData = {};
+    let expenseData = {};
+    let navBarData = {};
     if (recordData) {
       recordData.forEach(item => {
         if (item.record_type === 'income') {
@@ -107,34 +97,34 @@ class Index extends Component<IndexProps,IndexState > {
           expenseList.push(item)
         }
       });
-      const incomeData = objArrReduce(incomeList);
-      const expenseData = objArrReduce(expenseList);
-      const navBarData = {
+      incomeData = objArrReduce(incomeList);
+      expenseData = objArrReduce(expenseList);
+      navBarData = {
         incomeCount: incomeData.moneyAll,
         expenseCount: expenseData.moneyAll,
       };
-
-      return (
-        <View className='index-wrapper'>
-          <View className='index-header'>
-            <NavBar
-              yearMonthStr={this.state.yearMonth}
-              onDateState={this.onDateChange.bind(this)}
-              navBarData={navBarData}
-            />
-          </View>
-          <View className='index-content'>
-            <Content
-              income={incomeData.recordList}
-              expense={expenseData.recordList}
-            />
-          </View>
-          <View className='index-footer'>
-            <TabBar/>
-          </View>
-        </View>
-      )
     }
+
+    return (
+      <View className='index-wrapper'>
+        <View className='index-header'>
+          <NavBar
+            yearMonthStr={this.state.yearMonth}
+            onDateState={this.onDateChange.bind(this)}
+            navBarData={navBarData}
+          />
+        </View>
+        <View className='index-content'>
+          <Content
+            income={incomeData.recordList}
+            expense={expenseData.recordList}
+          />
+        </View>
+        <View className='index-footer'>
+          <TabBar />
+        </View>
+      </View>
+    )
   }
 }
 

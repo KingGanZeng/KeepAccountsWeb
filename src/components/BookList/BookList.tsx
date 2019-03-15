@@ -8,7 +8,7 @@ class BookList extends Component<BookListProps,BookListState > {
   constructor(props: BookListProps) {
     super(props);
     this.state = {
-      title: this.props.title,
+      bookTitle: this.props.title,
       bookList: this.props.list,
     }
   }
@@ -37,10 +37,11 @@ class BookList extends Component<BookListProps,BookListState > {
     if (this.state.bookList && this.state.bookList.length > 0) {
       hasBook = true
     }
-    const books = this.state.bookList.map((book) => {
+    const books = this.state.bookList.map((book, index) => {
       const bookClass = book.book_type + '-book';
       return (
         <View
+          key={String(index)}
           className={'book-item' + " " + bookClass}
           onClick={this.onClickBook.bind(this, book)}
         >
@@ -53,13 +54,14 @@ class BookList extends Component<BookListProps,BookListState > {
     return (
       <View className='fx-BookList-wrap'>
         <AtCard
-          title={this.state.title}
+          title={this.state.bookTitle}
           className='card-wrapper'
         >
-          <ScrollView className='scroll-view'
-                      scrollX
-                      scrollWithAnimation
-                      style='width: 100%;'
+          <ScrollView
+            className='scroll-view'
+            scrollX
+            scrollWithAnimation
+            style='width: 100%;'
           >
             {hasBook && books}
             {!hasBook && <View className='empty-wrapper'>暂无账本</View>}

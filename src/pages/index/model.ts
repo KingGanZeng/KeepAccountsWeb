@@ -1,4 +1,3 @@
-// import Taro from '@tarojs/taro';
 import * as indexApi from './service';
 
 export default {
@@ -10,29 +9,6 @@ export default {
   },
 
   effects: {
-    * getNavBarData({ payload }, { select, call, put }) {
-      const { key, v } = yield select(state => state.index);
-      const result = yield call(indexApi.getNavBarData, {
-        key,
-        v,
-        ...payload
-      });
-      if (result && result.length > 0) {
-        yield put({
-          type: 'updateState',
-          payload: {
-            navBarData: result[0]
-          }
-        })
-      } else {
-        yield put({
-          type: 'updateState',
-          payload: {
-            navBarData: []
-          }
-        })
-      }
-    },
     * getRecordData({ payload }, { select, call, put }) {
       const { key, v } = yield select(state => state.index);
       const result = yield call(indexApi.getRecordData, {

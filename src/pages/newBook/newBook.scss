@@ -1,10 +1,49 @@
 
-newBook {
-  width: 100%;
-}
-
 .newBook-container {
   margin: 20px;
+  .name-wrapper {
+    font-size: 28px;
+    .at-input__title {
+      font-size: 28px;
+    }
+    .at-input__input {
+      font-size: 28px!important;
+    }
+  }
+  .picker-wrapper {
+    padding: 24px 0;
+    color: #333;
+    background-color: #FFF;
+    margin-left: 32px;
+    margin-bottom: 1PX;
+    font-size: 28px;
+    line-height:1.5;
+    vertical-align:middle;
+    text-align:left;
+    position: relative;
+    .picker-content {
+      position: absolute;
+      right: 40px;
+      color: #666666;
+    }
+  }
+  .border-bottom:after {
+    content: '';
+    width: 100%;
+    height: 1px;
+    background: #e3e3e3;
+    -webkit-transform: scale(1, 0.5);
+    transform: scale(1, 0.5);
+  }
+  .button-wrapper {
+    margin: 25px auto;
+    .form-button {
+      margin: 0 10px;
+    }
+  }
+  .at-button--small {
+    width: 200px;
+  }
 }
 
 .newBook-wrap {
@@ -15,8 +54,4 @@ newBook {
 
 .input-margin-bottom {
   margin-bottom: 200px;
-}
-
-.form-button {
-  margin: 0 20% 25px !important;
 }

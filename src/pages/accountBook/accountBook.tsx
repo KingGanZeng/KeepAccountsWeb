@@ -55,7 +55,7 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
       type = 'others'
     }
     Taro.navigateTo({
-      url: "/pages/newBook/newBook?booktype=" + type
+      url: "/pages/newBook/newBook?bookType=" + type
     })
   }
 
@@ -80,8 +80,8 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
 
     return (
       <View className='fx-accountBook-wrap'>
-        <BookList title='我的账本' list={myBookList}/>
-        <BookList title='小组账本' list={groupBookList}/>
+        <BookList title='我的账本' list={myBookList} />
+        <BookList title='小组账本' list={groupBookList} />
         <AtCard
           className='choice-wrapper'
           title='选择账本场景'

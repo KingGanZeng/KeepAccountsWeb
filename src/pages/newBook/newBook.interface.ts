@@ -6,10 +6,12 @@
  * @interface NewBookState
  */
 export interface NewBookState {
-  bookName: string,
   bookType: string,
-  peopleNum: number,
-  loading: boolean
+  bookCategory: Array<string>, // 账本类型
+  bookCategoryChecked: string, // 当前选中账本类型
+  hasGroup: boolean, // 是否开启小组
+  loading: boolean, // 提交状态，用于页面loading样式渲染
+  bookName: string, // 账本名称
 }
 
 /**

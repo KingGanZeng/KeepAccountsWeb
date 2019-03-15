@@ -9,19 +9,6 @@ export interface IndexState {
 }
 
 /**
- * 首页NavBar数据格式
- */
-export interface BannerProps {
-  user_name: string,
-  book_id: number,
-  book_name: string,
-  month: number,
-  year: number,
-  income: number,
-  expense: number
-}
-
-/**
  * 记账记录返回格式
  */
 export interface RecordProps {
@@ -42,6 +29,5 @@ export interface RecordProps {
  */
 export interface IndexProps {
   dispatch?: any,
-  navBarData?: Array<BannerProps>,
   recordData?: Array<RecordProps>
 }
