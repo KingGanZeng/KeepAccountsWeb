@@ -11,12 +11,15 @@ class TabBar extends Component<TabBarProps,TabBarState > {
     this.state = {
       isOpen: false,
       showLeftBar: false,
+      bookId: this.props.nowBookId,
     }
   }
   static options = {
     addGlobalClass: true
   };
-  static defaultProps:TabBarProps = {};
+  static defaultProps:TabBarProps = {
+    nowBookId: '',
+  };
 
   /**
    * 显示侧边栏
@@ -107,7 +110,11 @@ class TabBar extends Component<TabBarProps,TabBarState > {
         <View className='at-col diagram-button'>
           <View className='at-icon at-icon-equalizer' />
         </View>
-        <MaskTabBar isOpened={this.state.isOpen} onOpenState={this.onChangeOpenState.bind(this)} />
+        <MaskTabBar
+          isOpened={this.state.isOpen}
+          onOpenState={this.onChangeOpenState.bind(this)}
+          nowBookId={this.state.bookId}
+        />
       </View>
     )
   }

@@ -6,7 +6,8 @@
  * @interface MaskTabBarState
  */
 export interface MaskTabBarState {
-  openState: boolean
+  openState: boolean,
+  bookId: string,
 }
 
 /**
@@ -17,5 +18,6 @@ export interface MaskTabBarState {
  */
 export interface MaskTabBarProps {
   isOpened: boolean,
+  nowBookId: string, // 账本编号
   onOpenState?: any
 }

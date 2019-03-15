@@ -8,14 +8,16 @@ class MaskTabBar extends Component<MaskTabBarProps,MaskTabBarState > {
   constructor(props: MaskTabBarProps) {
     super(props);
     this.state = {
-      openState: this.props.isOpened
+      openState: this.props.isOpened,
+      bookId: this.props.nowBookId,
     }
   }
   static options = {
     addGlobalClass: true
   };
   static defaultProps:MaskTabBarProps = {
-    isOpened: false
+    isOpened: false,
+    nowBookId: '',
   };
 
   /**
@@ -26,6 +28,15 @@ class MaskTabBar extends Component<MaskTabBarProps,MaskTabBarState > {
       openState: false,
     }, () => {
       this.props.onOpenState(this.state.openState)
+    })
+  }
+
+  /**
+   * 跳转到新记账页面
+   */
+  newRecord() {
+    Taro.navigateTo({
+      url: '/pages/newRecord/newRecord?bookId=' + this.state.bookId
     })
   }
 
@@ -46,7 +57,10 @@ class MaskTabBar extends Component<MaskTabBarProps,MaskTabBarState > {
                 onClick={this.closeRecordWay.bind(this)}
               />
               <View className='at-icon at-icon-image left-button' />
-              <View className='at-icon at-icon-edit center-button' />
+              <View
+                className='at-icon at-icon-edit center-button'
+                onClick={this.newRecord}
+              />
               <View className='at-icon at-icon-volume-plus right-button' />
             </View>
           </View>

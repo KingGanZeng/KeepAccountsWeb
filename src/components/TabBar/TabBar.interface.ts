@@ -7,7 +7,8 @@
  */
 export interface TabBarState {
   isOpen: boolean,
-  showLeftBar: boolean
+  showLeftBar: boolean,
+  bookId: string,
 }
 
 /**
@@ -17,5 +18,5 @@ export interface TabBarState {
  * @interface TabBarProps
  */
 export interface TabBarProps {
-
+  nowBookId: string, // 当前选择的账本编号
 }

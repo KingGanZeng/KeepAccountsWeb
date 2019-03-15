@@ -27,8 +27,10 @@ class Index extends Component<IndexProps,IndexState > {
     const nowDate = new Date();
     const year = nowDate.getFullYear();
     const month = addZero((nowDate.getMonth()+1).toString());
+    const urlBookId = decodeURIComponent(this.$router.params.bookId);
     this.state = {
       yearMonth: `${year}-${month}`, // 用于存储日期，并传递给NavBar
+      bookId: urlBookId || ' ',
     }
   }
 
@@ -121,7 +123,7 @@ class Index extends Component<IndexProps,IndexState > {
           />
         </View>
         <View className='index-footer'>
-          <TabBar />
+          <TabBar nowBookId={this.state.bookId} />
         </View>
       </View>
     )
