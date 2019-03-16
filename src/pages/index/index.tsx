@@ -28,9 +28,11 @@ class Index extends Component<IndexProps,IndexState > {
     const year = nowDate.getFullYear();
     const month = addZero((nowDate.getMonth()+1).toString());
     const urlBookId = decodeURIComponent(this.$router.params.bookId);
+    const urlBookType= decodeURIComponent(this.$router.params.bookType)
     this.state = {
       yearMonth: `${year}-${month}`, // 用于存储日期，并传递给NavBar
       bookId: urlBookId || ' ',
+      bookType: urlBookType || ' ', // 账本类别
     }
   }
 
@@ -76,8 +78,10 @@ class Index extends Component<IndexProps,IndexState > {
 
   // 页面挂载时执行
   componentDidMount() {
-    console.log(this.state.yearMonth)
     this.getDateData(this.state.yearMonth)
+    Taro.setNavigationBarTitle({ // 设置标题栏账本名
+      title: decodeURIComponent(this.$router.params.bookName)
+    })
   }
 
   render() {
@@ -101,10 +105,8 @@ class Index extends Component<IndexProps,IndexState > {
       });
       incomeData = objArrReduce(incomeList);
       expenseData = objArrReduce(expenseList);
-      navBarData = {
-        incomeCount: incomeData.moneyAll,
-        expenseCount: expenseData.moneyAll,
-      };
+      // @ts-ignore
+      navBarData = { incomeCount: incomeData.moneyAll, expenseCount: expenseData.moneyAll,};
     }
 
     return (
@@ -114,11 +116,14 @@ class Index extends Component<IndexProps,IndexState > {
             yearMonthStr={this.state.yearMonth}
             onDateState={this.onDateChange.bind(this)}
             navBarData={navBarData}
+            navBookType={this.state.bookType}
           />
         </View>
         <View className='index-content'>
           <Content
+            // @ts-ignore
             income={incomeData.recordList}
+            // @ts-ignore
             expense={expenseData.recordList}
           />
         </View>

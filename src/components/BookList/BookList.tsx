@@ -55,7 +55,6 @@ class BookList extends Component<BookListProps,BookListState > {
       <View className='fx-BookList-wrap'>
         <AtCard
           title={this.state.bookTitle}
-          className='card-wrapper'
         >
           <ScrollView
             className='scroll-view'

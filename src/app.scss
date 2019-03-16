@@ -1,7 +1,10 @@
+@import './assets/iconfont/scss/fontawesome.scss';
 $border_color: "#333333";
 
 body {
   background-color: #f5f5f5;
+  margin: 0;
+  padding: 0;
 }
 
 .same-border {
@@ -46,6 +49,16 @@ body {
   right: 0;
   width: 1px;
   @extend .same-border;
+}
+
+.border-beside:after {
+  content: '';
+  height: 100%;
+  width: 1px;
+  background-color: #E3E3E3;
+  -webkit-transform: scale(1, 0.5);
+  transform: scale(1, 0.5);
+  z-index: 1;
 }
 
 .border-shadow {

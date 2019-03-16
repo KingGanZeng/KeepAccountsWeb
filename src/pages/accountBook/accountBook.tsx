@@ -88,6 +88,8 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
           note='新建账本需先选择账本场景'
         >
           <AtGrid
+            className='choice-block'
+            hasBorder={false}
             data={
             [
               {

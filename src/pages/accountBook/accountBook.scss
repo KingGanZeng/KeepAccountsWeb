@@ -1,7 +1,22 @@
 
 .fx-accountBook-wrap {
+  background: #2b364e;
   .choice-wrapper {
-    margin-top:15px;
-    margin-bottom:15px;
+    margin-top:25px;
+    margin-bottom:25px;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
   }
+  .choice-block .at-grid__flex .content-inner__text {
+    font-size: 28px;
+  }
+  .fx-BookList-wrap {
+    .at-card {
+      margin: 0!important;
+    }
+    .at-card__header {
+      padding: 18px 0;
+      margin: 0 24px;
+    }
+  }
+
 }

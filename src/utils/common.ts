@@ -76,7 +76,7 @@ export const bookNameTranslate = (language, bookName) => {
     } else if(bookName === 'rent') {
       return '租房居住'
     } else if(bookName === 'others') {
-      return '其他记账'
+      return '借还记录'
     }
   } else if (language === 'Chinese') {
     if(bookName === '日常开销') {
@@ -91,7 +91,7 @@ export const bookNameTranslate = (language, bookName) => {
       return 'moneyManagement'
     } else if(bookName === '租房居住') {
       return 'rent'
-    } else if(bookName === '不知道啥') {
+    } else if(bookName === '借还记录') {
       return 'others'
     }
   }

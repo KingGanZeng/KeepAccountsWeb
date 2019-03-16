@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Picker } from '@tarojs/components'
+import { View, Picker, Text } from '@tarojs/components'
 import { NavBarProps, NavBarState } from './NavBar.interface'
 import './NavBar.scss'
 import { addZero } from '../../utils/common'
@@ -9,19 +9,21 @@ class NavBar extends Component<NavBarProps,NavBarState > {
     super(props);
     this.state = {
       date: this.props.yearMonthStr,
-      income: this.props.navBarData.incomeCount,
-      expense: this.props.navBarData.expenseCount,
+      income: this.props.navBarData.incomeCount || 0,
+      expense: this.props.navBarData.expenseCount || 0,
+      bookType: this.props.navBookType,
     }
   }
   static options = {
     addGlobalClass: true
   };
   static defaultProps:NavBarProps = {
-    yearMonthStr: '2019-02',
+    yearMonthStr: '2019-03',
     navBarData: {
       incomeCount: 0,
       expenseCount: 0,
-    }
+    },
+    navBookType: '',
   };
 
   /**
@@ -32,6 +34,7 @@ class NavBar extends Component<NavBarProps,NavBarState > {
     this.setState({
       date: e.detail.value
     }, () => {
+      console.log(this.state.date);
       this.props.onDateState(this.state.date)
     })
   };
@@ -48,51 +51,66 @@ class NavBar extends Component<NavBarProps,NavBarState > {
   }
 
   render() {
-    // 设置时间
+    // 设置时间，生成时间选择器
     const bookYear = this.state.date.split('-')[0];
     let bookMonth= this.state.date.split('-')[1];
     bookMonth = addZero(bookMonth);
+    let pickerType = this.state.bookType === 'dayLife' || this.state.bookType === 'rent' ? 'month' : 'year';
+    pickerType = 'month';
+
+    let content:any;
+    if (this.state.bookType !== 'dayLife') {
+      const mapCount = [
+        {title: '收入', value: this.state.income},
+        {title: '支出', value: this.state.expense},
+        ];
+      content = mapCount.map((item, index) => {
+        if (item.title !== '笔数') {
+          item.value = item.value.toFixed(2);
+        }
+        return (
+          <View className='at-col navBar-footer left-first'>
+            <View className='footer-title'>{item.title}</View>
+            <View className='footer-content'>
+              { item.title == '支出' && <Text className='money book-income'>{item.value}</Text> }元
+              { item.title == '收入' && <Text className='money book-expense'>{item.value}</Text> }元
+            </View>
+          </View>
+        )
+      })
+    }
 
     return (
       <View className='fx-NavBar-wrap'>
         <View className='at-row'>
-          <View
-            className='book-name at-col'
-            onClick={this.jumpToEdit}
-          >
-            默认账本
-            <View className='at-icon at-icon-edit' />
-          </View>
-          <View className='choose-date at-col border-shadow'>
+          <View className='at-col at-col-1 at-col--auto navBar-footer half-border-right border-beside'>
             <Picker
               mode='date'
-              fields='month'
+              fields={pickerType}
               onChange={this.onDateChange}
               value={this.state.date}
             >
-              <View className='at-row'>
-                <View className='at-col at-col-1 at-col--auto'>
-                  <View className='at-icon at-icon-calendar' />
+              { pickerType === 'month'  &&
+              <View>
+                <View className='navBar-year'>{bookYear}年</View>
+                <View className='navBar-month'>
+                  <Text className='month-wrapper'>{bookMonth}</Text>月
+                  <View className='at-icon at-icon-chevron-down' />
                 </View>
-                <View className='at-col at-col-1 at-col--auto navBar-year'>{bookYear}年</View>
-                <View className='at-col at-col-1 at-col--auto navBar-month'>{bookMonth}月</View>
               </View>
+              }
+              { pickerType !== 'month'  &&
+              <View>
+                <View className='navBar-year'>当前年份</View>
+                <View className='navBar-only-year'>
+                  <Text className='month-wrapper'>{bookYear}</Text>年
+                  <View className='at-icon at-icon-chevron-down' />
+                </View>
+              </View>
+              }
             </Picker>
           </View>
-        </View>
-        <View className='at-row footer-wrapper'>
-          <View className='at-col navBar-footer half-border-right border-test'>
-            <View className='footer-title'>收入</View>
-            <View className='footer-content book-expense'>{this.state.income.toFixed(2)}元</View>
-          </View>
-          <View className='at-col navBar-footer half-border-right border-test'>
-            <View className='footer-title'>支出</View>
-            <View className='footer-content book-income'>{this.state.expense.toFixed(2)}元</View>
-          </View>
-          <View className='at-col navBar-footer'>
-            <View className='footer-title'>结余</View>
-            <View className='footer-content'>{(this.state.income-this.state.expense).toFixed(2)}元</View>
-          </View>
+          {content}
         </View>
       </View>
     );
