@@ -88,7 +88,6 @@ class NavBar extends Component<NavBarProps,NavBarState > {
     } else if(this.state.bookType == 'travelParty') {
       const mapCount = [
         {title: '支出', value: this.state.expense},
-        {title: '预算', value: this.state.budget},
         {title: '笔数', value: this.state.count},
       ];
       content = mapCount.map((item, index) => {

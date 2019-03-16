@@ -15,6 +15,14 @@ class TravelPartyContent extends Component<TravelPartyContentProps,TravelPartyCo
   }
   static defaultProps:TravelPartyContentProps = {}
 
+  jumpToDetailBook() {
+    Taro.navigateTo({
+      url: "/pages/index/index?bookId=" + 321 +
+        '&bookName=' + '今年旅游' +
+        '&bookType=' + 'homeDecoration'
+    })
+  }
+
   render() {
     return (
       <View className='fx-TravelPartyContent-wrap'>
@@ -25,7 +33,7 @@ class TravelPartyContent extends Component<TravelPartyContentProps,TravelPartyCo
           circular
           indicatorDots>
           <SwiperItem>
-            <View className='inner-item'>
+            <View className='inner-item' onClick={this.jumpToDetailBook}>
               <View className='item-container'>
                 <View className='item-header at-row at-row__justify--between'>
                   <View className='at-col at-col-1 at-col--auto header-left'>
@@ -44,7 +52,7 @@ class TravelPartyContent extends Component<TravelPartyContentProps,TravelPartyCo
             </View>
           </SwiperItem>
           <SwiperItem>
-            <View className='inner-item'>
+            <View className='inner-item' onClick={this.jumpToDetailBook}>
               <View className='item-container'>
                 <View className='item-header at-row at-row__justify--between'>
                   <View className='at-col at-col-1 at-col--auto header-left'>
@@ -63,7 +71,7 @@ class TravelPartyContent extends Component<TravelPartyContentProps,TravelPartyCo
             </View>
           </SwiperItem>
           <SwiperItem>
-            <View className='inner-item'>
+            <View className='inner-item' onClick={this.jumpToDetailBook}>
               <View className='item-container'>
                 <View className='item-header at-row at-row__justify--between'>
                   <View className='at-col at-col-1 at-col--auto header-left'>
