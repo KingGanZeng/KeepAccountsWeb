@@ -154,7 +154,10 @@ class Index extends Component<IndexProps,IndexState > {
           />}
         </View>
         <View className='index-footer'>
-          <TabBar nowBookId={this.state.bookId} />
+          <TabBar
+            nowBookId={this.state.bookId}
+            nowBookType={this.state.bookType}
+          />
         </View>
       </View>
     )

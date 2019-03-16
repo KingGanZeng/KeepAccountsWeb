@@ -10,6 +10,7 @@ class MaskTabBar extends Component<MaskTabBarProps,MaskTabBarState > {
     this.state = {
       openState: this.props.isOpened,
       bookId: this.props.nowBookId,
+      bookType: this.props.nowBookType,
     }
   }
   static options = {
@@ -18,6 +19,7 @@ class MaskTabBar extends Component<MaskTabBarProps,MaskTabBarState > {
   static defaultProps:MaskTabBarProps = {
     isOpened: false,
     nowBookId: '',
+    nowBookType: '',
   };
 
   /**
@@ -35,9 +37,20 @@ class MaskTabBar extends Component<MaskTabBarProps,MaskTabBarState > {
    * 跳转到新记账页面
    */
   newRecord() {
-    Taro.navigateTo({
-      url: '/pages/newRecord/newRecord?bookId=' + this.state.bookId
+    console.log(this.state.bookType)
+    this.setState({
+      openState: false,
     })
+    if (this.state.bookType == 'travelParty') {
+      Taro.navigateTo({
+        url: '/pages/newTravel/newTravel?bookId=' + this.state.bookId + '&bookType=' + this.state.bookType
+      })
+    } else {
+      Taro.navigateTo({
+        url: '/pages/newRecord/newRecord?bookId=' + this.state.bookId
+      })
+    }
+
   }
 
   render() {

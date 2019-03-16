@@ -1,4 +1,11 @@
 
 .fx-LineChart-wrap {
-    width: 100%;
+  height: 520px;
+  margin: 30px 50px;
+  padding: 20px 0;
+  border-radius: 15px;
+  background: #4a556c;
+  .ec-canvas {
+    height: 520px;
+  }
  }

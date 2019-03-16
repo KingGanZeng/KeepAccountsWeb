@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Swiper, SwiperItem } from '@tarojs/components'
+import { View, Swiper, SwiperItem, Text } from '@tarojs/components'
 import { TravelPartyContentProps, TravelPartyContentState } from './TravelPartyContent.interface'
 import './TravelPartyContent.scss'
 // @ts-ignore
@@ -65,7 +65,23 @@ class TravelPartyContent extends Component<TravelPartyContentProps,TravelPartyCo
                 </View>
                 <View className='item-content at-row'>
                   <View className='at-col image-content' />
-                  <View className='at-col detail-content'></View>
+                  <View className='at-col detail-content'>
+
+                    <View className='at-row at-row__justify--between detail-item'>
+                      <View className='at-col at-col-1 at-col--auto item-title'>
+                        <View className='at-row at-row__align--start'>
+                          <View className='at-col at-icon at-icon-shopping-bag-2'></View>
+                          <View className='at-col title-wrapper'>
+                            <View className='title-name'>交通</View>
+                          </View>
+                        </View>
+                      </View>
+                      <View className='at-col at-col-1 at-col--auto item-money'>
+                        ￥936
+                      </View>
+                    </View>
+
+                  </View>
                 </View>
               </View>
             </View>

@@ -9,6 +9,7 @@ export interface TabBarState {
   isOpen: boolean,
   showLeftBar: boolean,
   bookId: string,
+  bookType: string,
 }
 
 /**
@@ -19,4 +20,5 @@ export interface TabBarState {
  */
 export interface TabBarProps {
   nowBookId: string, // 当前选择的账本编号
+  nowBookType: string, // 账本类型
 }

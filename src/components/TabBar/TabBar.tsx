@@ -12,6 +12,7 @@ class TabBar extends Component<TabBarProps,TabBarState > {
       isOpen: false,
       showLeftBar: false,
       bookId: this.props.nowBookId,
+      bookType: this.props.nowBookType,
     }
   }
   static options = {
@@ -19,6 +20,7 @@ class TabBar extends Component<TabBarProps,TabBarState > {
   };
   static defaultProps:TabBarProps = {
     nowBookId: '',
+    nowBookType: '',
   };
 
   /**
@@ -121,6 +123,7 @@ class TabBar extends Component<TabBarProps,TabBarState > {
           isOpened={this.state.isOpen}
           onOpenState={this.onChangeOpenState.bind(this)}
           nowBookId={this.state.bookId}
+          nowBookType={this.state.bookType}
         />
       </View>
     )

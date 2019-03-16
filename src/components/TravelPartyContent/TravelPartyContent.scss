@@ -40,4 +40,17 @@
     border-radius: 15px;
     overflow: hidden;
   }
+  .detail-content {
+    padding-left: 20px;
+  }
+  .detail-item {
+    font-size: 22px;
+    color: #fff;
+    .title-wrapper {
+      margin-left: 5px;
+    }
+    .item-money {
+      color: #E3E3E3;
+    }
+  }
  }

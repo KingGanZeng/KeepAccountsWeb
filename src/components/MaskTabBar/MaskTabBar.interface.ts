@@ -8,6 +8,7 @@
 export interface MaskTabBarState {
   openState: boolean,
   bookId: string,
+  bookType: string
 }
 
 /**
@@ -19,5 +20,6 @@ export interface MaskTabBarState {
 export interface MaskTabBarProps {
   isOpened: boolean,
   nowBookId: string, // 账本编号
+  nowBookType: string, // 账本类型
   onOpenState?: any
 }

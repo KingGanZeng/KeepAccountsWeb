@@ -63,6 +63,9 @@ const config = {
           }
         }
       }
+    },
+    compile: {
+      exclude: ['src/components/ec-canvas/echarts.js']
     }
   },
   h5: {

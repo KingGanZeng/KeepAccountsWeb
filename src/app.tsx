@@ -23,6 +23,7 @@ class App extends Component {
       'pages/index/index', // 账本详情页
       'pages/newBook/newBook', // 新建账本页
       'pages/newRecord/newRecord', // 新建账单页
+      'pages/newTravel/newTravel', // 新建旅游聚会页
     ],
     window: {
       backgroundTextStyle: 'light',

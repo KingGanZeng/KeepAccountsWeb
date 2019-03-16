@@ -1,0 +1,25 @@
+.newTravel-wrap {
+  width: 100%;
+  min-height: 100vh;
+  background: #2b364e;
+  .input-wrapper {
+    margin: 80px 0;
+    box-sizing: border-box;
+    .at-input {
+      color: #ffffff;
+      padding:20px 50px;
+      background: #4a5d6c;
+      margin: 0;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      input[placeholder] {
+        color: #e3e3e3;
+      }
+    }
+  }
+  .button-wrapper {
+    margin: 80px 40px;
+    box-sizing: border-box;
+  }
+}
