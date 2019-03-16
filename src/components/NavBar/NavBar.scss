@@ -47,9 +47,18 @@
         padding-right: 4px;
         &.book-income {
           color: #f54552;
+          font-weight: bold;
         }
         &.book-expense {
-          color: #6ac9c1;
+          color: #51ffa4;
+          font-weight: bold;
+        }
+        &.book-budget {
+          color: #a981fe;
+          font-weight: bold;
+        }
+        &.book-count {
+          font-weight: bold;
         }
       }
     }

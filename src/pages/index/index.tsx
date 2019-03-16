@@ -50,7 +50,6 @@ class Index extends Component<IndexProps,IndexState > {
 
   // 获取Content账单数据
   async getRecordData(month: number, year: number, book_id: string) {
-    console.log(month, year, book_id)
     return await this.props.dispatch({
       type: 'index/getRecordData',
       payload: {
@@ -90,8 +89,8 @@ class Index extends Component<IndexProps,IndexState > {
     //处理收支数据
     let incomeList = [];
     let expenseList = [];
-    let incomeData = {};
-    let expenseData = {};
+    let incomeData:any = {};
+    let expenseData:any = {};
     let navBarData = {};
     if (recordData) {
       recordData.forEach(item => {
@@ -106,7 +105,12 @@ class Index extends Component<IndexProps,IndexState > {
       incomeData = objArrReduce(incomeList);
       expenseData = objArrReduce(expenseList);
       // @ts-ignore
-      navBarData = { incomeCount: incomeData.moneyAll, expenseCount: expenseData.moneyAll,};
+      navBarData = {
+        incomeCount: incomeData.moneyAll,
+        expenseCount: expenseData.moneyAll,
+        count:'2',
+        budget:'100'
+      };
     }
 
     return (

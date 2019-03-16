@@ -9,6 +9,8 @@ export interface NavBarState {
   date: string,
   income: number,
   expense: number,
+  count: number,
+  budget: number,
   bookType: string,
 }
 
@@ -24,6 +26,8 @@ export interface NavBarProps {
   navBarData: {
     incomeCount: number, // 收入额
     expenseCount: number, // 支出额
+    count: number, // 笔数
+    budget: number, // 预算
   },
   navBookType: string, // 账本类型
 }

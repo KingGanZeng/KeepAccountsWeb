@@ -11,6 +11,8 @@ class NavBar extends Component<NavBarProps,NavBarState > {
       date: this.props.yearMonthStr,
       income: this.props.navBarData.incomeCount || 0,
       expense: this.props.navBarData.expenseCount || 0,
+      count: this.props.navBarData.count || 0,
+      budget: this.props.navBarData.budget || 0,
       bookType: this.props.navBookType,
     }
   }
@@ -22,6 +24,8 @@ class NavBar extends Component<NavBarProps,NavBarState > {
     navBarData: {
       incomeCount: 0,
       expenseCount: 0,
+      count: 0,
+      budget: 0,
     },
     navBookType: '',
   };
@@ -34,7 +38,6 @@ class NavBar extends Component<NavBarProps,NavBarState > {
     this.setState({
       date: e.detail.value
     }, () => {
-      console.log(this.state.date);
       this.props.onDateState(this.state.date)
     })
   };
@@ -59,21 +62,142 @@ class NavBar extends Component<NavBarProps,NavBarState > {
     pickerType = 'month';
 
     let content:any;
-    if (this.state.bookType !== 'dayLife') {
+    if (this.state.bookType == 'dayLife') {
       const mapCount = [
-        {title: '收入', value: this.state.income},
         {title: '支出', value: this.state.expense},
-        ];
+        {title: '预算', value: this.state.budget},
+        {title: '收入', value: this.state.income},
+      ];
       content = mapCount.map((item, index) => {
         if (item.title !== '笔数') {
+          // @ts-ignore
           item.value = item.value.toFixed(2);
         }
         return (
-          <View className='at-col navBar-footer left-first'>
+          <View className='at-col navBar-footer left-first' key={index}>
             <View className='footer-title'>{item.title}</View>
             <View className='footer-content'>
-              { item.title == '支出' && <Text className='money book-income'>{item.value}</Text> }元
-              { item.title == '收入' && <Text className='money book-expense'>{item.value}</Text> }元
+              { item.title == '支出' && <Text className='money book-expense'>{item.value}</Text> }
+              { item.title == '收入' && <Text className='money book-income'>{item.value}</Text> }
+              { item.title == '预算' && <Text className='money book-budget'>{item.value}</Text> }
+              <Text>￥</Text>
+            </View>
+          </View>
+        )
+      })
+    } else if(this.state.bookType == 'travelParty') {
+      const mapCount = [
+        {title: '支出', value: this.state.expense},
+        {title: '预算', value: this.state.budget},
+        {title: '笔数', value: this.state.count},
+      ];
+      content = mapCount.map((item, index) => {
+        if (item.title !== '笔数') {
+          // @ts-ignore
+          item.value = item.value.toFixed(2);
+        }
+        return (
+          <View className='at-col navBar-footer left-first' key={index}>
+            <View className='footer-title'>{item.title}</View>
+            <View className='footer-content'>
+              { item.title == '支出' && <Text className='money book-expense'>{item.value}</Text> }
+              { item.title == '收入' && <Text className='money book-income'>{item.value}</Text> }
+              { item.title == '预算' && <Text className='money book-budget'>{item.value}</Text> }
+              { item.title == '笔数' && <Text className='money book-count'>{item.value}</Text> }
+              { item.title != '笔数' && <Text>￥</Text>}
+            </View>
+          </View>
+        )
+      })
+    } else if(this.state.bookType == 'homeDecoration') {
+      const mapCount = [
+        {title: '支出', value: this.state.expense},
+        {title: '预算', value: this.state.budget},
+        {title: '笔数', value: this.state.count},
+      ];
+      content = mapCount.map((item, index) => {
+        if (item.title !== '笔数') {
+          // @ts-ignore
+          item.value = item.value.toFixed(2);
+        }
+        return (
+          <View className='at-col navBar-footer left-first' key={index}>
+            <View className='footer-title'>{item.title}</View>
+            <View className='footer-content'>
+              { item.title == '支出' && <Text className='money book-expense'>{item.value}</Text> }
+              { item.title == '预算' && <Text className='money book-budget'>{item.value}</Text> }
+              { item.title == '笔数' && <Text className='money book-count'>{item.value}</Text> }
+              { item.title != '笔数' && <Text>￥</Text>}
+            </View>
+          </View>
+        )
+      })
+    } else if(this.state.bookType == 'socialRelation') {
+      const mapCount = [
+        {title: '支出', value: this.state.expense},
+        {title: '收入', value: this.state.income},
+      ];
+      content = mapCount.map((item, index) => {
+        return (
+          <View className='at-col navBar-footer left-first' key={index}>
+            <View className='footer-title'>{item.title}</View>
+            <View className='footer-content'>
+              { item.title == '支出' && <Text className='money book-expense'>{item.value}</Text> }
+              { item.title == '收入' && <Text className='money book-income'>{item.value}</Text> }
+              <Text>￥</Text>
+            </View>
+          </View>
+        )
+      })
+    } else if(this.state.bookType == 'moneyManagement') {
+      const mapCount = [
+        {title: '盈利', value: this.state.income},
+        {title: '亏损', value: this.state.expense},
+      ];
+      content = mapCount.map((item, index) => {
+        return (
+          <View className='at-col navBar-footer left-first' key={index}>
+            <View className='footer-title'>{item.title}</View>
+            <View className='footer-content'>
+              { item.title == '亏损' && <Text className='money book-expense'>{item.value}</Text> }
+              { item.title == '盈利' && <Text className='money book-income'>{item.value}</Text> }
+              <Text>￥</Text>
+            </View>
+          </View>
+        )
+      })
+    } else if(this.state.bookType == 'rent') {
+      const mapCount = [
+        {title: '总支出', value: this.state.expense},
+        {title: '人数', value: this.state.count},
+        {title: '人均', value: (this.state.expense / this.state.count) || 0},
+      ];
+      content = mapCount.map((item, index) => {
+        return (
+          <View className='at-col navBar-footer left-first' key={index}>
+            <View className='footer-title'>{item.title}</View>
+            <View className='footer-content'>
+              { item.title == '总支出' && <Text className='money book-expense'>{item.value}</Text> }
+              { item.title == '人均' && <Text className='money book-budget'>{item.value}</Text> }
+              { item.title == '人数' && <Text className='money book-count'>{item.value}</Text> }
+              { item.title != '人数' && <Text>￥</Text>}
+            </View>
+          </View>
+        )
+      })
+    } else if(this.state.bookType == 'others') {
+      const mapCount = [
+        {title: '应还', value: this.state.expense},
+        {title: '应收', value: this.state.income},
+      ];
+      content = mapCount.map((item, index) => {
+        return (
+          <View className='at-col navBar-footer left-first' key={index}>
+            <View className='footer-title'>{item.title}</View>
+            <View className='footer-content'>
+              { item.title == '应还' && <Text className='money book-expense'>{item.value}</Text> }
+              { item.title == '应收' && <Text className='money book-income'>{item.value}</Text> }
+              <Text>￥</Text>
             </View>
           </View>
         )
@@ -110,7 +234,7 @@ class NavBar extends Component<NavBarProps,NavBarState > {
               }
             </Picker>
           </View>
-          {content}
+          { content }
         </View>
       </View>
     );

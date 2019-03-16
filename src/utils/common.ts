@@ -61,19 +61,18 @@ export const objArrReduce = arr => {
 };
 
 export const bookNameTranslate = (language, bookName) => {
-  console.log(222, language, bookName)
   if (language === 'English') {
     if(bookName === 'dayLife') {
       return '日常开销';
-    } else if(bookName === 'travelPart') {
-      return'出游聚会'
+    } else if(bookName === 'travelParty') {
+      return '出游聚会'
     } else if(bookName === 'homeDecoration') {
       return '居家装修'
     } else if(bookName === 'socialRelation') {
       return '人情往来'
     } else if(bookName === 'moneyManagement') {
       return '投资理财'
-    } else if(bookName === 'rent') {
+    } else if(bookName === 'moneyManagement') {
       return '租房居住'
     } else if(bookName === 'others') {
       return '借还记录'
@@ -82,7 +81,7 @@ export const bookNameTranslate = (language, bookName) => {
     if(bookName === '日常开销') {
       return 'dayLife';
     } else if(bookName === '出游聚会') {
-      return'travelPart'
+      return'travelParty'
     } else if(bookName === '居家装修') {
       return 'homeDecoration'
     } else if(bookName === '人情往来') {

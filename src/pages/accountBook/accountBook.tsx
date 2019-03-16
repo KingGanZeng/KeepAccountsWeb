@@ -42,7 +42,7 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
     if(item.value === '日常开销') {
       type = 'dayLife'
     } else if(item.value === '出游聚会') {
-      type = 'travelPart'
+      type = 'travelParty'
     } else if(item.value === '居家装修') {
       type = 'homeDecoration'
     } else if(item.value === '人情往来') {
@@ -66,7 +66,7 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
   render() {
     const myBookList = [
       {book_id:1, book_type: 'dayLife', book_name: '日常开销', note: ''},
-      {book_id:2, book_type: 'travelPart', book_name: '出游聚会', note: ''},
+      {book_id:2, book_type: 'travelParty', book_name: '出游聚会', note: ''},
       {book_id:3, book_type: 'homeDecoration', book_name: '居家装修', note: ''},
       {book_id:4, book_type: 'socialRelation', book_name: '人情往来', note: ''},
       {book_id:5, book_type: 'moneyManagement', book_name: '投资理财', note: ''},
