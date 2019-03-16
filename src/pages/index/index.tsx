@@ -13,6 +13,8 @@ import { TabBar } from '../../components/TabBar/TabBar'
 import { NavBar } from '../../components/NavBar/NavBar'
 // @ts-ignore
 import { Content } from '../../components/Content/Content'
+// @ts-ignore
+import { TravelPartyContent } from '../../components/TravelPartyContent/TravelPartyContent'
 
 @connect(({ index }) => ({
     ...index,
@@ -124,7 +126,6 @@ class Index extends Component<IndexProps,IndexState > {
         budget: 100
       };
     }
-    console.log(111111111, navBarData);
 
     return (
       <View className='index-wrapper'>
@@ -137,12 +138,20 @@ class Index extends Component<IndexProps,IndexState > {
           />
         </View>
         <View className='index-content'>
+          { this.state.bookType == 'travelParty' &&
+          <TravelPartyContent
+            // @ts-ignore
+            income={incomeData.recordList}
+            // @ts-ignore
+            expense={expenseData.recordList}
+          />}
+          { this.state.bookType != 'travelParty' &&
           <Content
             // @ts-ignore
             income={incomeData.recordList}
             // @ts-ignore
             expense={expenseData.recordList}
-          />
+          />}
         </View>
         <View className='index-footer'>
           <TabBar nowBookId={this.state.bookId} />

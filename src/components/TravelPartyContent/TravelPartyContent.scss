@@ -1,0 +1,43 @@
+.fx-TravelPartyContent-wrap {
+  width:100%;
+  background-color:#2b364e;
+  padding-bottom:160px;
+  min-height:1000px;
+  box-sizing: border-box;
+  .inner-container {
+    height: 470px;
+  }
+  .inner-item {
+    margin: 30px;
+    padding: 20px;
+  }
+  .item-container {
+    border-radius: 15px;
+    background: #4a556c;
+    padding: 25px;
+  }
+  .item-header {
+    color: #ffffff;
+    .travel-title {
+      font-size: 28px;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+    .travel-create-time {
+      font-size: 22px;
+      color: #e3e3e3;
+      margin-bottom: 36px;
+    }
+    .header-right {
+      color: #f54552;
+      font-weight: bold;
+    }
+  }
+  .image-content {
+    width: 200px;
+    height: 200px;
+    background: #e3e3e3;
+    border-radius: 15px;
+    overflow: hidden;
+  }
+ }

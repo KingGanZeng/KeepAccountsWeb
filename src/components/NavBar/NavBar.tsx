@@ -2,7 +2,7 @@ import Taro, { Component } from '@tarojs/taro'
 import { View, Picker, Text } from '@tarojs/components'
 import { NavBarProps, NavBarState } from './NavBar.interface'
 import './NavBar.scss'
-import { addZero } from '../../utils/common'
+import { addZero, moneyFormatter } from '../../utils/common'
 
 class NavBar extends Component<NavBarProps,NavBarState > {
   constructor(props: NavBarProps) {
@@ -71,7 +71,7 @@ class NavBar extends Component<NavBarProps,NavBarState > {
       content = mapCount.map((item, index) => {
         if (item.title !== '笔数') {
           // @ts-ignore
-          item.value = item.value.toFixed(2);
+          item.value = moneyFormatter(item.value);
         }
         return (
           <View className='at-col navBar-footer left-first' key={index}>

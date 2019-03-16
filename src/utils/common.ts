@@ -96,4 +96,18 @@ export const bookNameTranslate = (language, bookName) => {
   }
 };
 
+/**
+ * 万元换算
+ * @param money
+ */
+export const moneyFormatter = (money) => {
+  if (money > 10000) {
+    money = money.toFixed(0)
+    console.log(money, money/10000)
+    return `${(money/10000).toFixed(0)}.${((money-money/10000*10000)/1000).toFixed(0)}${((money-money/1000*1000)/100).toFixed(0)}${((money-money/100*100)/10).toFixed(0)}`
+  } else {
+    return money.toFixed(2)
+  }
+}
+
 export const globalData: any = {}; // 全局公共变量
