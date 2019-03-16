@@ -2,6 +2,7 @@
   width: 100%;
   padding: 25px 25px 25px 45px;
   background: #2b364e;
+  box-sizing: border-box;
   color: #ffffff;
   .navBar-year {
     font-size: 26px;
@@ -31,6 +32,9 @@
     background: #999999;
   }
   .navBar-footer {
+    &:first-child {
+      border-right: 1px solid #E3E3E3;
+    }
     .footer-title {
       font-size: 26px;
       color: #E3E3E3;

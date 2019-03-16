@@ -71,25 +71,22 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
       {book_id:4, book_type: 'socialRelation', book_name: '人情往来', note: ''},
       {book_id:5, book_type: 'moneyManagement', book_name: '投资理财', note: ''},
       {book_id:5, book_type: 'rent', book_name: '租房居住', note: ''},
-      {book_id:5, book_type: 'others', book_name: '其他记账', note: ''},
-    ];
-
-    const groupBookList = [
-      {book_id:1, book_type: 'dayLife', book_name: '聚餐记账', note: '同事组'},
+      {book_id:6, book_type: 'others', book_name: '借还记录', note: ''},
+      {book_id:8, book_type: 'dayLife', book_name: '聚餐记账', note: '同事组'},
     ];
 
     return (
       <View className='fx-accountBook-wrap'>
         <BookList title='我的账本' list={myBookList} />
-        <BookList title='小组账本' list={groupBookList} />
         <AtCard
           className='choice-wrapper'
           title='选择账本场景'
-          note='新建账本需先选择账本场景'
+          note='*新建账本需先选择账本场景'
         >
           <AtGrid
             className='choice-block'
             hasBorder={false}
+            mode='rect'
             data={
             [
               {
@@ -118,7 +115,7 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
               },
               {
                 image: 'https://img12.360buyimg.com/jdphoto/s72x72_jfs/t10660/330/203667368/1672/801735d7/59c85643N31e68303.png',
-                value: '其他记账'
+                value: '借还记录'
               },
             ]}
             onClick={this.toNewAccountBook}

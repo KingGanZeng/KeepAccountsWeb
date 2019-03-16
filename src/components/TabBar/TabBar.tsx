@@ -70,6 +70,9 @@ class TabBar extends Component<TabBarProps,TabBarState > {
    * 切换账本
    */
   changeBook() {
+    this.setState({
+      showLeftBar: false,
+    })
     Taro.navigateTo({
       url: '/pages/accountBook/accountBook'
     })
@@ -89,6 +92,7 @@ class TabBar extends Component<TabBarProps,TabBarState > {
             onClose={this.onClose.bind(this)}
             onItemClick={this.choosePage}
           >
+            <View className='drawer-top-item' />
             <View
               className='drawer-item half-border-bottom border-bottom'
               onClick={this.changeBook}
@@ -97,6 +101,9 @@ class TabBar extends Component<TabBarProps,TabBarState > {
             </View>
             <View className='drawer-item half-border-bottom border-bottom'>
               发现<View className='at-icon at-icon-eye' />
+            </View>
+            <View className='drawer-item half-border-bottom border-bottom'>
+              愿望记账<View className='at-icon at-icon-heart-2' />
             </View>
           </AtDrawer>
         </View>

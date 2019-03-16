@@ -84,7 +84,19 @@ class Index extends Component<IndexProps,IndexState > {
   }
 
   render() {
-    const { recordData } = this.props;
+    let { recordData } = this.props;
+    recordData = [
+      {record_id: 'r05', uid: 'DE90ESD290', date: '2019-03-12', username: 'zenggan', record_type: 'income', category:'sell', money: 200.32},
+      {record_id: 'r04', uid: 'DE90ESD290', date: '2019-03-12', username: 'zenggan', record_type: 'expense', category:'food', money: 200.12},
+      {record_id: 'r03', uid: 'DE90ESD290', date: '2019-03-12', username: 'zenggan', record_type: 'expense', category:'shopping',money: 2009.00},
+      {record_id: 'r02', uid: 'DE90ESD290', date: '2019-03-11', username: 'zenggan', record_type: 'expense', category:'shopping',money: 400.00},
+      {record_id: 'r05', uid: 'DE90ESD290', date: '2019-03-12', username: 'zenggan', record_type: 'income', category:'sell', money: 200.32},
+      {record_id: 'r04', uid: 'DE90ESD290', date: '2019-03-12', username: 'zenggan', record_type: 'expense', category:'food', money: 200.12},
+      {record_id: 'r03', uid: 'DE90ESD290', date: '2019-03-12', username: 'zenggan', record_type: 'expense', category:'shopping',money: 2009.00},
+      {record_id: 'r02', uid: 'DE90ESD290', date: '2019-03-11', username: 'zenggan', record_type: 'expense', category:'shopping',money: 400.00},
+      {record_id: 'r01', uid: 'DE90ESD290', date: '2019-03-7', username: 'zenggan', record_type: 'expense', category:'food',money: 40.00},
+      {record_id: 'r00', uid: 'DE90ESD290', date: '2019-03-5', username: 'zenggan', record_type: 'income', category:'salary',money: 40000.00},
+    ];
 
     //处理收支数据
     let incomeList = [];
@@ -108,10 +120,11 @@ class Index extends Component<IndexProps,IndexState > {
       navBarData = {
         incomeCount: incomeData.moneyAll,
         expenseCount: expenseData.moneyAll,
-        count:'2',
-        budget:'100'
+        count: 2,
+        budget: 100
       };
     }
+    console.log(111111111, navBarData);
 
     return (
       <View className='index-wrapper'>

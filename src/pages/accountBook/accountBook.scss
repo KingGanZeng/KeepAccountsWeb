@@ -1,10 +1,15 @@
 
 .fx-accountBook-wrap {
   background: #2b364e;
+  padding-bottom: 25px;
+  height: 100vh;
   .choice-wrapper {
-    margin-top:25px;
-    margin-bottom:25px;
-    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
+    margin-top:40px;
+    background:#4a556c;
+    border: none;
+    .content-inner__text {
+      color: #ffffff;
+    }
   }
   .choice-block .at-grid__flex .content-inner__text {
     font-size: 28px;
@@ -13,10 +18,21 @@
     .at-card {
       margin: 0!important;
     }
-    .at-card__header {
-      padding: 18px 0;
-      margin: 0 24px;
+    .at-card {
+      background:#4a556c;
+      border:none;
+    }
+    .at-card__content {
+      padding: 24px 24px 24px 34px;
     }
   }
-
+  .at-card__header {
+    padding: 24px 0;
+    margin: 0 24px 0 34px;
+    border-bottom: 1px #ffffff solid;
+    .at-card__header-title {
+      color: #ffffff;
+      font-weight: bold;
+    }
+  }
 }

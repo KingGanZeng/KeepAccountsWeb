@@ -42,6 +42,7 @@ class Content extends Component<ContentProps,ContentState > {
         <DailyContent
           taroKey={String(index)}
           dailyDetail={item}
+          type='income'
         />
       )
     });
@@ -53,6 +54,7 @@ class Content extends Component<ContentProps,ContentState > {
         <DailyContent
           taroKey={String(index)}
           dailyDetail={item}
+          type='expense'
         />
       )
     });

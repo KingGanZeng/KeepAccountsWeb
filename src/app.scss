@@ -9,7 +9,7 @@ body {
 
 .same-border {
   position: absolute;
-  z-index: 10;
+  z-index: 1;
   content: "";
   background-color: $border_color;
   -webkit-transform: scale(1, 0.5);

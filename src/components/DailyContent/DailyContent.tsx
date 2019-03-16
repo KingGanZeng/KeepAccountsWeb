@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
 import { DailyContentProps, DailyContentState } from './DailyContent.interface'
 import './DailyContent.scss'
 import { addZero } from '../../utils/common'
@@ -9,13 +9,15 @@ class DailyContent extends Component<DailyContentProps,DailyContentState > {
     super(props);
     this.state = {
       dailyDetail: this.props.dailyDetail,
+      detailType: this.props.type,
     }
   }
   static options = {
     addGlobalClass: true
   };
   static defaultProps:DailyContentProps = {
-    dailyDetail: {}
+    dailyDetail: {},
+    type: 'income',
   };
 
   /**
@@ -42,7 +44,7 @@ class DailyContent extends Component<DailyContentProps,DailyContentState > {
     const { dailyDetail } = this.state;
     const contentList = dailyDetail.rowArr.map((item, index) => {
       return (
-        <View className='at-row at-row__justify--between daily-item half-border-bottom border-bottom'
+        <View className='at-row at-row__justify--between daily-item'
               key={String(index)}
         >
           <View className='at-col at-col-1 at-col--auto item-intro'>
@@ -62,7 +64,9 @@ class DailyContent extends Component<DailyContentProps,DailyContentState > {
             {this.dateFormatter()}
           </View>
           <View className='at-col at-col-1 at-col--auto content-total'>
-            ￥{this.state.dailyDetail.total.toFixed(2)}
+            ￥<Text className={this.state.detailType == 'income' ? 'income-count' : 'expense-count'}>
+            {this.state.dailyDetail.total.toFixed(2)}
+          </Text>
           </View>
         </View>
         <View className='daily-content'>

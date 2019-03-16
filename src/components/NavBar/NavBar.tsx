@@ -207,7 +207,7 @@ class NavBar extends Component<NavBarProps,NavBarState > {
     return (
       <View className='fx-NavBar-wrap'>
         <View className='at-row'>
-          <View className='at-col at-col-1 at-col--auto navBar-footer half-border-right border-beside'>
+          <View className='at-col at-col-1 at-col--auto navBar-footer half-border-right'>
             <Picker
               mode='date'
               fields={pickerType}

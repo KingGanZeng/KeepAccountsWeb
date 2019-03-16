@@ -7,6 +7,7 @@
  */
 export interface DailyContentState {
   dailyDetail?: any
+  detailType: string,
 }
 
 /**
@@ -27,4 +28,5 @@ export interface rowArrFormat {
  */
 export interface DailyContentProps {
   dailyDetail: Object, // 每一天的消费详情
+  type: string, // 支出还是收入
 }

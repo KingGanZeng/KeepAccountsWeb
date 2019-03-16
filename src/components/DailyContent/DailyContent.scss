@@ -6,22 +6,22 @@
     font-weight: bolder;
     font-size: 0.9rem;
     margin-bottom: 10px;
+    color: #ffffff;
     .content-date, .content-total {
       letter-spacing: 3px;
     }
   }
   .daily-content {
-    border-radius: 8px;
-    background: #ffffff;
     box-sizing: border-box;
     padding-bottom: 20px;
-    -webkit-box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
-    box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
   }
   .daily-item {
-    background: #ffffff;
+    background: #4a556c;
     padding: 32px;
     box-sizing: border-box;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    color: #ffffff;
   }
   .item-intro {
     .at-icon:before {
@@ -29,16 +29,24 @@
     }
   }
   .item-money {
-    color: #999999;
+    color: #e3e3e3;
     font-size: 0.9rem;
+  }
+  .income-count {
+    color: #f54552;
+  }
+  .expense-count {
+    color: #51ffa4;
   }
  }
 
 .border-bottom:after {
+  display: block;
   content: '';
-  width: 100%;
+  margin: 40px 20px 0;
+  box-sizing: border-box;
   height: 1px;
-  background: linear-gradient(to right, transparent, #666666, #999999, #666666, transparent);
+  background: linear-gradient(to right, #EEEEEE, #E3E3E3, #EEEEEE);
   -webkit-transform: scale(1, 0.5);
   transform: scale(1, 0.5);
 }
