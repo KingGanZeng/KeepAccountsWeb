@@ -9,6 +9,8 @@ import { NewRecordProps, NewRecordState } from './newRecord.interface'
 import './newRecord.scss'
 // @ts-ignore
 import { CategoryList } from '../../components/CategoryList/CategoryList'
+// @ts-ignore
+import {bookNameTranslate} from "../../utils/common";
 
 @connect(({ newRecord }) => ({
     ...newRecord,
@@ -16,12 +18,14 @@ import { CategoryList } from '../../components/CategoryList/CategoryList'
 
 class NewRecord extends Component<NewRecordProps,NewRecordState > {
   config:Config = {
-    navigationBarTitleText: '标题'
+    navigationBarTitleText: '新建记账'
   }
   constructor(props: NewRecordProps) {
     super(props)
     this.state = {
       current: 0,
+      bookType: decodeURIComponent(this.$router.params.bookType) || 'dayLife',
+      bookId: parseInt(decodeURIComponent(this.$router.params.bookId), 10),
     }
   }
 
@@ -36,7 +40,10 @@ class NewRecord extends Component<NewRecordProps,NewRecordState > {
   }
 
   componentDidMount() {
-
+    Taro.setNavigationBarTitle({
+      // @ts-ignore
+      title: bookNameTranslate('English', this.state.bookType)
+    })
   }
 
   render() {
@@ -53,16 +60,23 @@ class NewRecord extends Component<NewRecordProps,NewRecordState > {
             current={this.state.current}
             index={0}
           >
-            <CategoryList />
+            <CategoryList
+              nowBookType={this.state.bookType}
+              nowBookId={this.state.bookId}
+              nowType='expense'
+            />
           </AtTabsPane>
           <AtTabsPane
             current={this.state.current}
             index={1}
           >
-            <CategoryList />
+            <CategoryList
+              nowBookType={this.state.bookType}
+              nowBookId={this.state.bookId}
+              nowType='income'
+            />
           </AtTabsPane>
         </AtTabs>
-        <Picker></Picker>
       </View>
     )
   }

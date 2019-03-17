@@ -37,20 +37,10 @@ class MaskTabBar extends Component<MaskTabBarProps,MaskTabBarState > {
    * 跳转到新记账页面
    */
   newRecord() {
-    console.log(this.state.bookType)
-    this.setState({
-      openState: false,
+    this.closeRecordWay()
+    Taro.navigateTo({
+      url: '/pages/newRecord/newRecord?bookId=' + this.state.bookId + '&bookType=' + this.state.bookType
     })
-    if (this.state.bookType == 'travelParty') {
-      Taro.navigateTo({
-        url: '/pages/newTravel/newTravel?bookId=' + this.state.bookId + '&bookType=' + this.state.bookType
-      })
-    } else {
-      Taro.navigateTo({
-        url: '/pages/newRecord/newRecord?bookId=' + this.state.bookId
-      })
-    }
-
   }
 
   render() {

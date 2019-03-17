@@ -72,7 +72,7 @@ export const bookNameTranslate = (language, bookName) => {
       return '人情往来'
     } else if(bookName === 'moneyManagement') {
       return '投资理财'
-    } else if(bookName === 'moneyManagement') {
+    } else if(bookName === 'rent') {
       return '租房居住'
     } else if(bookName === 'others') {
       return '借还记录'
@@ -97,17 +97,64 @@ export const bookNameTranslate = (language, bookName) => {
 };
 
 /**
- * 万元换算
- * @param money
+ * 解析小数点后位数
+ * @param integer
  */
-export const moneyFormatter = (money) => {
-  if (money > 10000) {
-    money = money.toFixed(0)
-    console.log(money, money/10000)
-    return `${(money/10000).toFixed(0)}.${((money-money/10000*10000)/1000).toFixed(0)}${((money-money/1000*1000)/100).toFixed(0)}${((money-money/100*100)/10).toFixed(0)}`
-  } else {
-    return money.toFixed(2)
+const getDigit = (integer) => {
+  let digit = -1;
+  while (integer >= 1) {
+    digit++;
+    integer = integer / 10;
   }
+  return digit;
+};
+
+/**
+ * 添加万
+ * @param integer
+ * @param number
+ * @param mutiple
+ * @param decimalDigit
+ */
+const addWan = (integer, number, mutiple, decimalDigit) => {
+  const digit = getDigit(integer);
+  if (digit > 3) {
+    let remainder = digit % 8;
+    if (remainder >= 5) {   // ‘十万’、‘百万’、‘千万’显示为‘万’
+      remainder = 4;
+    }
+    return Math.round(number / Math.pow(10, remainder + mutiple - decimalDigit)) / Math.pow(10, decimalDigit) + '万';
+  } else {
+    return Math.round(number / Math.pow(10, mutiple - decimalDigit)) / Math.pow(10, decimalDigit);
+  }
+};
+
+/**
+ * 万元换算
+ * @param number
+ * @param decimalDigit
+ */
+export const moneyFormatter = (number, decimalDigit) => {
+    decimalDigit = decimalDigit == null ? 2 : decimalDigit;
+    const integer = Math.floor(number);
+    const digit = getDigit(integer);
+    // ['个', '十', '百', '千', '万', '十万', '百万', '千万'];
+    const unit:any = [];
+    if (digit > 3) {
+      const multiple = Math.floor(digit / 8);
+      if (multiple >= 1) {
+        const tmp = Math.round(integer / Math.pow(10, 8 * multiple));
+        unit.push(addWan(tmp, number, 8 * multiple, decimalDigit));
+        for (let i = 0; i < multiple; i++) {
+          unit.push('亿');
+        }
+        return unit.join('');
+      } else {
+        return addWan(integer, number, 0, decimalDigit);
+      }
+    } else {
+      return number;
+    }
 }
 
 export const globalData: any = {}; // 全局公共变量

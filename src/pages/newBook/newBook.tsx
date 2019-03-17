@@ -21,9 +21,10 @@ class NewBook extends Component<NewBookProps,NewBookState > {
     const defBookName = decodeURIComponent(this.$router.params.bookName);
     this.state = {
       bookType: defBookType,
-      bookCategory: ['日常开销', '出游聚会', '居家装修', '人情往来', '投资理财', '租房居住', '其他记账'],
+      bookCategory: ['日常开销', '出游聚会', '居家装修', '人情往来', '投资理财', '租房居住', '借还记录'],
       bookCategoryChecked: bookNameTranslate('English', defBookType) || '日常开销',
       bookName: defBookName==='undefined' ? '新建账本' : defBookName,
+      budget: 0, // 账本预算
       hasGroup: false,
       loading: false,
     }
@@ -146,16 +147,19 @@ class NewBook extends Component<NewBookProps,NewBookState > {
           onSubmit={this.onSubmit.bind(this)}
           onReset={this.onReset.bind(this)}
         >
+          <View className='book-setting-label'>账本名称</View>
           <AtInput
             name='bookName'
-            title='账本名称'
             type='text'
             className='name-wrapper'
             maxLength={6}
             value={this.state.bookName}
             placeholder={this.state.bookName}
             onChange={this.handleChange.bind(this, 'bookName')}
+            autoFocus
+            border={false}
           />
+          <View className='book-setting-label'>账本设置</View>
           <Picker
             mode='selector'
             range={this.state.bookCategory}
@@ -165,34 +169,43 @@ class NewBook extends Component<NewBookProps,NewBookState > {
             <View className='picker-wrapper half-border-bottom border-bottom'>
               账本类型
               <Text className='picker-content'>{this.state.bookCategoryChecked}</Text>
+              <View className='at-icon at-icon-chevron-right' />
             </View>
           </Picker>
+          <AtInput
+            name='bookName'
+            type='number'
+            title='账本预算'
+            className='name-wrapper'
+            value={this.state.budget}
+            placeholder={this.state.budget.toString()}
+            onChange={this.handleChange.bind(this, 'budget')}
+            autoFocus
+          />
           <AtSwitch
             title='是否开启小组'
             checked={this.state.hasGroup}
             onChange={this.handleGroupChange}
             className='input-margin-bottom'
+            border={false}
+            color='#ff5a5b'
           />
-          <View className='button-wrapper at-row at-row__justify--center'>
-            <View className='at-col at-col-1 at-col--auto'>
+          <View className='button-wrapper'>
+            <View className='button-item'>
               <AtButton
                 type='primary'
                 formType='submit'
-                className='form-button'
+                className='form-button submit-button'
                 loading={this.state.loading}
-                circle
-                size='small'
               >
                 提交
               </AtButton>
             </View>
-            <View className='at-col at-col-1 at-col--auto'>
+            <View className='button-item'>
               <AtButton
                 formType='reset'
                 type='secondary'
-                circle
                 className='form-button'
-                size='small'
               >
                 重置
               </AtButton>

@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Swiper, SwiperItem, Text } from '@tarojs/components'
+import { View, Swiper, SwiperItem } from '@tarojs/components'
 import { TravelPartyContentProps, TravelPartyContentState } from './TravelPartyContent.interface'
 import './TravelPartyContent.scss'
 // @ts-ignore
@@ -15,9 +15,12 @@ class TravelPartyContent extends Component<TravelPartyContentProps,TravelPartyCo
   }
   static defaultProps:TravelPartyContentProps = {}
 
+  /**
+   * 跳转活动内页
+   */
   jumpToDetailBook() {
     Taro.navigateTo({
-      url: "/pages/index/index?bookId=" + 321 +
+      url: "/pages/travelDetails/travelDetails?bookId=" + 321 +
         '&bookName=' + '今年旅游' +
         '&bookType=' + 'homeDecoration'
     })
@@ -100,7 +103,7 @@ class TravelPartyContent extends Component<TravelPartyContentProps,TravelPartyCo
                 </View>
                 <View className='item-content at-row'>
                   <View className='at-col image-content' />
-                  <View className='at-col detail-content'></View>
+                  <View className='at-col detail-content' />
                 </View>
               </View>
             </View>

@@ -1,5 +1,135 @@
+.newRecord-wrap {
+  width: 100%;
+  min-height: 100vh;
+  background: #2b364e;
 
-newRecord-wrap {
-    width: 100%;
-    min-height: 100vh;
+  //样式覆写
+  .at-tabs__header {
+    background: #2b364e;
+  }
+  .at-tabs__item {
+    color: #ffffff;
+    margin: 0 60px;
+  }
+  .at-tabs__item--active {
+    color:#cabe16;
+    font-weight:bold;
+
+  }
+  .at-tabs__item-underline {
+    background-color: #cabe16;
+    height: 6px;
+  }
+  .at-tabs__underline {
+    width: 0!important;
+    height: 0!important;
+  }
+  .fx-CategoryList-wrap {
+    .at-grid__flex .content-inner__text{
+      color: #ffffff;
+    }
+    // 弹窗样式
+    .at-modal__container {
+      top: 35%;
+      background-color: #394660;
+    }
+    .header-wrapper {
+      position:absolute;
+      left:0;
+      right:0;
+      top:0;
+      text-align:left;
+      color:#ffffff;
+      font-weight: bold;
+      .now-time {
+        &.expense {
+          color: #02edb0;
+        }
+        &.income {
+          color: #ef6b73;
+        }
+      }
+    }
+    .header-icon-wrapper {
+      position:absolute;
+      right:0;
+      top:0;
+      border:1px solid #e3e3e3;
+      border-radius:50%;
+      width:38px;
+      height:38px;
+      .at-icon {
+        width:38px;
+        line-height:38px;
+        text-align:center;
+        font-size:20px;
+        margin-top:-3px;
+      }
+    }
+    .action-icon-wrapper {
+      margin: 35px auto 10px;
+      width: 100px;
+      height: 100px;
+      border: 1px solid #ffffff;
+      border-radius: 50%;
+      .icon-item {
+        font-size:50px;
+        line-height:100px;
+        color: #ffffff;
+      }
+    }
+    .action-title {
+      color: #ffffff;
+      font-weight: bold;
+      padding:8px 0 20px;
+      background: #394660;
+      &.expense {
+        color: #02edb0;
+      }
+      &.income {
+        color: #ef6b73;
+      }
+    }
+    .money-wrapper {
+      .at-input {
+        background: #394660;
+      }
+    }
+    .note-wrapper {
+      .at-input {
+        background: #394660;
+      }
+    }
+    .at-input{
+      padding: 18px 0;
+      margin: 0 32px;
+      color: #ffffff;
+      .at-input__input {
+        padding-right: 0;
+        color: #ffffff!important;
+      }
+    }
+    .action-date {
+      padding:0 0 24px;
+      margin:0 32px 10px;
+      font-size: 22px;
+      color: #e3e3e3;
+    }
+    .action-button {
+      color:#ffffff;
+      padding:14px 0;
+      margin:10px 40px;
+      box-sizing:border-box;
+      border-radius:15px;
+      font-weight:bold;
+      &.income {
+        border:1px solid #ef6b73;
+        background:#ef6b73;
+      }
+      &.expense {
+        border:1px solid #02edb0;
+        background:#02edb0;
+      }
+    }
+  }
 }

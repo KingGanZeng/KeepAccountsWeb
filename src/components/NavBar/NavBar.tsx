@@ -58,8 +58,7 @@ class NavBar extends Component<NavBarProps,NavBarState > {
     const bookYear = this.state.date.split('-')[0];
     let bookMonth= this.state.date.split('-')[1];
     bookMonth = addZero(bookMonth);
-    let pickerType = this.state.bookType === 'dayLife' || this.state.bookType === 'rent' ? 'month' : 'year';
-    pickerType = 'month';
+    const pickerType = this.state.bookType === 'dayLife' || this.state.bookType === 'rent' ? 'month' : 'year';
 
     let content:any;
     if (this.state.bookType == 'dayLife') {
@@ -93,7 +92,7 @@ class NavBar extends Component<NavBarProps,NavBarState > {
       content = mapCount.map((item, index) => {
         if (item.title !== '笔数') {
           // @ts-ignore
-          item.value = item.value.toFixed(2);
+          item.value = moneyFormatter(item.value);
         }
         return (
           <View className='at-col navBar-footer left-first' key={index}>
@@ -117,7 +116,7 @@ class NavBar extends Component<NavBarProps,NavBarState > {
       content = mapCount.map((item, index) => {
         if (item.title !== '笔数') {
           // @ts-ignore
-          item.value = item.value.toFixed(2);
+          item.value = moneyFormatter(item.value);
         }
         return (
           <View className='at-col navBar-footer left-first' key={index}>
@@ -137,6 +136,10 @@ class NavBar extends Component<NavBarProps,NavBarState > {
         {title: '收入', value: this.state.income},
       ];
       content = mapCount.map((item, index) => {
+        if (item.title !== '笔数') {
+          // @ts-ignore
+          item.value = moneyFormatter(item.value);
+        }
         return (
           <View className='at-col navBar-footer left-first' key={index}>
             <View className='footer-title'>{item.title}</View>
@@ -154,6 +157,10 @@ class NavBar extends Component<NavBarProps,NavBarState > {
         {title: '亏损', value: this.state.expense},
       ];
       content = mapCount.map((item, index) => {
+        if (item.title !== '笔数') {
+          // @ts-ignore
+          item.value = moneyFormatter(item.value);
+        }
         return (
           <View className='at-col navBar-footer left-first' key={index}>
             <View className='footer-title'>{item.title}</View>
@@ -172,6 +179,10 @@ class NavBar extends Component<NavBarProps,NavBarState > {
         {title: '人均', value: (this.state.expense / this.state.count) || 0},
       ];
       content = mapCount.map((item, index) => {
+        if (item.title !== '笔数') {
+          // @ts-ignore
+          item.value = moneyFormatter(item.value);
+        }
         return (
           <View className='at-col navBar-footer left-first' key={index}>
             <View className='footer-title'>{item.title}</View>
@@ -190,6 +201,10 @@ class NavBar extends Component<NavBarProps,NavBarState > {
         {title: '应收', value: this.state.income},
       ];
       content = mapCount.map((item, index) => {
+        if (item.title !== '笔数') {
+          // @ts-ignore
+          item.value = moneyFormatter(item.value);
+        }
         return (
           <View className='at-col navBar-footer left-first' key={index}>
             <View className='footer-title'>{item.title}</View>

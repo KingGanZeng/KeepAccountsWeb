@@ -20,10 +20,11 @@ class App extends Component {
   config: Config = {
     pages: [ // 在这里配置page，不然是访问不到的
       'pages/accountBook/accountBook', // 选择账本页
-      'pages/index/index', // 账本详情页
-      'pages/newBook/newBook', // 新建账本页
       'pages/newRecord/newRecord', // 新建账单页
+      'pages/newBook/newBook', // 新建账本页
+      'pages/index/index', // 账本详情页
       'pages/newTravel/newTravel', // 新建旅游聚会页
+      'pages/travelDetails/travelDetails', // 旅游聚会内页
     ],
     window: {
       backgroundTextStyle: 'light',

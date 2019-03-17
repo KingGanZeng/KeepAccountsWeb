@@ -1,6 +1,7 @@
 
 .newBook-container {
-  margin: 20px;
+  background: #2b364e;
+  height: 100vh;
   .name-wrapper {
     font-size: 28px;
     .at-input__title {
@@ -10,46 +11,86 @@
       font-size: 28px!important;
     }
   }
+  .book-setting-label {
+    font-size: 28px;
+    color: #fff;
+    padding: 32px 24px;
+  }
+  .button-wrapper {
+    position: fixed;
+    bottom: 0;
+    left:0;
+    right: 0;
+    .button-item {
+      margin: 32px;
+      .form-button {
+        background: #4a5d6c;
+        border-color: #4a5d6c;
+        color: #ffffff!important;
+      }
+      .submit-button {
+        background: #ff5a5b;
+        border-color: #ff5a5b;
+      }
+    }
+  }
+  //样式覆写
+  .at-form {
+    background: #2b364e;
+    &:after {
+      width: 0;
+      height: 0;
+    }
+  }
+  .at-input {
+    background: #4a5d6c;
+    color: #ffffff;
+    margin: 0;
+    padding: 24px 20px;
+    & input[placeholder] {
+      color: #e3e3e3;
+    }
+  }
   .picker-wrapper {
-    padding: 24px 0;
-    color: #333;
-    background-color: #FFF;
-    margin-left: 32px;
-    margin-bottom: 1PX;
     font-size: 28px;
     line-height:1.5;
     vertical-align:middle;
     text-align:left;
     position: relative;
+    color: #ffffff;
+    padding: 32px 10px 32px 24px;
+    background: #4a5d6c;
     .picker-content {
       position: absolute;
-      right: 40px;
-      color: #666666;
+      right: 50px;
+      color: #999999;
+    }
+    .at-icon {
+      float: right;
+      margin-top: 6px;
+      color: #e3e3e3
     }
   }
   .border-bottom:after {
     content: '';
     width: 100%;
     height: 1px;
-    background: #e3e3e3;
+    background: #ffffff;
     -webkit-transform: scale(1, 0.5);
     transform: scale(1, 0.5);
   }
-  .button-wrapper {
-    margin: 25px auto;
-    .form-button {
-      margin: 0 10px;
+  .at-switch {
+    background:#4a5d6c;
+    color:#fff;
+    margin: 0;
+    padding: 32px 24px;
+    .at-switch__title {
+      color: #fff;
+    }
+    .at-switch__container {
+      background: #4a5d6c;
     }
   }
-  .at-button--small {
-    width: 200px;
-  }
-}
-
-.newBook-wrap {
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
 }
 
 .input-margin-bottom {

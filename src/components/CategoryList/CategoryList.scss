@@ -1,4 +1,31 @@
-
 .fx-CategoryList-wrap {
-    width: 100%;
+  width: 100%;
+  height: 100vh;
+  text-align: center;
+  padding: 50px 0;
+  color: #ffffff;
+  .choice-wrapper {
+    margin-bottom: 45px;
+    &:active {
+      background-color: #4a5d6c;
+    }
+  }
+  .icon-info {
+    font-size: 26px;
+  }
+  .icon-wrapper {
+    border-radius: 50%;
+    overflow: hidden;
+    margin: auto;
+    height: 80px;
+    width: 80px;
+    margin-bottom: 20px;
+  }
+  .iconfont {
+    &:after {
+      text-align: center;
+      width: 80px;
+      line-height: 80px;
+    }
+  }
  }

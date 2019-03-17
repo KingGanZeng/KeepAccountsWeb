@@ -96,6 +96,16 @@
     background-color: #cabe16;
     height: 6px;
   }
+  .at-tabs__underline {
+    width: 0!important;
+    height: 0!important;
+  }
+
+  .fx-LineChart-wrap {
+    .ec-canvas {
+      height: 520px;
+    }
+  }
 }
 
 .index-wrapper {

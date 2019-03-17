@@ -7,6 +7,7 @@
   box-sizing: border-box;
   background-color: #4a5d6c;
   color: #E3E3E3;
+  z-index: 998;
 
   .at-icon {
     font-size: 1.3rem;
@@ -41,7 +42,9 @@
       -webkit-box-shadow:0 0 18px 12px #555e71;
       box-shadow:0 0 18px 12px #555e71;
       border:1px solid #555e71;
-
+      &:active {
+        background-color: #f3a97c;
+      }
     }
   }
 
