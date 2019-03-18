@@ -30,7 +30,7 @@ class Index extends Component<IndexProps,IndexState > {
     const year = nowDate.getFullYear();
     const month = addZero((nowDate.getMonth()+1).toString());
     const urlBookId = decodeURIComponent(this.$router.params.bookId);
-    const urlBookType= decodeURIComponent(this.$router.params.bookType)
+    const urlBookType= decodeURIComponent(this.$router.params.bookType);
     this.state = {
       yearMonth: `${year}-${month}`, // 用于存储日期，并传递给NavBar
       bookId: urlBookId || ' ',
@@ -72,14 +72,14 @@ class Index extends Component<IndexProps,IndexState > {
     const m = date.split('-')[1];
     const book_id = this.$router.params.myBookId;
     Tips.loading();
-    this.getRecordData(m, y, book_id)
-    this.render()
+    this.getRecordData(m, y, book_id);
+    this.render();
     Tips.loaded();
   }
 
   // 页面挂载时执行
   componentDidMount() {
-    this.getDateData(this.state.yearMonth)
+    this.getDateData(this.state.yearMonth);
     Taro.setNavigationBarTitle({ // 设置标题栏账本名
       title: decodeURIComponent(this.$router.params.bookName)
     })
@@ -106,7 +106,7 @@ class Index extends Component<IndexProps,IndexState > {
     let incomeData:any = {};
     let expenseData:any = {};
     let navBarData = {};
-    if (recordData) {
+    if (recordData && this.state.bookType == 'travelParty') {
       recordData.forEach(item => {
         if (item.record_type === 'income') {
           // @ts-ignore
@@ -127,6 +127,9 @@ class Index extends Component<IndexProps,IndexState > {
       };
     }
 
+    // 处理旅游出行数据
+    let bookRecord = [];
+
     return (
       <View className='index-wrapper'>
         <View className='index-header'>
@@ -140,10 +143,9 @@ class Index extends Component<IndexProps,IndexState > {
         <View className='index-content'>
           { this.state.bookType == 'travelParty' &&
           <TravelPartyContent
-            // @ts-ignore
-            income={incomeData.recordList}
-            // @ts-ignore
-            expense={expenseData.recordList}
+            nowbookRecord={bookRecord}
+            nowBookType='travelParty'
+            nowBookId={this.state.bookId}
           />}
           { this.state.bookType != 'travelParty' &&
           <Content

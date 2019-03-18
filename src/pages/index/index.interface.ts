@@ -15,12 +15,12 @@ export interface IndexState {
  */
 export interface RecordProps {
   record_id: string,
-  book_id: number,
-  record_type: string,
-  username: string,
   uid: string,
-  money: number,
   date: string,
+  record_type: string,
+  category: string,
+  username: string,
+  money: number,
 }
 
 /**

@@ -1,29 +1,59 @@
-$main_color: #2b364e;
+$body_color: #e3e3e3;
+$header_color: #2b364e;
+$header_color_second: #2b364e98;
+$card_color: #2b364e;
+$content_color: #2b364e;
 $second_color: #05e4ab;
 $border_color: #05e4ab;
+$content_border_color: #2b364e10;
 
 .travelDetails-wrap {
+  ::-webkit-scrollbar{
+    width: 0;
+    height: 0;
+    color: transparent;
+  }
   width: 100%;
-  min-height: 100vh;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
   box-sizing:border-box;
-  background-color: $main_color;
+  background-color: $body_color;
   color: #fff;
+  overflow: hidden;
   .header-wrapper {
-    background-color: $main_color;
-    color:#fff;
-    height:300px;
-    position:relative;
+    width: 100%;
+    height: 300px;
+    position: relative;
+    color: #ffffff;
+    &::after {
+      content: '';
+      width: 140%;
+      height: 300px;
+      position: absolute;
+      left: -20%;
+      top: 0;
+      z-index: 1;
+      border-radius: 0 0 50% 50%;
+      background: linear-gradient(180deg, $header_color, $header_color_second);
+    }
+  }
+  .scroll-view {
+    height: 700px;
   }
   .header-card {
-    background-color: $main_color;
+    z-index: 2;
+    background-color: $card_color;
     border-radius:30px;
-    padding:20px 40px 40px;
+    padding:40px 40px;
     position:absolute;
     left:80px;
     right:80px;
     top:20px;
     border: 2px solid $border_color;
-    //box-shadow:0 10px 16px 0 rgba(145,250,120,0.6), 0 0 20px 15px rgba(145,250,120,0.18);
+    box-shadow:0 10px 6px $header_color_second, 0 0 10px 6px $header_color_second;
     .card-header {
       margin-bottom: 50px;
     }
@@ -60,18 +90,72 @@ $border_color: #05e4ab;
     }
   }
   .travelDetails-container {
-    margin-top: 180px;
+    margin-top: 120px;
     padding:0 45px;
     .container-title {
-      color: $main_color;
+      color: $header_color;
       font-weight:bolder;
-      font-size:32px;
+      font-size:28px;
       padding-bottom:20px;
-      border-bottom: 1px solid #2b364e20;
+      border-bottom: 1px solid $content_border_color;
     }
     .detail-item {
       padding:20px 0;
-      font-size:30px;
+      font-size:28px;
+      border-bottom: 1px solid $content_border_color;
+      .icon-wrapper {
+        display: inline-block;
+        width: 50px;
+        height: 50px;
+        vertical-align: top;
+        margin-right: 20px;
+      }
+      .icon-item {
+        border-radius: 50%;
+        background: #05e4ab;
+        line-height: 50px;
+        width: 100%;
+        color: #ffffff;
+        text-align: center;
+      }
+      .text-wrapper {
+        display: inline-block;
+        .detail-name {
+          color: #333333;
+          margin-bottom: 6px;
+        }
+        .detail-date, .detail-note {
+          font-size: 24px;
+          color: $header_color_second;
+          margin-bottom: 6px;
+        }
+      }
+      .detail-money {
+        color: #333333;
+        letter-spacing: 1px;
+      }
+    }
+  }
+  .travelDetails-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.1), rgba(255,255,255,0.5));
+    padding: 10px 100px;
+    box-sizing: border-box;
+    .new-record {
+      border-radius: 100px;
+      line-height: 80px!important;
+      font-size: 28px;
+      color: #fff;
+      background: $header_color;
+      box-shadow:0 4px 1px $header_color_second, 0 0 1px 3px $header_color_second;
+      transition: background 0.1s;
+      &:active {
+        background: $header_color_second;
+      }
     }
   }
 }

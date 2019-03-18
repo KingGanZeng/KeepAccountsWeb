@@ -13,4 +13,7 @@ export interface TravelDetailsState {}
  * @export
  * @interface TravelDetailsProps
  */
-export interface TravelDetailsProps {}
+export interface TravelDetailsProps {
+  dispatch?: any,
+  recordData: any,
+}
