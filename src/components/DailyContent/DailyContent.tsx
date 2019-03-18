@@ -42,6 +42,8 @@ class DailyContent extends Component<DailyContentProps,DailyContentState > {
 
   render() {
     const { dailyDetail } = this.state;
+
+    console.log(111, dailyDetail);
     const contentList = dailyDetail.rowArr.map((item, index) => {
       return (
         <View className='at-row at-row__justify--between daily-item'
@@ -49,6 +51,7 @@ class DailyContent extends Component<DailyContentProps,DailyContentState > {
         >
           <View className='at-col at-col-1 at-col--auto item-intro'>
             <View className='at-icon at-icon-shopping-bag-2'>{item.category}</View>
+            <View className='item-note'>{item.note}</View>
           </View>
           <View className='at-col at-col-1 at-col--auto item-money'>
             ￥{item.money.toFixed(2)}

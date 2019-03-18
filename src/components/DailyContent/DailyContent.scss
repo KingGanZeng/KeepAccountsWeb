@@ -1,3 +1,5 @@
+$border_color: #05e4ab30;
+
 .fx-DailyContent-wrap {
   width: 100%;
   padding: 20px 52px;
@@ -22,11 +24,18 @@
     border-radius: 15px;
     margin-bottom: 20px;
     color: #ffffff;
+    border: 1px solid $border_color;
   }
   .item-intro {
     .at-icon:before {
       margin-right: 20px;
     }
+  }
+  .item-note {
+    font-size:22px;
+    margin-top:10px;
+    margin-left:53px;
+    color:#e3e3e3;
   }
   .item-money {
     color: #e3e3e3;

@@ -34,7 +34,8 @@ export const objArrReduce = arr => {
       type: curItem.record_type,
       money: curItem.money,
       name: curItem.username,
-      category: curItem.category
+      category: curItem.category,
+      note: curItem.note,
     };
     totalMoney += curItem.money;
     if (hashMap[curItem.date]) {

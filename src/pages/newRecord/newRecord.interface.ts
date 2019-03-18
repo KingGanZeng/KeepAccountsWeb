@@ -9,6 +9,13 @@ export interface NewRecordState {
   current: number, // 当前标签页编号
   bookType: string, // 当前账本类型
   bookId: number, // 账本id
+  actionTitle: string, // 账本名称
+  actionIcon: string, // 记录图标
+  actionIconBackgroundColor: string, // 图标背景
+  inputDate: string, // 记录时间（默认当前）
+  inputMoney: number, // 记录金额
+  inputNote: string, // 记录备注
+  openState: boolean, // 弹出框状态
 }
 
 /**

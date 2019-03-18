@@ -21,6 +21,7 @@ export interface RecordProps {
   category: string,
   username: string,
   money: number,
+  note: string,
 }
 
 /**
