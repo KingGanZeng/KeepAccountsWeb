@@ -1,0 +1,77 @@
+$main_color: #2b364e;
+$second_color: #05e4ab;
+$border_color: #05e4ab;
+
+.travelDetails-wrap {
+  width: 100%;
+  min-height: 100vh;
+  box-sizing:border-box;
+  background-color: $main_color;
+  color: #fff;
+  .header-wrapper {
+    background-color: $main_color;
+    color:#fff;
+    height:300px;
+    position:relative;
+  }
+  .header-card {
+    background-color: $main_color;
+    border-radius:30px;
+    padding:20px 40px 40px;
+    position:absolute;
+    left:80px;
+    right:80px;
+    top:20px;
+    border: 2px solid $border_color;
+    //box-shadow:0 10px 16px 0 rgba(145,250,120,0.6), 0 0 20px 15px rgba(145,250,120,0.18);
+    .card-header {
+      margin-bottom: 50px;
+    }
+    .total-expense {
+      padding:20px 0 0;
+      text-align:center;
+      font-size:40px;
+      letter-spacing:1px;
+      .expense-money {
+        font-size: 56px;
+        font-weight: bold;
+      }
+    }
+    .expense-title {
+      text-align:center;
+      font-size:24px;
+      color:#e3e3e3;
+      margin-bottom:20px;
+    }
+    .card-content {
+      text-align:center;
+      font-size:28px;
+      .budget-block {
+        border-right:4px solid #d0c8d950;
+      }
+      .budget-block, .count-block {
+        color:#e3e3e3;
+        margin-bottom:14px;
+      }
+      .budget-money, .count-money {
+        font-size: 36px;
+        color: #ffffff
+      }
+    }
+  }
+  .travelDetails-container {
+    margin-top: 180px;
+    padding:0 45px;
+    .container-title {
+      color: $main_color;
+      font-weight:bolder;
+      font-size:32px;
+      padding-bottom:20px;
+      border-bottom: 1px solid #2b364e20;
+    }
+    .detail-item {
+      padding:20px 0;
+      font-size:30px;
+    }
+  }
+}
