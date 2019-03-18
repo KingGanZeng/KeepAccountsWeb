@@ -108,13 +108,13 @@ class TabBar extends Component<TabBarProps,TabBarState > {
               切换账本<View className='at-icon at-icon-bookmark' />
             </View>
             <View className='drawer-item half-border-bottom border-bottom'>
+              修改账本信息<View className='at-icon at-icon-tags' />
+            </View>
+            <View className='drawer-item half-border-bottom border-bottom'>
               发现<View className='at-icon at-icon-eye' />
             </View>
             <View className='drawer-item half-border-bottom border-bottom'>
               愿望记账<View className='at-icon at-icon-heart-2' />
-            </View>
-            <View className='drawer-item half-border-bottom border-bottom'>
-              修改账本信息<View className='at-icon at-icon-tags' />
             </View>
           </AtDrawer>
         </View>

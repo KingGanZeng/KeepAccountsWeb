@@ -1,6 +1,6 @@
 {
 	"miniprogramRoot": "dist/",
-	"projectname": "taroWeapp",
+	"projectname": "KeepAccountsWeb",
 	"description": "Demo",
 	"appid": "wx47bdf41ed1be8aa2",
 	"setting": {

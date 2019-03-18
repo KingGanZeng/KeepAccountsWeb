@@ -25,6 +25,7 @@ class App extends Component {
       'pages/index/index', // 账本详情页
       'pages/newTravel/newTravel', // 新建旅游聚会页
       'pages/travelDetails/travelDetails', // 旅游聚会内页
+      'pages/newManagement/newManagement', // 新建投资项目
     ],
     window: {
       backgroundTextStyle: 'light',

@@ -15,6 +15,7 @@ class CategoryList extends Component<CategoryListProps,CategoryListState > {
     }
   }
   static options = {
+
     addGlobalClass: true
   };
   static defaultProps:CategoryListProps = {

@@ -31,10 +31,13 @@ class MoneyManagementContent extends Component<MoneyManagementContentProps,Money
 
   /**
    * 跳转到新建投资项目
-   * @param item
+   * @param e
    */
-  jumpToNewManagement = (item) => {
-
+  jumpToNewManagement = e => {
+    console.log(e);
+    Taro.navigateTo({
+      url: '/pages/newManagement/newManagement?moneyManageBookId=' + this.props.nowBookId
+    })
   }
 
   render() {

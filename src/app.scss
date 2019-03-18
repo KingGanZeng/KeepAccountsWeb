@@ -1,9 +1,12 @@
 $main_color: #2b364e;
+$main_color_light: #4a556c60;
 $second_color: #4a556c;
 $border_color: #05e4ab60;
 $item-background: #4a556c60;
-$income_color: #f65858;
+$income_color: #f54552;
+$income_color-active: #f5455240;
 $expense_color: #4ffa93;
+$expense_color-active: #4ffa9360;
 
 body {
   background-color: #f5f5f5;
@@ -93,3 +96,84 @@ body {
     }
   }
 }
+
+// 底部多按钮样式
+.button-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 150px;
+  padding: 10px 50px;
+  box-sizing: border-box;
+  color: #ffffff;
+  .button-wrapper {
+    padding: 0 30px;
+    .button-item {
+      border-radius: 50px;
+      font-size: 28px;
+      color: #fff;
+      &.confirm {
+        background: $income_color;
+        border: 1px solid $income_color;
+        &:active {
+          background: $income_color-active
+        }
+      }
+      &.cancel {
+        background: $main_color_light;
+        border: 1px solid $expense_color;
+        &:active {
+          background: $expense_color-active;
+        }
+      }
+    }
+  }
+}
+
+// 设置input框样式
+.input-outline-x{
+  width: 100%;
+  position: relative;
+}
+.input-control {
+  margin: 0;
+  font-size: 32px;
+  line-height: 1.5;
+  outline: none;
+  color: #ffffff;
+}
+
+.input-outline {
+  padding: 26px 32px 26px;
+  border: 4px solid $border_color;
+  border-radius: 8px;
+  transition: border-color .25s;
+}
+
+.input-outline:focus, .textarea-outline:focus {
+  border-color: $expense_color;
+}
+.input-label {
+  position: absolute;
+  font-size: 32px;
+  line-height: 1.5;
+  left: 32px;
+  top: 32px;
+  color: $expense_color;
+  padding: 0 4px;
+  transform-origin: 0 0;
+  pointer-events: none;
+  transition: all .25s;
+}
+/* 线框样式label定位 */
+.input-label-active {
+  color: $expense_color;
+  transform: scale(0.85) translate(-4px, -58px);
+}
+/* 线框交互下有个白色背景 */
+.input-outline-x .input-label {
+  background-color: $main_color;
+}
+
+
