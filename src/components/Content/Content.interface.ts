@@ -22,4 +22,5 @@ export interface ContentState {
 export interface ContentProps {
   income: Object,
   expense: Object,
+  nowBookType: string,
 }

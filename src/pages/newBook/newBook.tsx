@@ -13,7 +13,7 @@ import './newBook.scss'
 
 class NewBook extends Component<NewBookProps,NewBookState > {
   config:Config = {
-    navigationBarTitleText: '新建/修改账本'
+    navigationBarTitleText: '编辑账本'
   };
   constructor(props: NewBookProps) {
     super(props);

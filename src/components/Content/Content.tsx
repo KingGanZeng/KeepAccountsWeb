@@ -11,7 +11,7 @@ class Content extends Component<ContentProps,ContentState > {
     super(props);
     this.state = {
       current: 0,
-      dailyObj: { // 假数据
+      dailyObj: {
         incomeObj: this.props.income,
         expenseObj: this.props.expense,
       }
@@ -23,6 +23,7 @@ class Content extends Component<ContentProps,ContentState > {
   static defaultProps:ContentProps = {
     income: {},
     expense: {},
+    nowBookType: '',
   };
 
   handleClick (value) {
@@ -32,7 +33,12 @@ class Content extends Component<ContentProps,ContentState > {
   }
 
   render() {
-    const tabList = [{ title: '支出' }, { title: '收入' }];
+    let tabList:any;
+    if(this.props.nowBookType == 'moneyManagementInner') {
+      tabList = [{ title: '亏损' }, { title: '盈利' }];
+    } else {
+      tabList = [{ title: '支出' }, { title: '收入' }];
+    }
     const { dailyObj } = this.state;
 
     const incomeArr = Object.values(dailyObj.incomeObj);

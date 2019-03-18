@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import {View, Text, Button} from '@tarojs/components'
 import { MoneyManagementContentProps, MoneyManagementContentState } from './MoneyManagementContent.interface'
 import './MoneyManagementContent.scss'
 
@@ -28,6 +28,14 @@ class MoneyManagementContent extends Component<MoneyManagementContentProps,Money
         '&bookType=' + 'moneyManagementInner'
     })
   };
+
+  /**
+   * 跳转到新建投资项目
+   * @param item
+   */
+  jumpToNewManagement = (item) => {
+
+  }
 
   render() {
     const recordArr = this.props.nowBookRecord;
@@ -58,6 +66,9 @@ class MoneyManagementContent extends Component<MoneyManagementContentProps,Money
     return (
       <View className='fx-MoneyManagementContent-wrap'>
         {content}
+        <View className='single-button-footer' onClick={this.jumpToNewManagement.bind(this)}>
+          <Button className='single-button'>新建项目</Button>
+        </View>
       </View>
     )
   }

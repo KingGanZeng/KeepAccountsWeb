@@ -53,7 +53,7 @@ class NewRecord extends Component<NewRecordProps,NewRecordState > {
    * 接受子组件信息，激活弹窗
    * @param data
    */
-  setModalAction(data) {
+  handleSetModalAction(data) {
     this.setState({
       actionTitle: data.actionTitle,
       actionIcon: data.actionIcon,
@@ -148,7 +148,7 @@ class NewRecord extends Component<NewRecordProps,NewRecordState > {
               nowBookType={this.state.bookType}
               nowBookId={this.state.bookId}
               nowType='expense'
-              onModalActionState={data => this.setModalAction(data)}
+              onModalActionState={this.handleSetModalAction.bind(this)}
             />
           </AtTabsPane>
           <AtTabsPane
@@ -159,7 +159,7 @@ class NewRecord extends Component<NewRecordProps,NewRecordState > {
               nowBookType={this.state.bookType}
               nowBookId={this.state.bookId}
               nowType='income'
-              onModalActionState={data => this.setModalAction(data)}
+              onModalActionState={this.handleSetModalAction.bind(this)}
             />
           </AtTabsPane>
         </AtTabs>

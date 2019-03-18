@@ -212,13 +212,15 @@ class Index extends Component<IndexProps,IndexState > {
             income={incomeData.recordList}
             // @ts-ignore
             expense={expenseData.recordList}
+            nowBookType={this.state.bookType}
           />}
         </View>
         <View className='index-footer'>
+          { renderContentType != 'moneyManagement' &&
           <TabBar
             nowBookId={this.state.bookId}
             nowBookType={this.state.bookType}
-          />
+          /> }
         </View>
       </View>
     )
