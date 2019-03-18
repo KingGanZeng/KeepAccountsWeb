@@ -59,20 +59,18 @@ class NewManagement extends Component<NewManagementProps,NewManagementState > {
       return ;
     }
     this.createProject(this.state.moneyManageBookId, this.state.projectName)
-      .then(() => {
-        Tips.loaded();
-        if (this.props.commitSuccess) {
-          Taro.navigateTo({
-            url: "/pages/index/index?bookId=" + this.props.projectId +
-              '&bookName=' + this.state.projectName +
-              '&bookType=' + 'moneyManageInner'
-          })
-        } else {
-          this.setState({
-            commitStatus: true,
-          })
-        }
-      });
+    if (this.props.commitSuccess) {
+      Taro.navigateTo({
+        url: "/pages/index/index?bookId=" + this.props.projectId +
+          '&bookName=' + this.state.projectName +
+          '&bookType=' + 'moneyManageInner'
+      })
+    } else {
+      this.setState({
+        commitStatus: true,
+      })
+    }
+    Tips.loaded()
   }
 
   /**

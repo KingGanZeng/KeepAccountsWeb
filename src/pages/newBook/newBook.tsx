@@ -142,6 +142,7 @@ class NewBook extends Component<NewBookProps,NewBookState > {
   render() {
     return (
       <View className='newBook-container'>
+        <View className='iconfont icon-signature' />
         <AtForm
           className='newBook-wrap'
           onSubmit={this.onSubmit.bind(this)}
