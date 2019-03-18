@@ -1,9 +1,14 @@
+$main_color: #2b364e;
+$border_color: #05e4ab60;
+$item-background: #4a556c60;
 
 .fx-BookList-wrap {
   margin: 0 24px 25px;
-  border-radius: 12px;
+  border-radius: 20px;
   box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
-  background-color: #2b364e;
+  background: linear-gradient(120deg, $main_color, $item-background);
+  border: 1px solid $border_color;
+  overflow: hidden;
 
   .scroll-view {
     white-space: nowrap;

@@ -153,6 +153,29 @@ class NavBar extends Component<NavBarProps,NavBarState > {
       })
     } else if(this.state.bookType == 'moneyManagement') {
       const mapCount = [
+        {title: '总盈利', value: this.state.income},
+        {title: '总亏损', value: this.state.expense},
+        {title: '收支差额', value: this.state.income-this.state.expense},
+      ];
+      content = mapCount.map((item, index) => {
+        if (item.title !== '笔数') {
+          // @ts-ignore
+          item.value = moneyFormatter(item.value);
+        }
+        return (
+          <View className='at-col navBar-footer left-first' key={index}>
+            <View className='footer-title'>{item.title}</View>
+            <View className='footer-content'>
+              { item.title == '总亏损' && <Text className='money book-expense'>{item.value}</Text> }
+              { item.title == '总盈利' && <Text className='money book-income'>{item.value}</Text> }
+              { item.title == '收支差额' && <Text className='money book-count'>{item.value}</Text> }
+              <Text>￥</Text>
+            </View>
+          </View>
+        )
+      })
+    } else if(this.state.bookType == 'moneyManagementInner') {
+      const mapCount = [
         {title: '盈利', value: this.state.income},
         {title: '亏损', value: this.state.expense},
       ];

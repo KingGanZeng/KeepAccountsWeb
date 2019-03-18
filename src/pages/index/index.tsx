@@ -15,6 +15,8 @@ import { NavBar } from '../../components/NavBar/NavBar'
 import { Content } from '../../components/Content/Content'
 // @ts-ignore
 import { TravelPartyContent } from '../../components/TravelPartyContent/TravelPartyContent'
+// @ts-ignore
+import { MoneyManagementContent } from '../../components/MoneyManagementContent/MoneyManagementContent'
 
 @connect(({ index }) => ({
     ...index,
@@ -51,7 +53,7 @@ class Index extends Component<IndexProps,IndexState > {
   }
 
   // 获取Content账单数据
-  async getRecordData(month: number, year: number, book_id: string) {
+  async getRecordData(month: string, year: string, book_id: string) {
     return await this.props.dispatch({
       type: 'index/getRecordData',
       payload: {
@@ -64,17 +66,38 @@ class Index extends Component<IndexProps,IndexState > {
   }
 
   /**
+   * 获取投资理财的相关信息
+   * @param year
+   * @param book_id
+   */
+  async getMoneyManagementData(year: string, book_id: string) {
+    return await this.props.dispatch({
+      type: 'index/getMoneyManagementData',
+      payload: {
+        uid: 'DAF1221DFX', // 这里需要提前获取
+        year: year,
+        book_id: book_id,
+      }
+    })
+  }
+
+  /**
    * 页面data请求
    * @param date
    */
-  getDateData(date) {
+  getDateData(date:string) {
     const y = date.split('-')[0];
     const m = date.split('-')[1];
-    const book_id = this.$router.params.myBookId;
     Tips.loading();
-    this.getRecordData(m, y, book_id);
-    this.render();
-    Tips.loaded();
+    if (this.state.bookType == 'moneyManagement') {
+      this.getMoneyManagementData(y, this.state.bookId)
+    } else {
+      this.getRecordData(m, y, this.state.bookId);
+    }
+    Tips.loaded()
+      .then(() => {
+        this.render();
+      })
   }
 
   // 页面挂载时执行
@@ -86,7 +109,7 @@ class Index extends Component<IndexProps,IndexState > {
   }
 
   render() {
-    let { recordData } = this.props;
+    let { recordData, moneyManagementData } = this.props;
     recordData = [
       {record_id: 'r05', uid: 'DE90ESD290', date: '2019-03-12', username: 'zenggan', record_type: 'income', category:'sell', money: 200.32, note: ''},
       {record_id: 'r04', uid: 'DE90ESD290', date: '2019-03-12', username: 'zenggan', record_type: 'expense', category:'food', money: 200.12, note: '今天天气不错'},
@@ -99,14 +122,31 @@ class Index extends Component<IndexProps,IndexState > {
       {record_id: 'r01', uid: 'DE90ESD290', date: '2019-03-7', username: 'zenggan', record_type: 'expense', category:'food',money: 40.00, note: '今天天气不错'},
       {record_id: 'r00', uid: 'DE90ESD290', date: '2019-03-5', username: 'zenggan', record_type: 'income', category:'salary',money: 40000.00, note: ''},
     ];
+    moneyManagementData = [
+      {management_name: '支付宝理财', income: 2000, expense: 3000.02, manage_id: 'm01', create_time: '2019-03-01'},
+      {management_name: '微信理财', income: 1000, expense: 500, manage_id: 'm02', create_time: '2019-01-01'}
+    ];
+    let renderContentType = '';
+    if (this.state.bookType == 'travelParty') {
+      renderContentType = 'travelParty';
+    } else if (this.state.bookType == 'moneyManagement') {
+      renderContentType = 'moneyManagement'
+    } else {
+      renderContentType = 'normal' // 除出游和理财外的其他项
+    }
 
+    let navBarData = { // 顶部数据集，不同类型做不同处理
+      incomeCount: 0,
+      expenseCount: 0,
+      count: 0,
+      budget: 0,
+    };
     //处理收支数据
     let incomeList = [];
     let expenseList = [];
     let incomeData:any = {};
     let expenseData:any = {};
-    let navBarData = {};
-    if (recordData && this.state.bookType != 'travelParty') {
+    if (recordData && renderContentType == 'normal') {
       recordData.forEach(item => {
         if (item.record_type === 'income') {
           // @ts-ignore
@@ -130,6 +170,19 @@ class Index extends Component<IndexProps,IndexState > {
     // 处理旅游出行数据
     let bookRecord = [];
 
+    // 处理理财投资数据
+    let moneyBookRecord = moneyManagementData;
+    if (moneyManagementData && renderContentType == 'moneyManagement') {
+      let incomeCount = 0;
+      let expenseCount = 0;
+      moneyManagementData.forEach(item => {
+        incomeCount += item.income;
+        expenseCount += item.expense;
+      });
+      navBarData.incomeCount = incomeCount;
+      navBarData.expenseCount = expenseCount;
+    }
+
     return (
       <View className='index-wrapper'>
         <View className='index-header'>
@@ -141,13 +194,19 @@ class Index extends Component<IndexProps,IndexState > {
           />
         </View>
         <View className='index-content'>
-          { this.state.bookType == 'travelParty' &&
+          { renderContentType == 'travelParty' &&
           <TravelPartyContent
             nowbookRecord={bookRecord}
             nowBookType='travelParty'
             nowBookId={this.state.bookId}
           />}
-          { this.state.bookType != 'travelParty' &&
+          { renderContentType == 'moneyManagement' &&
+          <MoneyManagementContent
+            nowBookRecord={moneyBookRecord}
+            nowBookType='moneyManagement'
+            nowBookId={this.state.bookId}
+          />}
+          { renderContentType == 'normal' &&
           <Content
             // @ts-ignore
             income={incomeData.recordList}

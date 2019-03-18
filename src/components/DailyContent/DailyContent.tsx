@@ -40,17 +40,28 @@ class DailyContent extends Component<DailyContentProps,DailyContentState > {
     }
   }
 
+  /**
+   * 跳转到修改记录
+   */
+  jumpToItem(item) {
+    console.log(item);
+    Taro.navigateTo({
+      url: '/pages/newRecord/newRecord?bookId=' + '321' + '&bookType=' + 'dayLife'
+    })
+  }
+
   render() {
     const { dailyDetail } = this.state;
-
-    console.log(111, dailyDetail);
     const contentList = dailyDetail.rowArr.map((item, index) => {
       return (
         <View className='at-row at-row__justify--between daily-item'
               key={String(index)}
+              onClick={this.jumpToItem.bind(this, item)}
         >
           <View className='at-col at-col-1 at-col--auto item-intro'>
-            <View className='at-icon at-icon-shopping-bag-2'>{item.category}</View>
+            <View className='at-icon at-icon-shopping-bag-2'>
+              <Text className='item-name'>{item.category}</Text>
+            </View>
             <View className='item-note'>{item.note}</View>
           </View>
           <View className='at-col at-col-1 at-col--auto item-money'>

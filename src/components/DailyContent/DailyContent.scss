@@ -1,4 +1,6 @@
-$border_color: #05e4ab30;
+$main_color: #2b364e;
+$border_color: #05e4ab60;
+$item-background: #4a556c60;
 
 .fx-DailyContent-wrap {
   width: 100%;
@@ -18,13 +20,20 @@ $border_color: #05e4ab30;
     padding-bottom: 20px;
   }
   .daily-item {
-    background: #4a556c;
+    background: linear-gradient(120deg, $main_color, $item-background);
     padding: 32px;
     box-sizing: border-box;
-    border-radius: 15px;
+    border-radius: 20px;
     margin-bottom: 20px;
     color: #ffffff;
     border: 1px solid $border_color;
+    transition: background 0.1s;
+    &:active {
+      background: linear-gradient(120deg, $border_color, $item-background);
+    }
+  }
+  .item-name {
+    font-size: 28px;
   }
   .item-intro {
     .at-icon:before {
@@ -39,7 +48,7 @@ $border_color: #05e4ab30;
   }
   .item-money {
     color: #e3e3e3;
-    font-size: 0.9rem;
+    font-size: 28px;
   }
   .income-count {
     color: #f54552;
@@ -48,14 +57,3 @@ $border_color: #05e4ab30;
     color: #51ffa4;
   }
  }
-
-.border-bottom:after {
-  display: block;
-  content: '';
-  margin: 40px 20px 0;
-  box-sizing: border-box;
-  height: 1px;
-  background: linear-gradient(to right, #EEEEEE, #E3E3E3, #EEEEEE);
-  -webkit-transform: scale(1, 0.5);
-  transform: scale(1, 0.5);
-}

@@ -1,12 +1,18 @@
+$main_color: #2b364e;
+$border_color: #05e4ab60;
+$item-background: #4a556c60;
 
 .fx-accountBook-wrap {
-  background: #2b364e;
-  padding-bottom: 25px;
+  background: $main_color;
+  padding-top: 25px;
   height: 100vh;
+  overflow: hidden;
+  box-sizing: border-box;
   .choice-wrapper {
     margin-top:40px;
-    background:#4a556c;
-    border: none;
+    background: linear-gradient(120deg, $main_color, $item-background);
+    border: 1px solid $border_color;
+    border-radius: 20px;
     .content-inner__text {
       color: #ffffff;
     }
@@ -19,7 +25,7 @@
       margin: 0!important;
     }
     .at-card {
-      background:#4a556c;
+      background: linear-gradient(120deg, $main_color, $item-background);
       border:none;
     }
     .at-card__content {
@@ -29,7 +35,7 @@
   .at-card__header {
     padding: 24px 0;
     margin: 0 24px 0 34px;
-    border-bottom: 1px #ffffff solid;
+    border-bottom: 1px solid $border_color;
     .at-card__header-title {
       color: #ffffff;
       font-weight: bold;

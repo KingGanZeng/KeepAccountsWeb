@@ -1,3 +1,7 @@
+$main_color: #2b364e;
+$border_color: #05e4ab60;
+$item-background: #4a556c60;
+
 .fx-TravelPartyContent-wrap {
   width:100%;
   background-color:#2b364e;
@@ -12,9 +16,14 @@
     padding: 20px;
   }
   .item-container {
-    border-radius: 15px;
-    background: #4a556c;
+    border-radius: 20px;
+    background: linear-gradient(120deg, $main_color, $item-background);
     padding: 25px;
+    border: 1px solid $border_color;
+    transition: background 0.1s;
+    &:active {
+      background: linear-gradient(120deg, $border_color, $item-background);
+    }
   }
   .item-header {
     color: #ffffff;

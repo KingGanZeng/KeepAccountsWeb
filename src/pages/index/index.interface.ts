@@ -33,4 +33,5 @@ export interface RecordProps {
 export interface IndexProps {
   dispatch?: any,
   recordData?: Array<RecordProps>
+  moneyManagementData?: any,
 }

@@ -1,0 +1,54 @@
+$main_color: #2b364e;
+$border_color: #05e4ab60;
+$item-background: #4a556c60;
+$income_color: #f65858;
+$expense_color: #4ffa93;
+
+.fx-MoneyManagementContent-wrap {
+  width: 100%;
+  min-height: 1010px;
+  background: $main_color;
+  box-sizing: border-box;
+  padding: 40px 52px;
+  color: #fff;
+  font-size: 32px;
+
+  .item-wrapper {
+    background: linear-gradient(120deg, $main_color, $item-background);
+    padding: 32px;
+    box-sizing: border-box;
+    border-radius: 20px;
+    margin-bottom: 30px;
+    color: #ffffff;
+    border: 1px solid $border_color;
+    transition: background 0.1s;
+    &:active {
+      background: linear-gradient(120deg, $border_color, $item-background);
+    }
+  }
+  .item-name {
+    margin-bottom: 20px;
+  }
+  .item-money {
+    font-size: 22px;
+    color: #e3e3e3;
+    margin-bottom: 4px;
+    .income {
+      color: $income_color;
+    }
+    .expense {
+      color: $expense_color;
+    }
+  }
+  .item-count {
+    text-align: right;
+    font-size: 22px;
+    padding-left: 20px;
+    width: 160px;
+    border-left: 1px solid $border_color;
+    .count-title {
+      margin: 4px;
+      color: #e3e3e3;
+    }
+  }
+}
