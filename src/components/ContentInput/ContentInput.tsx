@@ -7,7 +7,7 @@ class ContentInput extends Component<ContentInputProps,ContentInputState > {
   constructor(props: ContentInputProps) {
     super(props)
     this.state = {
-      bookName:'',
+      inputContent:'',
       focusState: false,
     }
   }
@@ -16,26 +16,38 @@ class ContentInput extends Component<ContentInputProps,ContentInputState > {
   }
   static defaultProps:ContentInputProps = {
     placeholder: '',
+    inputName: '',
   }
 
+  /**
+   * 聚焦时添加样式
+   */
   focusStyle() {
     this.setState({
       focusState: true,
     })
   }
 
+  /**
+   * 失焦时撤销样式
+   */
   blurStyle() {
-    if (!this.state.projectName) {
+    if (!this.state.inputContent) {
       this.setState({
         focusState: false,
       })
     }
   }
 
+  /**
+   * 输入值改变时触发
+   * @param e
+   */
   onInputChange = e => {
     this.setState({
-      projectName: e.detail.value,
-      helpInfo: '',
+      inputContent: e.detail.value,
+    }, () => {
+      this.props.onInput(this.props.inputName, this.state.inputContent)
     })
   };
 
@@ -49,7 +61,7 @@ class ContentInput extends Component<ContentInputProps,ContentInputState > {
             onFocus={this.focusStyle}
             onBlur={this.blurStyle}
             onInput={this.onInputChange}
-            value={this.state.bookName}
+            value={this.state.inputContent}
             placeholderStyle='color: rgba(0,0,0,0)'
             maxLength={8}
           />
