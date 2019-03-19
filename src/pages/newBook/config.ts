@@ -2,7 +2,7 @@
 export default {
   createBook: {
     host: 'http://a.b.com:8000',
-    url: '/api/updateBook',
+    url: '/api/createBook',
     method: 'POST'
   },
   getBookInfo: {

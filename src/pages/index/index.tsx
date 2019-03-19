@@ -37,6 +37,8 @@ class Index extends Component<IndexProps,IndexState > {
       yearMonth: `${year}-${month}`, // 用于存储日期，并传递给NavBar
       bookId: urlBookId || ' ',
       bookType: urlBookType || ' ', // 账本类别
+      username: '',
+      uid: ''
     }
   }
 
@@ -106,26 +108,47 @@ class Index extends Component<IndexProps,IndexState > {
     Taro.setNavigationBarTitle({ // 设置标题栏账本名
       title: decodeURIComponent(this.$router.params.bookName)
     })
+    // 从缓存中获取用户信息
+    Taro.getStorage({
+      key: 'uid',
+      // @ts-ignore
+      success: (res) => {
+        this.setState({
+          uid: res.data
+        })
+      }
+    });
+    Taro.getStorage({
+      key: 'username',
+      // @ts-ignore
+      success: (res) => {
+        this.setState({
+          username: res.data
+        })
+      }
+    })
   }
 
   render() {
-    let { recordData, moneyManagementData } = this.props;
-    recordData = [
-      {record_id: 'r05', uid: 'DE90ESD290', date: '2019-03-12', username: 'zenggan', record_type: 'income', category:'sell', money: 200.32, note: ''},
-      {record_id: 'r04', uid: 'DE90ESD290', date: '2019-03-12', username: 'zenggan', record_type: 'expense', category:'food', money: 200.12, note: '今天天气不错'},
-      {record_id: 'r03', uid: 'DE90ESD290', date: '2019-03-12', username: 'zenggan', record_type: 'expense', category:'shopping',money: 2009.00, note: ''},
-      {record_id: 'r02', uid: 'DE90ESD290', date: '2019-03-11', username: 'zenggan', record_type: 'expense', category:'shopping',money: 400.00, note: '今天天气不错'},
-      {record_id: 'r05', uid: 'DE90ESD290', date: '2019-03-12', username: 'zenggan', record_type: 'income', category:'sell', money: 200.32, note: ''},
-      {record_id: 'r04', uid: 'DE90ESD290', date: '2019-03-12', username: 'zenggan', record_type: 'expense', category:'food', money: 200.12, note: '今天天气不错'},
-      {record_id: 'r03', uid: 'DE90ESD290', date: '2019-03-12', username: 'zenggan', record_type: 'expense', category:'shopping',money: 2009.00, note: ''},
-      {record_id: 'r02', uid: 'DE90ESD290', date: '2019-03-11', username: 'zenggan', record_type: 'expense', category:'shopping',money: 400.00, note: '今天天气不错'},
-      {record_id: 'r01', uid: 'DE90ESD290', date: '2019-03-7', username: 'zenggan', record_type: 'expense', category:'food',money: 40.00, note: '今天天气不错'},
-      {record_id: 'r00', uid: 'DE90ESD290', date: '2019-03-5', username: 'zenggan', record_type: 'income', category:'salary',money: 40000.00, note: ''},
-    ];
-    moneyManagementData = [
-      {management_name: '支付宝理财', income: 2000, expense: 3000.02, manage_id: 'm01', create_time: '2019-03-01'},
-      {management_name: '微信理财', income: 1000, expense: 500, manage_id: 'm02', create_time: '2019-01-01'}
-    ];
+    const { recordData, moneyManagementData } = this.props;
+
+    // recordData = [
+    //   {record_id: 'r05', uid: 'DE90ESD290', date: '2019-03-12', username: 'zenggan', record_type: 'income', category:'sell', money: 200.32, note: ''},
+    //   {record_id: 'r04', uid: 'DE90ESD290', date: '2019-03-12', username: 'zenggan', record_type: 'expense', category:'food', money: 200.12, note: '今天天气不错'},
+    //   {record_id: 'r03', uid: 'DE90ESD290', date: '2019-03-12', username: 'zenggan', record_type: 'expense', category:'shopping',money: 2009.00, note: ''},
+    //   {record_id: 'r02', uid: 'DE90ESD290', date: '2019-03-11', username: 'zenggan', record_type: 'expense', category:'shopping',money: 400.00, note: '今天天气不错'},
+    //   {record_id: 'r05', uid: 'DE90ESD290', date: '2019-03-12', username: 'zenggan', record_type: 'income', category:'sell', money: 200.32, note: ''},
+    //   {record_id: 'r04', uid: 'DE90ESD290', date: '2019-03-12', username: 'zenggan', record_type: 'expense', category:'food', money: 200.12, note: '今天天气不错'},
+    //   {record_id: 'r03', uid: 'DE90ESD290', date: '2019-03-12', username: 'zenggan', record_type: 'expense', category:'shopping',money: 2009.00, note: ''},
+    //   {record_id: 'r02', uid: 'DE90ESD290', date: '2019-03-11', username: 'zenggan', record_type: 'expense', category:'shopping',money: 400.00, note: '今天天气不错'},
+    //   {record_id: 'r01', uid: 'DE90ESD290', date: '2019-03-7', username: 'zenggan', record_type: 'expense', category:'food',money: 40.00, note: '今天天气不错'},
+    //   {record_id: 'r00', uid: 'DE90ESD290', date: '2019-03-5', username: 'zenggan', record_type: 'income', category:'salary',money: 40000.00, note: ''},
+    // ];
+    // moneyManagementData = [
+    //   {management_name: '支付宝理财', income: 2000, expense: 3000.02, manage_id: 'm01', create_time: '2019-03-01'},
+    //   {management_name: '微信理财', income: 1000, expense: 500, manage_id: 'm02', create_time: '2019-01-01'}
+    // ];
+
     let renderContentType = '';
     if (this.state.bookType == 'travelParty') {
       renderContentType = 'travelParty';

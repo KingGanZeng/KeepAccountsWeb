@@ -13,6 +13,9 @@ export interface NewBookState {
   hasGroup: boolean, // 是否开启小组
   loading: boolean, // 提交状态，用于页面loading样式渲染
   bookName: string, // 账本名称
+  hasError: boolean, // 新建账本是否成功
+  uid: string,
+  username: string,
 }
 
 /**
@@ -34,7 +37,8 @@ export interface BookInterface {
  */
 export interface NewBookProps {
   dispatch?: any,
-  submitSuccess?: boolean,
+  submitSuccess: boolean,
+  book_id: string,
   book_info?: Array<BookInterface>
 }
 

@@ -11,9 +11,17 @@ interface BookProps {
  * @interface AccountBookState
  */
 export interface AccountBookState {
-  bookArray: Array<BookProps>
+  bookArray: Array<BookProps>,
+  hasAuthorized: boolean, // 是否授权过
+  modalOpenState: boolean, // 模态框状态
 }
 
+/**
+ * BookInterface 参数类型
+ *
+ * @export
+ * @interface BookInterface
+ */
 export interface BookInterface {
   user_name: string,
   book_name: string,

@@ -20,7 +20,7 @@ export default {
         yield put({
           type: 'updateState',
           payload: {
-            submitSuccess: true
+            submitSuccess: true,
           }
         })
       } else {

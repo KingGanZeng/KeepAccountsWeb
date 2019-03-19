@@ -8,6 +8,8 @@ export interface IndexState {
   yearMonth: string, // 用于日期选择器
   bookId: string, // 用于存储账本id
   bookType: string, // 用于存储账本类别
+  uid: string, // 用户openid
+  username: string, // 用户昵称
 }
 
 /**
@@ -32,6 +34,6 @@ export interface RecordProps {
  */
 export interface IndexProps {
   dispatch?: any,
-  recordData?: Array<RecordProps>
+  recordData?: Array<RecordProps>,
   moneyManagementData?: any,
 }

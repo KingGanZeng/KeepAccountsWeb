@@ -35,6 +35,10 @@ export class Request {
   static apiLists: { [key: string]: () => any; } = {}
   // token
   static token: string = ''
+  // uid
+  static uid: string = ''
+  // username
+  static username: string = ''
 
   // constructor(setting) {
 
@@ -103,6 +107,36 @@ export class Request {
     return this.loginReadyPromise
   }
 
+  static getOpenId(code) {
+    return new Promise(async (resolve, reject) => {
+      // const { data } = await Taro.request({
+      //   url: 'https://api.weixin.qq.com/sns/jscode2session',
+      //   data: {
+      //     appid: 'wx47bdf41ed1be8aa2',
+      //     secret: 'SECRET',
+      //     js_code: code,
+      //     grant_type: 'authorization_code',
+      //   }
+      // })
+      const data = {
+        code: 1,
+        data: {
+          openId: 'faw3d',
+          sessionId: 'fsd',
+        }
+      }
+
+
+      if (data.code !== 0 || !data.data) {
+        reject()
+        return
+      }
+      console.log(data)
+      Taro.setStorageSync('uid', data.data.openId)
+      resolve()
+    })
+  }
+
   /**
    *
    * @static 登陆的具体方法
@@ -113,7 +147,9 @@ export class Request {
     this.isLogining = true
     return new Promise(async (resolve, reject) => {
       // 获取code
+
       const { code } = await Taro.login()
+      await this.getOpenId(code)
 
       // 请求登录
       const { data } = await Taro.request({

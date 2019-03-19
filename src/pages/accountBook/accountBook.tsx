@@ -1,10 +1,12 @@
 
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import { View, Button } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import {AtCard, AtGrid } from "taro-ui";
+import { AtCard, AtGrid, AtModal, AtModalContent } from "taro-ui";
+import { Request } from '../../utils/request'
 import { AccountBookProps, AccountBookState } from './accountBook.interface'
 import './accountBook.scss'
+import '../../assets/iconfont/iconfont.scss'
 // @ts-ignore
 import { BookList } from '../../components/BookList/BookList';
 
@@ -19,7 +21,9 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
   constructor(props: AccountBookProps) {
     super(props);
     this.state = {
-      bookArray: []
+      bookArray: [],
+      hasAuthorized: false,
+      modalOpenState: false,
     }
   }
 
@@ -29,15 +33,33 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
    * @return Promise<*>
    */
   async getBook() {
+    let uid:string = ''
+    Taro.getStorage({
+      key: 'uid',
+      // @ts-ignore
+      success: function(res) {
+        uid = res.data
+      }
+    })
     await this.props.dispatch({
       type: 'accountBook/getBook',
       payload: {
-        user_name: 'zenggan'
+        uid: uid
       }
     })
   }
 
-  toNewAccountBook(item) {
+  /**
+   * 账本名称转义
+   * @param item
+   */
+  async toNewAccountBook(item) {
+    if(!this.state.hasAuthorized) {
+      this.setState({
+        modalOpenState: true,
+      })
+      return ;
+    }
     let type = '';
     if(item.value === '日常开销') {
       type = 'dayLife'
@@ -59,24 +81,107 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
     })
   }
 
-  componentDidMount() {
-    this.getBook()
+  /**
+   * 关闭弹出窗，状态更新
+   */
+  handleModal() {
+    this.setState({
+      hasAuthorized: false,
+    }, () => {
+      console.log(this.state.hasAuthorized)
+    })_
+  }
+
+  /**
+   * 获取认证状态
+   * 未认证弹窗认证
+   * 已认证从数据库获取信息
+   */
+  async getAuthorized() {
+    let authorizeState = false
+    let openState= false
+    await Taro.getSetting({
+      success(res) {
+        if(!res.authSetting['scope.userInfo']) {
+          authorizeState = false
+          openState = true
+        } else {
+          authorizeState = true
+        }
+      }
+    })
+    this.setState({
+      hasAuthorized: authorizeState,
+      modalOpenState: openState
+    }, () => {
+      if(this.state.hasAuthorized) {
+        Request.login()
+        // 获取用户的相关信息
+        Taro.getUserInfo()
+          .then(result => {
+            const userInfo = JSON.parse(result.rawData)
+            // 将用户名存入localStorage
+            Taro.setStorageSync('username', userInfo.nickName)
+            console.log(userInfo)
+          })
+      }
+    })
+  }
+
+  /**
+   * 获取用户信息
+   * @param e
+   */
+  onGotUserInfo = e => {
+    this.setState({
+      hasAuthorized: true,
+      modalOpenState: false,
+    })
+    console.log(e)
+  }
+
+  /**
+   * 组件渲染完成后执行
+   */
+  async componentDidMount() {
+    await this.getAuthorized()
+    await this.getBook()
   }
 
   render() {
-    const myBookList = [
-      {book_id:1, book_type: 'dayLife', book_name: '日常开销', note: ''},
-      {book_id:2, book_type: 'travelParty', book_name: '出游聚会', note: ''},
-      {book_id:3, book_type: 'homeDecoration', book_name: '居家装修', note: ''},
-      {book_id:4, book_type: 'socialRelation', book_name: '人情往来', note: ''},
-      {book_id:5, book_type: 'moneyManagement', book_name: '投资理财', note: ''},
-      {book_id:5, book_type: 'rent', book_name: '租房居住', note: ''},
-      {book_id:6, book_type: 'others', book_name: '借还记录', note: ''},
-      {book_id:8, book_type: 'dayLife', book_name: '聚餐记账', note: '同事组'},
-    ];
+    const { data } = this.props
+    // const myBookList = [
+    //   {book_id:1, book_type: 'dayLife', book_name: '日常开销', note: ''},
+    //   {book_id:2, book_type: 'travelParty', book_name: '出游聚会', note: ''},
+    //   {book_id:3, book_type: 'homeDecoration', book_name: '居家装修', note: ''},
+    //   {book_id:4, book_type: 'socialRelation', book_name: '人情往来', note: ''},
+    //   {book_id:5, book_type: 'moneyManagement', book_name: '投资理财', note: ''},
+    //   {book_id:5, book_type: 'rent', book_name: '租房居住', note: ''},
+    //   {book_id:6, book_type: 'others', book_name: '借还记录', note: ''},
+    //   {book_id:8, book_type: 'dayLife', book_name: '聚餐记账', note: '同事组'},
+    // ];
+    const myBookList = data
 
     return (
       <View className='fx-accountBook-wrap'>
+        <AtModal
+          isOpened={this.state.modalOpenState}
+          onClose={this.handleModal}
+        >
+          <AtModalContent>
+            <View className='login-title'>欢迎</View>
+            <View className='iconfont icon-signature' />
+            <View className='login-intro'>xx记账小程序可以帮你快速记录生活的点滴，点击开始，开启你的记账旅程吧</View>
+            <View className='login-button-wrapper'>
+              <Button
+                className='login-button'
+                openType='getUserInfo'
+                onGetUserInfo={this.onGotUserInfo.bind(this)}
+              >开始使用</Button>
+              <View className='at-tabs__item-underline at-tabs__item-underline' />
+            </View>
+          </AtModalContent>
+        </AtModal>
         <BookList title='我的账本' list={myBookList} />
         <AtCard
           className='choice-wrapper'
@@ -127,23 +232,3 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
 }
 
 export default AccountBook
-
-
-/*
-
-
-   <View className='fx-accountBook-card'>日常花销
-        </View>
-        <View className='fx-accountBook-card-'>出游聚会
-        </View>
-        <View className='fx-accountBook-card'>房屋装修
-        </View>
-        <View className='fx-accountBook-card-'>人情往来
-        </View>
-        <View className='fx-accountBook-card'>投资理财
-        </View>
-        <View className='fx-accountBook-card-'>租房居住
-        </View>
-        <View className='fx-accountBook-card'>借还记录
-        </View>
- */

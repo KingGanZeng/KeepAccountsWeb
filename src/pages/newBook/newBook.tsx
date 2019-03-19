@@ -1,7 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Picker, Text, Input, Label } from '@tarojs/components'
+import { View, Picker, Text, } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-import { AtInput, AtForm, AtButton, AtSwitch } from 'taro-ui'
+import { AtForm, AtButton, AtToast } from 'taro-ui'
 import { bookNameTranslate } from '../../utils/common'
 import { NewBookProps, NewBookState } from './newBook.interface'
 import './newBook.scss'
@@ -29,6 +29,9 @@ class NewBook extends Component<NewBookProps,NewBookState > {
       budget: 0, // 账本预算
       hasGroup: false,
       loading: false,
+      hasError: false,
+      uid: '',
+      username: '',
     }
   }
 
@@ -38,12 +41,20 @@ class NewBook extends Component<NewBookProps,NewBookState > {
    *
    */
   async createBook() {
+    if(!this.state.bookName || !this.state.bookCategoryChecked){
+      this.setState({
+        hasError: true
+      });
+      return
+    }
     return await this.props.dispatch({
       type: 'newBook/createBook',
       payload: {
-        user_name: 'zenggan',
+        username: this.state.username,
+        uid: this.state.uid,
         book_name: this.state.bookName,
         book_type: this.state.bookType,
+        budget: this.state.budget,
       }
     })
   }
@@ -55,8 +66,8 @@ class NewBook extends Component<NewBookProps,NewBookState > {
     return await this.props.dispatch({
       type: 'newBook/createGroup',
       payload: {
-        user_name: 'zenggan',
-        uid: 'DSADW21',
+        user_name: this.state.username,
+        uid: this.state.uid,
       }
     })
   }
@@ -68,7 +79,7 @@ class NewBook extends Component<NewBookProps,NewBookState > {
     return await this.props.dispatch({
       type: 'newBook/getBookInfo',
       payload: {
-        user_name: 'zenggan',
+        user_name: this.state.username,
         book_id: this.$router.params.book_id
       }
     })
@@ -81,15 +92,27 @@ class NewBook extends Component<NewBookProps,NewBookState > {
     if (this.state.hasGroup) {
       this.createGroup()
     }
-    this.createBook();
-    setTimeout(
-      () => {
-        Taro.redirectTo({
-          url: '/pages/accountBook/accountBook'
-        })
-      },
-      300
-    )
+    const data = new Promise(async (resolve, reject) => {
+      const result = await this.createBook();
+      console.log("新建账本请求:", result);
+      if (!this.props.submitSuccess) {
+        reject();
+        this.setState({
+          hasError: true
+        });
+        return
+      }
+      Taro.redirectTo({
+        url: '/pages/accountBook/accountBook'
+      });
+      resolve()
+    });
+    setTimeout(() => {
+      this.setState({
+        hasError: false
+      })
+    },500);
+    return data
   }
 
   /**
@@ -105,28 +128,22 @@ class NewBook extends Component<NewBookProps,NewBookState > {
   }
 
   /**
-   * 账本名称修改
-   * @param valueName
-   * @param value
-   */
-  handleChange(valueName, value) {
-    let data = {};
-    data[valueName] = value;
-    this.setState(data)
-  }
-
-  /**
    * 切换账本类型
    * @param e
    */
   onCategoryChange = e => {
     this.setState({
       bookCategoryChecked: this.state.bookCategory[e.detail.value]
+    }, () => {
+      this.setState({
+        bookType: bookNameTranslate('Chinese', this.state.bookCategoryChecked)
+      })
     })
   };
 
   /**
    * 切换小组状态
+   *
    * @param value
    */
   handleGroupChange = value => {
@@ -135,23 +152,78 @@ class NewBook extends Component<NewBookProps,NewBookState > {
     })
   };
 
+  /**
+   * 父组件处理子组件传递的信息
+   *
+   * @param inputName
+   * @param inputContent
+   */
+  onInputChange(inputName, inputContent) {
+    if(inputName == 'bookName') {
+      this.setState({
+        bookName: inputContent
+      })
+    } else if(inputName == 'bookType') {
+      this.setState({
+        bookType: inputContent
+      })
+    } else {
+      this.setState({
+        budget: inputContent
+      })
+    }
+  }
+
   componentDidMount() {
     if (this.$router.params.book_id) {
       this.getBookInfo()
     }
+    // 从缓存中获取用户信息
+    Taro.getStorage({
+      key: 'uid',
+      // @ts-ignore
+      success: (res) => {
+        this.setState({
+          uid: res.data
+        })
+      }
+    });
+    Taro.getStorage({
+      key: 'username',
+      // @ts-ignore
+      success: (res) => {
+        this.setState({
+          username: res.data
+        })
+      }
+    })
   }
 
   render() {
     return (
       <View className='newBook-container'>
+        <AtToast
+          isOpened={this.state.hasError}
+          text='新建账本错误'
+          icon='close-circle'
+          hasMask
+        />
         <AtForm
           className='newBook-wrap'
           onSubmit={this.onSubmit.bind(this)}
           onReset={this.onReset.bind(this)}
         >
           <View className='iconfont icon-signature' />
-          <ContentInput placeholder='账本名称' />
-          <ContentInput placeholder='账本预算' />
+          <ContentInput
+            onInput={this.onInputChange.bind(this)}
+            inputName='bookName'
+            placeholder='账本名称'
+          />
+          <ContentInput
+            onInput={this.onInputChange.bind(this)}
+            inputName='bookBudget'
+            placeholder='账本预算'
+          />
           <Picker
             mode='selector'
             range={this.state.bookCategory}

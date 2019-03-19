@@ -1,8 +1,64 @@
 $main_color: #2b364e;
 $border_color: #05e4ab60;
 $item-background: #4a556c60;
+$income_color: #f54552;
+$income_color-active: #f5455240;
+$expense_color: #4ffa93;
+$expense_color-active: #4ffa9360;
+$underline_color: #cabe16;
 
 .fx-accountBook-wrap {
+  .at-modal__container {
+    top: 45%；
+  }
+  .at-modal__content {
+    background: $main_color;
+    color: #fff;
+  }
+  .login-title {
+    font-size: 34px;
+    margin: 0 0 20px;
+    color: $underline_color;
+    text-align: center;
+  }
+  .iconfont {
+    font-size: 100px;
+    color: $underline_color;
+    text-align: center;
+    margin: 0 0 20px;
+  }
+  .login-intro {
+    padding: 20px;
+  }
+  .login-button-wrapper {
+    margin: 0 40px;
+    .login-button {
+      background: $main_color;
+      color: $underline_color;
+      border: none;
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+    .at-tabs__item-underline {
+      background: $underline_color;
+      height: 6px;
+      width: auto;
+      transition:all 0.15s;
+      animation: underline-active 2s;
+      animation-fill-mode:forwards;
+      left: 40px;
+      right: 40px;
+    }
+    @keyframes underline-active {
+      from {
+        transform: scaleX(0);
+      }
+      to {
+        transform: scaleX(1);
+      }
+    }
+  }
+
   background: $main_color;
   padding-top: 25px;
   height: 100vh;

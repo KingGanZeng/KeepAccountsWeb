@@ -61,8 +61,8 @@ export const objArrReduce = arr => {
   };
 };
 
-export const bookNameTranslate = (language, bookName) => {
-  if (language === 'English') {
+export const bookNameTranslate = (toLanguage, bookName) => {
+  if (toLanguage === 'Chinese') {
     if(bookName === 'dayLife') {
       return '日常开销';
     } else if(bookName === 'travelParty') {
@@ -78,7 +78,7 @@ export const bookNameTranslate = (language, bookName) => {
     } else if(bookName === 'others') {
       return '借还记录'
     }
-  } else if (language === 'Chinese') {
+  } else if (toLanguage === 'English') {
     if(bookName === '日常开销') {
       return 'dayLife';
     } else if(bookName === '出游聚会') {
