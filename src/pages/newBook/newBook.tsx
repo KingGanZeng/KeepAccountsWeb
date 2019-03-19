@@ -1,10 +1,12 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Picker, Text } from '@tarojs/components'
+import { View, Picker, Text, Input, Label } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import { AtInput, AtForm, AtButton, AtSwitch } from 'taro-ui'
 import { bookNameTranslate } from '../../utils/common'
 import { NewBookProps, NewBookState } from './newBook.interface'
 import './newBook.scss'
+import '../../assets/iconfont/iconfont.scss'
+import ContentInput from "../../components/ContentInput/ContentInput";
 
 
 @connect(({ newBook }) => ({
@@ -142,57 +144,70 @@ class NewBook extends Component<NewBookProps,NewBookState > {
   render() {
     return (
       <View className='newBook-container'>
-        <View className='iconfont icon-signature' />
         <AtForm
           className='newBook-wrap'
           onSubmit={this.onSubmit.bind(this)}
           onReset={this.onReset.bind(this)}
         >
-          <View className='book-setting-label'>账本名称</View>
-          <AtInput
-            name='bookName'
-            type='text'
-            className='name-wrapper'
-            maxLength={6}
-            value={this.state.bookName}
-            placeholder={this.state.bookName}
-            onChange={this.handleChange.bind(this, 'bookName')}
-            autoFocus
-            border={false}
-          />
-          <View className='book-setting-label'>账本设置</View>
+          <View className='iconfont icon-signature' />
+          <ContentInput placeholder='账本名称' />
+          <ContentInput placeholder='账本预算' />
           <Picker
             mode='selector'
             range={this.state.bookCategory}
             onChange={this.onCategoryChange}
             value={0}
           >
-            <View className='picker-wrapper half-border-bottom border-bottom'>
+            <View className='picker-wrapper'>
               账本类型
               <Text className='picker-content'>{this.state.bookCategoryChecked}</Text>
               <View className='at-icon at-icon-chevron-right' />
             </View>
           </Picker>
-          <AtInput
-            name='bookName'
-            type='number'
-            title='账本预算'
-            className='name-wrapper'
-            value={this.state.budget}
-            placeholder={this.state.budget.toString()}
-            onChange={this.handleChange.bind(this, 'budget')}
-            autoFocus
-          />
-          <AtSwitch
-            title='是否开启小组'
-            checked={this.state.hasGroup}
-            onChange={this.handleGroupChange}
-            className='input-margin-bottom'
-            border={false}
-            color='#ff5a5b'
-          />
-          <View className='button-wrapper'>
-            <View className='button-item'>
+          {/*<AtInput*/}
+            {/*name='bookName'*/}
+            {/*type='text'*/}
+            {/*className='name-wrapper'*/}
+            {/*maxLength={6}*/}
+            {/*value={this.state.bookName}*/}
+            {/*placeholder={this.state.bookName}*/}
+            {/*onChange={this.handleChange.bind(this, 'bookName')}*/}
+            {/*autoFocus*/}
+            {/*border={false}*/}
+          {/*/>*/}
+          {/*<View className='book-setting-label'>账本设置</View>*/}
+          {/*<Picker*/}
+            {/*mode='selector'*/}
+            {/*range={this.state.bookCategory}*/}
+            {/*onChange={this.onCategoryChange}*/}
+            {/*value={0}*/}
+          {/*>*/}
+            {/*<View className='picker-wrapper half-border-bottom border-bottom'>*/}
+              {/*账本类型*/}
+              {/*<Text className='picker-content'>{this.state.bookCategoryChecked}</Text>*/}
+              {/*<View className='at-icon at-icon-chevron-right' />*/}
+            {/*</View>*/}
+          {/*</Picker>*/}
+          {/*<AtInput*/}
+            {/*name='bookName'*/}
+            {/*type='number'*/}
+            {/*title='账本预算'*/}
+            {/*className='name-wrapper'*/}
+            {/*value={this.state.budget}*/}
+            {/*placeholder={this.state.budget.toString()}*/}
+            {/*onChange={this.handleChange.bind(this, 'budget')}*/}
+            {/*autoFocus*/}
+          {/*/>*/}
+          {/*<AtSwitch*/}
+            {/*title='是否开启小组'*/}
+            {/*checked={this.state.hasGroup}*/}
+            {/*onChange={this.handleGroupChange}*/}
+            {/*className='input-margin-bottom'*/}
+            {/*border={false}*/}
+            {/*color='#ff5a5b'*/}
+          {/*/>*/}
+          <View className='button-wrapper at-row'>
+            <View className='button-item at-col'>
               <AtButton
                 type='primary'
                 formType='submit'
@@ -202,7 +217,7 @@ class NewBook extends Component<NewBookProps,NewBookState > {
                 提交
               </AtButton>
             </View>
-            <View className='button-item'>
+            <View className='button-item at-col'>
               <AtButton
                 formType='reset'
                 type='secondary'

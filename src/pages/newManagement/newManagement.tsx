@@ -56,6 +56,7 @@ class NewManagement extends Component<NewManagementProps,NewManagementState > {
       this.setState({
         helpInfo: '请输入项目名称,例如: 支付宝理财'
       });
+      Tips.loaded();
       return ;
     }
     this.createProject(this.state.moneyManageBookId, this.state.projectName)

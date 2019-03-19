@@ -8,10 +8,16 @@ $expense_color: #4ffa93;
   background: #2b364e;
   height: 100vh;
   .iconfont {
-    padding-top: 120px;
+    padding-top: 80px;
     text-align: center;
     font-size: 100px;
     color: $income_color;
+  }
+  picker{
+    width:75%;
+    margin:auto;
+    height:40px;
+    margin-top: 40px;
   }
   .name-wrapper {
     font-size: 28px;
@@ -62,25 +68,36 @@ $expense_color: #4ffa93;
       color: #e3e3e3;
     }
   }
+  .input-control{
+    margin: 30px auto;
+    height: 40px;
+  }
   .picker-wrapper {
-    font-size: 28px;
+    font-size: 32px;
     line-height:1.5;
     vertical-align:middle;
     text-align:left;
     position: relative;
-    color: #ffffff;
-    padding: 32px 10px 32px 24px;
-    background: #4a5d6c;
+    color: $expense_color;
+    padding: 26px 32px 26px;
+    border: 4px solid $border_color;
+    border-radius: 8px;
+    transition: border-color .25s;
+    background: $main_color;
     .picker-content {
       position: absolute;
-      right: 50px;
-      color: #999999;
+      right: 60px;
+      color: #ffffff;
     }
     .at-icon {
       float: right;
       margin-top: 6px;
-      color: #e3e3e3
+      color: $expense_color;
     }
+  }
+  .button-wrapper {
+    box-sizing: border-box;
+    bottom: 180px;
   }
   .border-bottom:after {
     content: '';

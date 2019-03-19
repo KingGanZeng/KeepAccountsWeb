@@ -133,7 +133,8 @@ body {
 
 // 设置input框样式
 .input-outline-x{
-  width: 100%;
+  width: 75%;
+  margin: auto;
   position: relative;
 }
 .input-control {
@@ -174,6 +175,12 @@ body {
 /* 线框交互下有个白色背景 */
 .input-outline-x .input-label {
   background-color: $main_color;
+}
+.help-info {
+  margin:20px auto;
+  width:75%;
+  font-size:24px;
+  color:$income_color;
 }
 
 
