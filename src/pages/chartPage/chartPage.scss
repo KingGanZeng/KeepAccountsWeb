@@ -1,0 +1,13 @@
+$main_color: #2b364e;
+$border_color: #05e4ab60;
+$item-background: #4a556c60;
+$income_color: #f65858;
+$expense_color: #4ffa93;
+
+.chartPage-wrap {
+  width: 100%;
+  min-height: 100vh;
+  background-color: $main_color;
+  box-sizing: border-box;
+  padding: 20px 0 80px;
+}

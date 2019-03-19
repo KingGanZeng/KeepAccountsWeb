@@ -65,6 +65,15 @@ class TabBar extends Component<TabBarProps,TabBarState > {
   }
 
   /**
+   * 跳转到图表页面
+   */
+  jumpToChartPage() {
+    Taro.navigateTo({
+      url: '/pages/chartPage/chartPage'
+    })
+  }
+
+  /**
    * 接收子组件传值，关闭选项遮罩
    * @param openState
    */
@@ -119,13 +128,16 @@ class TabBar extends Component<TabBarProps,TabBarState > {
           </AtDrawer>
         </View>
         <View className='at-col at-row at-row__align-content--center'>
-          <View className='at-col add-button'>
-            <View
-              className='at-icon at-icon-close rotate-button'
-              onClick={this.showRecordWay}
-            /></View>
+          <View
+            className='at-col add-button'
+            onClick={this.showRecordWay}
+          >
+            <View className='at-icon at-icon-close rotate-button'/></View>
         </View>
-        <View className='at-col diagram-button'>
+        <View
+          className='at-col diagram-button'
+          onClick={this.jumpToChartPage}
+        >
           <View className='at-icon at-icon-equalizer' />
         </View>
         <MaskTabBar

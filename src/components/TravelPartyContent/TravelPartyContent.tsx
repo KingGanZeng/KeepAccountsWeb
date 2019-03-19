@@ -3,7 +3,7 @@ import { View, Swiper, SwiperItem } from '@tarojs/components'
 import { TravelPartyContentProps, TravelPartyContentState } from './TravelPartyContent.interface'
 import './TravelPartyContent.scss'
 // @ts-ignore
-import { LineChart } from '../LineChart/LineChart'
+// import { LineChart } from '../LineChart/LineChart'
 
 class TravelPartyContent extends Component<TravelPartyContentProps,TravelPartyContentState > {
   constructor(props: TravelPartyContentProps) {
