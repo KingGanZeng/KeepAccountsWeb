@@ -16,7 +16,7 @@ export default {
         v,
         ...payload
       })
-      if(result.length != 0) {
+      if(result.results.length != 0) {
         yield put({
           type: 'updateState',
           payload: {
@@ -24,6 +24,7 @@ export default {
           }
         })
       }
+      return result
     }
   },
 

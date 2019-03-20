@@ -34,13 +34,17 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
    * @return Promise<*>
    */
   async getBook() {
-    await this.props.dispatch({
+    const result = await this.props.dispatch({
       type: 'accountBook/getBook',
       payload: {
         uid: this.state.uid
       }
     })
-    this.render()
+    // this.setState({
+    //   bookArray: result.results
+    // }, () => {
+    //   console.log(this.state.bookArray)
+    // })
   }
 
   /**
@@ -160,6 +164,7 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
     // ];
     const myBookList = data || []
     const hasBook = myBookList.length > 0;
+    console.log("***这里渲染***", myBookList);
 
     return (
       <View className='fx-accountBook-wrap'>
