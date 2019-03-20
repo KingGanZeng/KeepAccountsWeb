@@ -172,7 +172,7 @@ export class Request {
         }
       }
 
-      Taro.setStorageSync('token', data.data.token)
+      // Taro.setStorageSync('token', data.data.token)
       this.isLogining = false
       resolve()
     })

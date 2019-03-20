@@ -37,7 +37,7 @@ export interface BookInterface {
  */
 export interface NewBookProps {
   dispatch?: any,
-  submitSuccess: boolean,
+  submitSuccess?: boolean,
   book_id: string,
   book_info?: Array<BookInterface>
 }

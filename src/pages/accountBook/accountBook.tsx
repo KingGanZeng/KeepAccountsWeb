@@ -40,6 +40,7 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
         uid: this.state.uid
       }
     })
+    this.render()
   }
 
   /**
@@ -66,7 +67,7 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
       type = 'moneyManagement'
     } else if(item.value === '租房居住') {
       type = 'rent'
-    } else if(item.value === '不知道啥') {
+    } else if(item.value === '借还记录') {
       type = 'others'
     }
     Taro.navigateTo({
@@ -140,6 +141,8 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
     const uid = Taro.getStorageSync('uid')
     this.setState({
       uid: uid
+    }, () => {
+      this.getBook()
     })
   }
 

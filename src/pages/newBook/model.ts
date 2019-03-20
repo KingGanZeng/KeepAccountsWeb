@@ -16,7 +16,9 @@ export default {
         v,
         ...payload
       })
-      if(result) {
+
+      if(result.book_id) {
+        console.log(result)
         yield put({
           type: 'updateState',
           payload: {
@@ -31,6 +33,7 @@ export default {
           }
         })
       }
+      return result
     },
     * getBookInfo({ payload }, { select, call, put }) {
       const { v } = yield select(state => state.newBook)

@@ -24,7 +24,7 @@ class NewBook extends Component<NewBookProps,NewBookState > {
     this.state = {
       bookType: defBookType,
       bookCategory: ['日常开销', '出游聚会', '居家装修', '人情往来', '投资理财', '租房居住', '借还记录'],
-      bookCategoryChecked: bookNameTranslate('English', defBookType) || '日常开销',
+      bookCategoryChecked: bookNameTranslate('Chinese', defBookType) || '日常开销',
       bookName: defBookName==='undefined' ? '新建账本' : defBookName,
       budget: 0, // 账本预算
       hasGroup: false,
@@ -94,8 +94,7 @@ class NewBook extends Component<NewBookProps,NewBookState > {
     }
     const data = new Promise(async (resolve, reject) => {
       const result = await this.createBook();
-      console.log("新建账本请求:", result);
-      if (!this.props.submitSuccess) {
+      if (!result) {
         reject();
         this.setState({
           hasError: true
@@ -136,7 +135,7 @@ class NewBook extends Component<NewBookProps,NewBookState > {
       bookCategoryChecked: this.state.bookCategory[e.detail.value]
     }, () => {
       this.setState({
-        bookType: bookNameTranslate('Chinese', this.state.bookCategoryChecked) || '',
+        bookType: bookNameTranslate('English', this.state.bookCategoryChecked) || '',
       })
     })
   };
