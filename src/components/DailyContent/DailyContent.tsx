@@ -8,7 +8,7 @@ class DailyContent extends Component<DailyContentProps,DailyContentState > {
   constructor(props: DailyContentProps) {
     super(props);
     this.state = {
-      dailyDetail: this.props.dailyDetail,
+      dailyDetail: this.props.dailyDetailInfo || {},
       detailType: this.props.type,
     }
   }
@@ -16,7 +16,7 @@ class DailyContent extends Component<DailyContentProps,DailyContentState > {
     addGlobalClass: true
   };
   static defaultProps:DailyContentProps = {
-    dailyDetail: {},
+    dailyDetailInfo: {},
     type: 'income',
   };
 
@@ -27,7 +27,7 @@ class DailyContent extends Component<DailyContentProps,DailyContentState > {
   dateFormatter() {
     const now = new Date();
     const date = this.state.dailyDetail.date;
-    const input = date.split('-');
+    const input = date ? date.split('-') : [];
     const y = now.getFullYear().toString();
     let m = now.getMonth().toString();
     let d = now.getDate().toString();
@@ -54,9 +54,10 @@ class DailyContent extends Component<DailyContentProps,DailyContentState > {
     const { dailyDetail } = this.state;
     const contentList = dailyDetail.rowArr.map((item, index) => {
       return (
-        <View className='at-row at-row__justify--between daily-item'
-              key={String(index)}
-              onClick={this.jumpToItem.bind(this, item)}
+        <View
+          className='at-row at-row__justify--between daily-item'
+          key={String(index)}
+          onClick={this.jumpToItem.bind(this, item)}
         >
           <View className='at-col at-col-1 at-col--auto item-intro'>
             <View className='at-icon at-icon-shopping-bag-2'>

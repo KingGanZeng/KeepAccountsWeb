@@ -6,19 +6,19 @@
  * @interface DailyContentState
  */
 export interface DailyContentState {
-  dailyDetail?: any
+  dailyDetail?: any,
   detailType: string,
 }
 
 /**
  * rowArr的格式
  */
-export interface rowArrFormat {
-  type: string,
-  money: number,
-  name: string,
-  category: string
-}
+// export interface rowArrFormat {
+//   type: string,
+//   money: number,
+//   name: string,
+//   category: string
+// }
 
 /**
  * DailyContent.props 参数类型
@@ -27,6 +27,6 @@ export interface rowArrFormat {
  * @interface DailyContentProps
  */
 export interface DailyContentProps {
-  dailyDetail: Object, // 每一天的消费详情
+  dailyDetailInfo: Object, // 每一天的消费详情
   type: string, // 支出还是收入
 }
