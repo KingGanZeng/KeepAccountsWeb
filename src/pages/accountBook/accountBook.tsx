@@ -165,6 +165,7 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
     const myBookList = data || []
     const hasBook = myBookList.length > 0;
     console.log("***这里渲染***", myBookList);
+    const date = +new Date();
 
     return (
       <View className='fx-accountBook-wrap'>
@@ -186,7 +187,7 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
             </View>
           </AtModalContent>
         </AtModal>
-        { hasBook && <BookList title='我的账本' list={myBookList} />}
+        { hasBook && <BookList title='我的账本' date={date} list={myBookList} />}
         <AtCard
           className='choice-wrapper'
           title='选择账本场景'

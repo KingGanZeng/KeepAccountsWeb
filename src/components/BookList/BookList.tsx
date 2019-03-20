@@ -8,8 +8,7 @@ class BookList extends Component<BookListProps,BookListState > {
   constructor(props: BookListProps) {
     super(props);
     this.state = {
-      bookTitle: this.props.title,
-      bookList: this.props.list,
+      bookTitle: this.props.title
     }
   }
   static options = {
@@ -17,7 +16,7 @@ class BookList extends Component<BookListProps,BookListState > {
   };
   static defaultProps:BookListProps = {
     title: '我的账本',
-    list: []
+    list: [],
   };
 
   /**
@@ -34,11 +33,11 @@ class BookList extends Component<BookListProps,BookListState > {
 
   render() {
     let hasBook = false;
-    console.log("This is component:", this.state.bookList)
-    if (this.state.bookList && this.state.bookList.length > 0) {
+    console.log("This is component:", this.props.list)
+    if (this.props.list && this.props.list.length > 0) {
       hasBook = true
     }
-    const books = this.state.bookList.map((book, index) => {
+    const books = this.props.list.map((book, index) => {
       const bookClass = book.book_type + '-book';
       return (
         <View

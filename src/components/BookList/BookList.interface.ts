@@ -7,9 +7,15 @@
  */
 export interface BookListState {
   bookTitle: string,
-  bookList: any
 }
 
+
+export interface BookProps {
+  book_id: number,
+  book_type: string,
+  book_name: string,
+  note: string
+}
 /**
  * BookList.props 参数类型
  *
@@ -17,13 +23,6 @@ export interface BookListState {
  * @interface BookListProps
  */
 export interface BookListProps {
-  title: string // 标题
-  list: Array<bookProps>, // book列表
-}
-
-export interface bookProps {
-  book_id: number,
-  book_type: string,
-  book_name: string,
-  note: string
+  title: string, // 标题
+  list: Array<BookProps>, // book列表
 }
