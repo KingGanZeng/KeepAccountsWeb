@@ -23,7 +23,7 @@ class App extends Component {
       'pages/newBook/newBook', // 新建账本页
       'pages/index/index', // 账本详情页
       'pages/newTravel/newTravel', // 新建旅游聚会页
-      'pages/newManagement/newManagement', // 新建投资项目
+      'pages/newManagement/newManagement' // 新建投资项目
     ],
     permission: {
       "scope.userLocation": {
@@ -34,21 +34,21 @@ class App extends Component {
       {
         root: 'pages/chartPage',
         pages: [
-          'chartPage', // 图表页面
+          'chartPage' // 图表页面
         ]
       },
       {
         root: 'pages/newRecord',
         pages: [
-          'newRecord', // 新建账单
+          'newRecord' // 新建账单
         ]
       },
       {
         root: 'pages/travelDetails',
         pages: [
-          'travelDetails', // 旅游聚会内页
+          'travelDetails' // 旅游聚会内页
         ]
-      }
+      },
     ],
     window: {
       backgroundTextStyle: 'light',
