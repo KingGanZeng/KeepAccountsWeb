@@ -14,6 +14,7 @@ export interface AccountBookState {
   bookArray: Array<BookProps>,
   hasAuthorized: boolean, // 是否授权过
   modalOpenState: boolean, // 模态框状态
+  uid: string, // uid
 }
 
 /**
@@ -26,7 +27,7 @@ export interface BookInterface {
   user_name: string,
   book_name: string,
   book_type: string,
-  book_id: number
+  book_id: number,
 }
 
 /**

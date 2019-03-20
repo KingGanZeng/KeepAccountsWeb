@@ -20,7 +20,7 @@ export default {
         yield put({
           type: 'updateState',
           payload: {
-            data: result,
+            data: result.results,
           }
         })
       }

@@ -109,30 +109,27 @@ export class Request {
 
   static getOpenId(code) {
     return new Promise(async (resolve, reject) => {
-      // const { data } = await Taro.request({
-      //   url: 'https://api.weixin.qq.com/sns/jscode2session',
-      //   data: {
-      //     appid: 'wx47bdf41ed1be8aa2',
-      //     secret: 'SECRET',
-      //     js_code: code,
-      //     grant_type: 'authorization_code',
-      //   }
-      // })
-      const data = {
-        code: 1,
+      const { data } = await Taro.request({
+        url: 'https://api.weixin.qq.com/sns/jscode2session',
         data: {
-          openId: 'faw3d',
-          sessionId: 'fsd',
+          appid: 'wx47bdf41ed1be8aa2',
+          secret: '53ae20f0b7de9c2048526fb2a0a6b063',
+          js_code: code,
+          grant_type: 'authorization_code',
         }
-      }
+      })
 
-
-      if (data.code !== 0 || !data.data) {
+      if (!data) {
         reject()
         return
       }
-      console.log(data)
-      Taro.setStorageSync('uid', data.data.openId)
+      console.log("获取到openid：", data.openid)
+      // 将openid存入缓存
+      try {
+        Taro.setStorageSync('uid', data.openid)
+      } catch (e) {
+        console.trace(e)
+      }
       resolve()
     })
   }
@@ -150,16 +147,29 @@ export class Request {
 
       const { code } = await Taro.login()
       await this.getOpenId(code)
+      const uid = Taro.getStorageSync('uid')
+      const username = Taro.getStorageSync('username')
 
       // 请求登录
       const { data } = await Taro.request({
         url: `${MAINHOST}${requestConfig.loginUrl}`,
-        data: { code: code }
+        data: { uid: uid }
       })
 
-      if (data.code !== 0 || !data.data || !data.data.token) {
-        reject()
-        return
+      // 未注册用户自动注册
+      if (!data.results) {
+        const { regisiterData } = await Taro.request({
+          method: 'POST',
+          url: `${MAINHOST}${requestConfig.registerUrl}`,
+          data: {
+            uid: uid,
+            username: username
+          }
+        })
+        if (!regisiterData) {
+          reject()
+          return
+        }
       }
 
       Taro.setStorageSync('token', data.data.token)

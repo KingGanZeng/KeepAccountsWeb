@@ -12,6 +12,7 @@ export const commonParame = {}
  */
 export const requestConfig = {
   loginUrl: '/api/user/wechat-auth', // 微信登录接口
+  registerUrl: '/api/user/create', // 注册接口
   ...index,
   ...accountBook,
   ...newBook,

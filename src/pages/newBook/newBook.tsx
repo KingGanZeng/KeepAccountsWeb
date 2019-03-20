@@ -136,7 +136,7 @@ class NewBook extends Component<NewBookProps,NewBookState > {
       bookCategoryChecked: this.state.bookCategory[e.detail.value]
     }, () => {
       this.setState({
-        bookType: bookNameTranslate('Chinese', this.state.bookCategoryChecked)
+        bookType: bookNameTranslate('Chinese', this.state.bookCategoryChecked) || '',
       })
     })
   };
@@ -179,23 +179,11 @@ class NewBook extends Component<NewBookProps,NewBookState > {
       this.getBookInfo()
     }
     // 从缓存中获取用户信息
-    Taro.getStorage({
-      key: 'uid',
-      // @ts-ignore
-      success: (res) => {
-        this.setState({
-          uid: res.data
-        })
-      }
-    });
-    Taro.getStorage({
-      key: 'username',
-      // @ts-ignore
-      success: (res) => {
-        this.setState({
-          username: res.data
-        })
-      }
+    const username = Taro.getStorageSync('username')
+    const uid = Taro.getStorageSync('uid')
+    this.setState({
+      uid: uid,
+      username: username,
     })
   }
 
@@ -222,7 +210,7 @@ class NewBook extends Component<NewBookProps,NewBookState > {
           <ContentInput
             onInput={this.onInputChange.bind(this)}
             inputName='bookBudget'
-            placeholder='账本预算'
+            placeholder='账本预算(元)'
           />
           <Picker
             mode='selector'

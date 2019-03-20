@@ -63,7 +63,7 @@ class ContentInput extends Component<ContentInputProps,ContentInputState > {
             onInput={this.onInputChange}
             value={this.state.inputContent}
             placeholderStyle='color: rgba(0,0,0,0)'
-            maxLength={8}
+            maxLength={20}
           />
           <Label
             className={this.state.focusState ? 'input-label input-label-active' : 'input-label'}

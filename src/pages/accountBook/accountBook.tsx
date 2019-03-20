@@ -24,6 +24,7 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
       bookArray: [],
       hasAuthorized: false,
       modalOpenState: false,
+      uid: '',
     }
   }
 
@@ -33,18 +34,10 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
    * @return Promise<*>
    */
   async getBook() {
-    let uid:string = ''
-    Taro.getStorage({
-      key: 'uid',
-      // @ts-ignore
-      success: function(res) {
-        uid = res.data
-      }
-    })
     await this.props.dispatch({
       type: 'accountBook/getBook',
       payload: {
-        uid: uid
+        uid: this.state.uid
       }
     })
   }
@@ -115,14 +108,12 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
       modalOpenState: openState
     }, () => {
       if(this.state.hasAuthorized) {
-        Request.login()
         // 获取用户的相关信息
         Taro.getUserInfo()
           .then(result => {
             const userInfo = JSON.parse(result.rawData)
             // 将用户名存入localStorage
             Taro.setStorageSync('username', userInfo.nickName)
-            console.log(userInfo)
           })
       }
     })
@@ -145,7 +136,11 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
    */
   async componentDidMount() {
     await this.getAuthorized()
-    await this.getBook()
+    await Request.login()
+    const uid = Taro.getStorageSync('uid')
+    this.setState({
+      uid: uid
+    })
   }
 
   render() {
@@ -160,7 +155,8 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
     //   {book_id:6, book_type: 'others', book_name: '借还记录', note: ''},
     //   {book_id:8, book_type: 'dayLife', book_name: '聚餐记账', note: '同事组'},
     // ];
-    const myBookList = data
+    const myBookList = data || []
+    const hasBook = myBookList.length > 0;
 
     return (
       <View className='fx-accountBook-wrap'>
@@ -182,7 +178,7 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
             </View>
           </AtModalContent>
         </AtModal>
-        <BookList title='我的账本' list={myBookList} />
+        { hasBook && <BookList title='我的账本' list={myBookList} />}
         <AtCard
           className='choice-wrapper'
           title='选择账本场景'

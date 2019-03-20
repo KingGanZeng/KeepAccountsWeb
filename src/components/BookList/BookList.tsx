@@ -34,6 +34,7 @@ class BookList extends Component<BookListProps,BookListState > {
 
   render() {
     let hasBook = false;
+    console.log("This is component:", this.state.bookList)
     if (this.state.bookList && this.state.bookList.length > 0) {
       hasBook = true
     }
