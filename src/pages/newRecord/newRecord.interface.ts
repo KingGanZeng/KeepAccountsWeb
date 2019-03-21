@@ -6,9 +6,11 @@
  * @interface NewRecordState
  */
 export interface NewRecordState {
+  uid: string,
+  username: string,
   current: number, // 当前标签页编号
-  bookType: string, // 当前账本类型
-  bookId: number, // 账本id
+  recordBookType: string, // 当前账本类型
+  recordBookId: number, // 账本id
   actionTitle: string, // 账本名称
   actionIcon: string, // 记录图标
   actionIconBackgroundColor: string, // 图标背景

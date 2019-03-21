@@ -26,9 +26,11 @@ class NewRecord extends Component<NewRecordProps,NewRecordState > {
     const month = addZero((nowDate.getMonth()+1).toString());
     const day = addZero((nowDate.getDate()).toString());
     this.state = {
+      uid: '',
+      username: '',
       current: 0,
-      bookType: decodeURIComponent(this.$router.params.bookType) || 'dayLife',
-      bookId: parseInt(decodeURIComponent(this.$router.params.bookId), 10),
+      recordBookType: decodeURIComponent(this.$router.params.bookType) || 'dayLife',
+      recordBookId: parseInt(decodeURIComponent(this.$router.params.bookId), 10),
       inputDate: `${year}-${month}-${day}`,
       inputMoney: 0, // 记录金额
       inputNote: '', // 记录备注
@@ -78,10 +80,29 @@ class NewRecord extends Component<NewRecordProps,NewRecordState > {
     })
   }
 
+  async createRecord() {
+    const recordType = this.state.current == 0 ? 'expense' : 'income'
+    return await this.props.dispatch({
+      type: 'newRecord/createRecord',
+      payload: {
+        uid: this.state.uid,
+        username: this.state.username,
+        book_id: this.state.recordBookId,
+        category: this.state.actionIcon,
+        record_type: recordType,
+        create_time: this.state.inputDate,
+        money: this.state.inputMoney,g
+
+        note: this.state.inputNote,
+      }
+    })
+  }
+
   /**
    * 弹出框确认
    */
   confirmAction() {
+
     this.setState({
       openState: false,
     }, () => {
@@ -123,6 +144,13 @@ class NewRecord extends Component<NewRecordProps,NewRecordState > {
     Taro.setNavigationBarTitle({
       // @ts-ignore
       title: bookNameTranslate('English', this.state.bookType)
+    })
+    // 从缓存中获取用户信息
+    const username = Taro.getStorageSync('username')
+    const uid = Taro.getStorageSync('uid')
+    this.setState({
+      uid: uid,
+      username: username,
     })
   }
 
@@ -193,7 +221,7 @@ class NewRecord extends Component<NewRecordProps,NewRecordState > {
                 name='money'
                 type='number'
                 placeholder='￥0.00'
-                value={this.state.inputMoney}
+                value={this.state.inputMoney || ''}
                 border={false}
                 onChange={this.handleChange.bind(this, 'money')}
               />

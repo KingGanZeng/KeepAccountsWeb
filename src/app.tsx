@@ -18,12 +18,13 @@ const store = dvaApp.getStore();
 
 class App extends Component {
   config: Config = {
-    pages: [ // 在这里配置page，不然是访问不到的
+    pages: [
       'pages/accountBook/accountBook', // 选择账本页
       'pages/newBook/newBook', // 新建账本页
       'pages/index/index', // 账本详情页
       'pages/newTravel/newTravel', // 新建旅游聚会页
-      'pages/newManagement/newManagement' // 新建投资项目
+      'pages/newManagement/newManagement', // 新建投资项目
+      'pages/newRecord/newRecord'
     ],
     permission: {
       "scope.userLocation": {
@@ -35,12 +36,6 @@ class App extends Component {
         root: 'pages/chartPage',
         pages: [
           'chartPage' // 图表页面
-        ]
-      },
-      {
-        root: 'pages/newRecord',
-        pages: [
-          'newRecord' // 新建账单
         ]
       },
       {
