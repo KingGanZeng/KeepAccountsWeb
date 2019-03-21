@@ -9,7 +9,6 @@ export interface IndexState {
   bookId: string, // 用于存储账本id
   bookType: string, // 用于存储账本类别
   uid: string, // 用户openid
-  username: string, // 用户昵称
 }
 
 /**
