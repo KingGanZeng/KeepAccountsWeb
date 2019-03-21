@@ -37,7 +37,6 @@ class Index extends Component<IndexProps,IndexState > {
       yearMonth: `${year}-${month}`, // 用于存储日期，并传递给NavBar
       bookId: urlBookId || ' ',
       bookType: urlBookType || ' ', // 账本类别
-      username: '',
       uid: ''
     }
   }
@@ -56,12 +55,15 @@ class Index extends Component<IndexProps,IndexState > {
 
   // 获取Content账单数据
   async getRecordData(month: string, year: string, book_id: string) {
+    const startTime = +new Date(`${year}-${month}`);
+    const nextMonth = parseInt(month, 10) + 1;
+    const endTime = +new Date(`${year}-${nextMonth}`);
     return await this.props.dispatch({
       type: 'index/getRecordData',
       payload: {
-        user_name: 'zenggan', // 这里需要localstorage中获取
-        month: month,
-        year: year,
+        uid: this.state.uid, // 这里需要localstorage中获取
+        start_time: startTime,
+        end_time: endTime,
         book_id: book_id
       }
     })
@@ -73,11 +75,15 @@ class Index extends Component<IndexProps,IndexState > {
    * @param book_id
    */
   async getMoneyManagementData(year: string, book_id: string) {
+    const startTime = +new Date(year)
+    const nextYear = parseInt(year, 10) + 1
+    const endTime = +new Date(`${nextYear}`)
     return await this.props.dispatch({
       type: 'index/getMoneyManagementData',
       payload: {
-        uid: 'DAF1221DFX', // 这里需要提前获取
-        year: year,
+        uid: this.state.uid, // 这里需要提前获取
+        start_time: startTime,
+        end_time: endTime,
         book_id: book_id,
       }
     })
@@ -109,23 +115,9 @@ class Index extends Component<IndexProps,IndexState > {
       title: decodeURIComponent(this.$router.params.bookName)
     })
     // 从缓存中获取用户信息
-    Taro.getStorage({
-      key: 'uid',
-      // @ts-ignore
-      success: (res) => {
-        this.setState({
-          uid: res.data
-        })
-      }
-    });
-    Taro.getStorage({
-      key: 'username',
-      // @ts-ignore
-      success: (res) => {
-        this.setState({
-          username: res.data
-        })
-      }
+    const uid = Taro.getStorageSync('uid')
+    this.setState({
+      uid: uid,
     })
   }
 

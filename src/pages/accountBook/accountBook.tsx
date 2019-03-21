@@ -34,7 +34,7 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
    * @return Promise<*>
    */
   async getBook() {
-    const result = await this.props.dispatch({
+    await this.props.dispatch({
       type: 'accountBook/getBook',
       payload: {
         uid: this.state.uid
@@ -87,7 +87,7 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
       hasAuthorized: false,
     }, () => {
       console.log(this.state.hasAuthorized)
-    })_
+    });
   }
 
   /**

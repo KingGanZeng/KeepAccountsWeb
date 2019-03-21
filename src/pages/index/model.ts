@@ -16,11 +16,11 @@ export default {
         v,
         ...payload
       });
-      if (result && result.length > 0 && typeof result === "object") {
+      if (result.results.length != 0) {
         yield put({
           type: 'updateState',
           payload: {
-            recordData: result
+            recordData: result.results
           }
         })
       } else {
@@ -41,11 +41,11 @@ export default {
         v,
         ...payload
       });
-      if (result && result.length > 0 && typeof result === "object") {
+      if (result.results.length != 0) {
         yield put({
           type: 'updateState',
           payload: {
-            moneyManagementData: result
+            moneyManagementData: result.results
           }
         })
       } else {
