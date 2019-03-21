@@ -91,8 +91,7 @@ class NewRecord extends Component<NewRecordProps,NewRecordState > {
         category: this.state.actionIcon,
         record_type: recordType,
         create_time: this.state.inputDate,
-        money: this.state.inputMoney,g
-
+        money: this.state.inputMoney,
         note: this.state.inputNote,
       }
     })
