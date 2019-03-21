@@ -18,6 +18,7 @@ export interface NewRecordState {
   inputMoney: number, // 记录金额
   inputNote: string, // 记录备注
   openState: boolean, // 弹出框状态
+  hasError: boolean, // toast状态
 }
 
 /**
@@ -26,4 +27,6 @@ export interface NewRecordState {
  * @export
  * @interface NewRecordProps
  */
-export interface NewRecordProps {}
+export interface NewRecordProps {
+  submitSuccess: boolean, // 提交状态
+}

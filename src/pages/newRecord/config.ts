@@ -1,4 +1,8 @@
 
 export default {
-  test: '/wechat/perfect-info', //xxx接口
+  createRecord: {
+    host: 'http://127.0.0.1:8000',
+    url: '/api/createRecord',
+    method: 'POST'
+  },
 }

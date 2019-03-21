@@ -1,5 +1,3 @@
-
-// import Taro from '@tarojs/taro';
 import * as newBookApi from './service';
 
 export default {

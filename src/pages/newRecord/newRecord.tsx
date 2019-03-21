@@ -1,7 +1,7 @@
 
 import Taro, { Component, Config } from '@tarojs/taro'
 import {Picker, View} from '@tarojs/components'
-import {AtInput, AtModal, AtModalContent, AtTabs, AtTabsPane} from 'taro-ui'
+import {AtInput, AtModal, AtModalContent, AtTabs, AtTabsPane, AtToast} from 'taro-ui'
 import { connect } from '@tarojs/redux'
 import { NewRecordProps, NewRecordState } from './newRecord.interface'
 import './newRecord.scss'
@@ -80,9 +80,12 @@ class NewRecord extends Component<NewRecordProps,NewRecordState > {
     })
   }
 
+  /**
+   * 创建新流水
+   */
   async createRecord() {
     const recordType = this.state.current == 0 ? 'expense' : 'income'
-    return await this.props.dispatch({
+    const result = await this.props.dispatch({
       type: 'newRecord/createRecord',
       payload: {
         uid: this.state.uid,
@@ -94,19 +97,25 @@ class NewRecord extends Component<NewRecordProps,NewRecordState > {
         money: this.state.inputMoney,
         note: this.state.inputNote,
       }
-    })
+    });
+    if(this.props.submitSuccess || result.record_id) {
+      this.setState({
+        openState: false,
+      }, () => {
+        Taro.navigateBack();
+      })
+    } else {
+      this.setState({
+        hasError: true,
+      })
+    }
   }
 
   /**
    * 弹出框确认
    */
-  confirmAction() {
-
-    this.setState({
-      openState: false,
-    }, () => {
-      Taro.navigateBack();
-    })
+  async confirmAction() {
+    await this.createRecord()
   }
 
   /**
@@ -162,6 +171,12 @@ class NewRecord extends Component<NewRecordProps,NewRecordState > {
 
     return (
       <View className='newRecord-wrap'>
+        <AtToast
+          isOpened={this.state.hasError}
+          text='新建账单错误'
+          icon='close-circle'
+          hasMask
+        />
         <AtTabs
           current={this.state.current}
           tabList={tabList}
@@ -172,8 +187,8 @@ class NewRecord extends Component<NewRecordProps,NewRecordState > {
             index={0}
           >
             <CategoryList
-              nowBookType={this.state.bookType}
-              nowBookId={this.state.bookId}
+              nowBookType={this.state.recordBookType}
+              nowBookId={this.state.recordBookId}
               nowType='expense'
               onModalActionState={this.handleSetModalAction.bind(this)}
             />
@@ -183,8 +198,8 @@ class NewRecord extends Component<NewRecordProps,NewRecordState > {
             index={1}
           >
             <CategoryList
-              nowBookType={this.state.bookType}
-              nowBookId={this.state.bookId}
+              nowBookType={this.state.recordBookType}
+              nowBookId={this.state.recordBookId}
               nowType='income'
               onModalActionState={this.handleSetModalAction.bind(this)}
             />
@@ -230,7 +245,7 @@ class NewRecord extends Component<NewRecordProps,NewRecordState > {
                 name='note'
                 placeholder='输入备注'
                 value={this.state.inputNote}
-                maxLength={15}
+                maxLength={30}
                 border={false}
                 onChange={this.handleChange.bind(this, 'note')}
               />
