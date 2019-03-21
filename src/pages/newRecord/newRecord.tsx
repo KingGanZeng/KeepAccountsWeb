@@ -218,7 +218,7 @@ class NewRecord extends Component<NewRecordProps,NewRecordState > {
               </View>
             </View>
             <View className='action-icon-wrapper' style={this.state.actionIconBackgroundColor}>
-              <View className={ this.state.actionIcon + ' icon-item at-icon'} />
+              <View className={this.state.actionIcon + ' icon-item at-icon'} />
             </View>
             <View className={this.state.current ? 'action-title income' : 'action-title expense'}>{this.state.actionTitle}</View>
             <View className='date-wrapper'>
