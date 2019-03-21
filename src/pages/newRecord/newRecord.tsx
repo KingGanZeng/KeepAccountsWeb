@@ -38,6 +38,7 @@ class NewRecord extends Component<NewRecordProps,NewRecordState > {
       actionIcon: '',
       actionIconBackgroundColor: '',
       openState: false,
+      hasError: false, // toast状态
     }
   }
 
@@ -93,7 +94,7 @@ class NewRecord extends Component<NewRecordProps,NewRecordState > {
         book_id: this.state.recordBookId,
         category: this.state.actionIcon,
         record_type: recordType,
-        create_time: this.state.inputDate,
+        create_timestamp: this.state.inputDate + ' 00:00',
         money: this.state.inputMoney,
         note: this.state.inputNote,
       }

@@ -29,4 +29,5 @@ export interface NewRecordState {
  */
 export interface NewRecordProps {
   submitSuccess: boolean, // 提交状态
+  dispatch?: any,
 }

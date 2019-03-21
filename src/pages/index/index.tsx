@@ -62,8 +62,8 @@ class Index extends Component<IndexProps,IndexState > {
       type: 'index/getRecordData',
       payload: {
         uid: this.state.uid, // 这里需要localstorage中获取
-        start_time: startTime,
-        end_time: endTime,
+        create_timestamp__gte: startTime,
+        create_timestamp__lte: endTime,
         book_id: book_id
       }
     })
@@ -82,8 +82,8 @@ class Index extends Component<IndexProps,IndexState > {
       type: 'index/getMoneyManagementData',
       payload: {
         uid: this.state.uid, // 这里需要提前获取
-        start_time: startTime,
-        end_time: endTime,
+        create_timestamp__gte: startTime,
+        create_timestamp__lte: endTime,
         book_id: book_id,
       }
     })
@@ -110,7 +110,6 @@ class Index extends Component<IndexProps,IndexState > {
 
   // 页面挂载时执行
   componentDidMount() {
-    this.getDateData(this.state.yearMonth);
     Taro.setNavigationBarTitle({ // 设置标题栏账本名
       title: decodeURIComponent(this.$router.params.bookName)
     })
@@ -118,6 +117,8 @@ class Index extends Component<IndexProps,IndexState > {
     const uid = Taro.getStorageSync('uid')
     this.setState({
       uid: uid,
+    }, () => {
+      this.getDateData(this.state.yearMonth);
     })
   }
 
