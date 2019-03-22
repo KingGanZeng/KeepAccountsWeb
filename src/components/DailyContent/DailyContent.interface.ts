@@ -6,7 +6,6 @@
  * @interface DailyContentState
  */
 export interface DailyContentState {
-  dailyDetail?: any,
   detailType: string,
 }
 
@@ -27,6 +26,7 @@ export interface DailyContentState {
  * @interface DailyContentProps
  */
 export interface DailyContentProps {
-  dailyDetailInfo: Object, // 每一天的消费详情
+  dailyDetail: any, // 每一天的消费详情
   type: string, // 支出还是收入
+  bookType: string, // 账本类型
 }

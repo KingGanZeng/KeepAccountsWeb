@@ -9,10 +9,6 @@ class NavBar extends Component<NavBarProps,NavBarState > {
     super(props);
     this.state = {
       date: this.props.yearMonthStr,
-      income: this.props.navBarData.incomeCount || 0,
-      expense: this.props.navBarData.expenseCount || 0,
-      count: this.props.navBarData.count || 0,
-      budget: this.props.navBarData.budget || 0,
       bookType: this.props.navBookType,
     }
   }
@@ -20,7 +16,7 @@ class NavBar extends Component<NavBarProps,NavBarState > {
     addGlobalClass: true
   };
   static defaultProps:NavBarProps = {
-    yearMonthStr: '2019-03',
+    yearMonthStr: '2019-02',
     navBarData: {
       incomeCount: 0,
       expenseCount: 0,
@@ -63,9 +59,9 @@ class NavBar extends Component<NavBarProps,NavBarState > {
     let content:any;
     if (this.state.bookType == 'dayLife') {
       const mapCount = [
-        {title: '支出', value: this.state.expense},
-        {title: '预算', value: this.state.budget},
-        {title: '收入', value: this.state.income},
+        {title: '支出', value: this.props.navBarData.expenseCount},
+        {title: '预算', value: this.props.navBarData.budget},
+        {title: '收入', value: this.props.navBarData.incomeCount},
       ];
       content = mapCount.map((item, index) => {
         if (item.title !== '笔数') {
@@ -86,8 +82,8 @@ class NavBar extends Component<NavBarProps,NavBarState > {
       })
     } else if(this.state.bookType == 'travelParty') {
       const mapCount = [
-        {title: '支出', value: this.state.expense},
-        {title: '笔数', value: this.state.count},
+        {title: '支出', value: this.props.navBarData.expenseCount},
+        {title: '笔数', value: this.props.navBarData.count},
       ];
       content = mapCount.map((item, index) => {
         if (item.title !== '笔数') {
@@ -109,9 +105,9 @@ class NavBar extends Component<NavBarProps,NavBarState > {
       })
     } else if(this.state.bookType == 'homeDecoration') {
       const mapCount = [
-        {title: '支出', value: this.state.expense},
-        {title: '预算', value: this.state.budget},
-        {title: '笔数', value: this.state.count},
+        {title: '支出', value: this.props.navBarData.expenseCount},
+        {title: '预算', value: this.props.navBarData.budget},
+        {title: '笔数', value: this.props.navBarData.count},
       ];
       content = mapCount.map((item, index) => {
         if (item.title !== '笔数') {
@@ -132,8 +128,8 @@ class NavBar extends Component<NavBarProps,NavBarState > {
       })
     } else if(this.state.bookType == 'socialRelation') {
       const mapCount = [
-        {title: '支出', value: this.state.expense},
-        {title: '收入', value: this.state.income},
+        {title: '支出', value: this.props.navBarData.expenseCount},
+        {title: '收入', value: this.props.navBarData.incomeCount},
       ];
       content = mapCount.map((item, index) => {
         if (item.title !== '笔数') {
@@ -153,9 +149,9 @@ class NavBar extends Component<NavBarProps,NavBarState > {
       })
     } else if(this.state.bookType == 'moneyManagement') {
       const mapCount = [
-        {title: '总盈利', value: this.state.income},
-        {title: '总亏损', value: this.state.expense},
-        {title: '收支差额', value: this.state.income-this.state.expense},
+        {title: '总盈利', value: this.props.navBarData.incomeCount},
+        {title: '总亏损', value: this.props.navBarData.expenseCount},
+        {title: '收支差额', value: this.props.navBarData.incomeCount-this.props.navBarData.expenseCount},
       ];
       content = mapCount.map((item, index) => {
         if (item.title !== '笔数') {
@@ -176,8 +172,8 @@ class NavBar extends Component<NavBarProps,NavBarState > {
       })
     } else if(this.state.bookType == 'moneyManagementInner') {
       const mapCount = [
-        {title: '盈利', value: this.state.income},
-        {title: '亏损', value: this.state.expense},
+        {title: '盈利', value: this.props.navBarData.incomeCount},
+        {title: '亏损', value: this.props.navBarData.expenseCount},
       ];
       content = mapCount.map((item, index) => {
         if (item.title !== '笔数') {
@@ -197,9 +193,9 @@ class NavBar extends Component<NavBarProps,NavBarState > {
       })
     } else if(this.state.bookType == 'rent') {
       const mapCount = [
-        {title: '总支出', value: this.state.expense},
-        {title: '人数', value: this.state.count},
-        {title: '人均', value: (this.state.expense / this.state.count) || 0},
+        {title: '总支出', value: this.props.navBarData.expenseCount},
+        {title: '人数', value: this.props.navBarData.count},
+        {title: '人均', value: (this.props.navBarData.expenseCount / this.props.navBarData.count) || 0},
       ];
       content = mapCount.map((item, index) => {
         if (item.title !== '笔数') {
@@ -220,8 +216,8 @@ class NavBar extends Component<NavBarProps,NavBarState > {
       })
     } else if(this.state.bookType == 'others') {
       const mapCount = [
-        {title: '应还', value: this.state.expense},
-        {title: '应收', value: this.state.income},
+        {title: '应还', value: this.props.navBarData.expenseCount},
+        {title: '应收', value: this.props.navBarData.incomeCount},
       ];
       content = mapCount.map((item, index) => {
         if (item.title !== '笔数') {

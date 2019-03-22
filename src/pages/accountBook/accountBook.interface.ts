@@ -1,9 +1,3 @@
-
-interface BookProps {
-  book_name: string,
-  book_id: number
-}
-
 /**
  * accountBook.state 参数类型
  *
@@ -11,7 +5,6 @@ interface BookProps {
  * @interface AccountBookState
  */
 export interface AccountBookState {
-  bookArray: Array<BookProps>,
   hasAuthorized: boolean, // 是否授权过
   modalOpenState: boolean, // 模态框状态
   uid: string, // uid

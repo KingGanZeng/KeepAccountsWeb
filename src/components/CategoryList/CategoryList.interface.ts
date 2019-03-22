@@ -6,10 +6,10 @@
  * @interface CategoryListState
  */
 export interface CategoryListState {
-  openState: boolean,
-  bookType: string,
-  bookId: number,
   type: string,
+  bookType: string,
+  // bookId: number,
+  // openState: boolean,
 }
 
 /**

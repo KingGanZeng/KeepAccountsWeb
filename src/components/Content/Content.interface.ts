@@ -7,10 +7,6 @@
  */
 export interface ContentState {
   current: number, // 用于标签页标识
-  dailyObj: {
-    incomeObj: Object, // 每日数据-收入信息
-    expenseObj: Object, // 每日数据-支出信息
-  },
 }
 
 /**
@@ -20,7 +16,7 @@ export interface ContentState {
  * @interface ContentProps
  */
 export interface ContentProps {
-  income: Object,
-  expense: Object,
+  income: Object, // 每日数据-收入信息
+  expense: Object, // 每日数据-支出信息
   nowBookType: string,
 }

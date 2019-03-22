@@ -8,9 +8,7 @@ class CategoryList extends Component<CategoryListProps,CategoryListState > {
   constructor(props: CategoryListProps) {
     super(props);
     this.state = {
-      openState: false,
       bookType: this.props.nowBookType,
-      bookId: this.props.nowBookId,
       type: this.props.nowType,
     }
   }
@@ -239,7 +237,6 @@ class CategoryList extends Component<CategoryListProps,CategoryListState > {
       iconArr = CategoryList.others
     }
     const thisType = this.state.type;
-    console.log(this.state);
     const iconContent = iconArr[thisType].map(item => {
       return (
         <View

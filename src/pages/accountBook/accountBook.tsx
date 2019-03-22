@@ -21,7 +21,6 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
   constructor(props: AccountBookProps) {
     super(props);
     this.state = {
-      bookArray: [],
       hasAuthorized: false,
       modalOpenState: false,
       uid: '',
@@ -40,11 +39,6 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
         uid: this.state.uid
       }
     })
-    // this.setState({
-    //   bookArray: result.results
-    // }, () => {
-    //   console.log(this.state.bookArray)
-    // })
   }
 
   /**
@@ -164,7 +158,6 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
     // ];
     const myBookList = data || []
     const hasBook = myBookList.length > 0;
-    console.log("***这里渲染***", myBookList);
     const date = +new Date();
 
     return (

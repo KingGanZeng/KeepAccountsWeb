@@ -11,10 +11,6 @@ class Content extends Component<ContentProps,ContentState > {
     super(props);
     this.state = {
       current: 0,
-      dailyObj: {
-        incomeObj: this.props.income,
-        expenseObj: this.props.expense,
-      }
     }
   }
   static options = {
@@ -39,7 +35,10 @@ class Content extends Component<ContentProps,ContentState > {
     } else {
       tabList = [{ title: '支出' }, { title: '收入' }];
     }
-    const { dailyObj } = this.state;
+    const dailyObj = {
+      incomeObj: this.props.income,
+      expenseObj: this.props.expense,
+    };
 
     const incomeArr = Object.values(dailyObj.incomeObj);
     const incomeContent = incomeArr.map((item, index) => {
@@ -49,6 +48,7 @@ class Content extends Component<ContentProps,ContentState > {
           taroKey={String(index)}
           dailyDetail={item}
           type='income'
+          bookType={this.props.nowBookType}
         />
       )
     });
@@ -61,6 +61,7 @@ class Content extends Component<ContentProps,ContentState > {
           taroKey={String(index)}
           dailyDetail={item}
           type='expense'
+          bookType={this.props.nowBookType}
         />
       )
     });

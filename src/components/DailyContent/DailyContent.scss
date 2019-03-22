@@ -1,6 +1,7 @@
 $main_color: #2b364e;
 $border_color: #05e4ab60;
 $item-background: #4a556c60;
+$underline_color: #cabe16;
 
 .fx-DailyContent-wrap {
   width: 100%;
@@ -32,12 +33,26 @@ $item-background: #4a556c60;
       background: linear-gradient(120deg, $border_color, $item-background);
     }
   }
-  .item-name {
-    font-size: 28px;
-  }
   .item-intro {
     .at-icon:before {
       margin-right: 20px;
+    }
+    .iconfont {
+      display:inline-block;
+      width:50px;
+      line-height:50px;
+      border-radius:50%;
+      font-size:35px;
+      color:#fff;
+      -webkit-box-sizing:border-box;
+      box-sizing:border-box;
+      text-align:center;
+      margin:0 20px 0 0;
+
+    }
+    .item-name {
+      font-size: 28px;
+      line-height: 40px;
     }
   }
   .item-note {
@@ -49,6 +64,7 @@ $item-background: #4a556c60;
   .item-money {
     color: #e3e3e3;
     font-size: 28px;
+    height: 28px;
   }
   .income-count {
     color: #f54552;

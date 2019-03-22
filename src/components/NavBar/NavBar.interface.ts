@@ -7,10 +7,6 @@
  */
 export interface NavBarState {
   date: string,
-  income: number,
-  expense: number,
-  count: number,
-  budget: number,
   bookType: string,
 }
 

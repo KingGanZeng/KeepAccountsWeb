@@ -16,7 +16,7 @@ export default {
         v,
         ...payload
       });
-      if (result && result.length > 0 && typeof result === "object") {
+      if (result.results.length != 0) {
         yield put({
           type: 'updateState',
           payload: {
@@ -27,12 +27,11 @@ export default {
         yield put({
           type: 'updateState',
           payload: {
-            recordData: [
-              {record_id: 'r05', uid: 'DE90ESD290', date: '2019-03-12', username: 'zenggan', record_type: 'income', category:'sell', money: 200.32},
-            ]
+            recordData: []
           }
         })
       }
+      return result.results
     },
     * getMoneyManagementData({ payload }, { select, call, put }) {
       const { key, v } = yield select(state => state.index);

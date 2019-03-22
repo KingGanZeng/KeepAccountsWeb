@@ -32,12 +32,14 @@ class Index extends Component<IndexProps,IndexState > {
     const year = nowDate.getFullYear();
     const month = addZero((nowDate.getMonth()+1).toString());
     const urlBookId = decodeURIComponent(this.$router.params.bookId);
-    const urlBookType= decodeURIComponent(this.$router.params.bookType);
+    const urlBookType = decodeURIComponent(this.$router.params.bookType);
+    const urlBudget = decodeURIComponent(this.$router.params.budget);
     this.state = {
       yearMonth: `${year}-${month}`, // 用于存储日期，并传递给NavBar
       bookId: urlBookId || ' ',
       bookType: urlBookType || ' ', // 账本类别
-      uid: ''
+      budget: parseFloat(urlBudget), // 预算
+      uid: '',
     }
   }
 
@@ -55,15 +57,15 @@ class Index extends Component<IndexProps,IndexState > {
 
   // 获取Content账单数据
   async getRecordData(month: string, year: string, book_id: string) {
-    const startTime = +new Date(`${year}-${month}`);
+    const startTime = `${year}-${month}-1`;
     const nextMonth = parseInt(month, 10) + 1;
-    const endTime = +new Date(`${year}-${nextMonth}`);
+    const endTime = `${year}-${nextMonth}-1`;
     return await this.props.dispatch({
       type: 'index/getRecordData',
       payload: {
         uid: this.state.uid, // 这里需要localstorage中获取
-        create_timestamp__gte: startTime,
-        create_timestamp__lte: endTime,
+        create_timestamp_min: startTime,
+        create_timestamp_max: endTime,
         book_id: book_id
       }
     })
@@ -75,15 +77,15 @@ class Index extends Component<IndexProps,IndexState > {
    * @param book_id
    */
   async getMoneyManagementData(year: string, book_id: string) {
-    const startTime = +new Date(year)
-    const nextYear = parseInt(year, 10) + 1
-    const endTime = +new Date(`${nextYear}`)
+    const startTime = `${year}-1-1`;
+    const nextYear = parseInt(year, 10) + 1;
+    const endTime = `${nextYear}-1-1`;
     return await this.props.dispatch({
       type: 'index/getMoneyManagementData',
       payload: {
         uid: this.state.uid, // 这里需要提前获取
-        create_timestamp__gte: startTime,
-        create_timestamp__lte: endTime,
+        create_timestamp_min: startTime,
+        create_timestamp_max: endTime,
         book_id: book_id,
       }
     })
@@ -109,12 +111,12 @@ class Index extends Component<IndexProps,IndexState > {
   }
 
   // 页面挂载时执行
-  componentDidMount() {
+  componentDidShow() {
     Taro.setNavigationBarTitle({ // 设置标题栏账本名
       title: decodeURIComponent(this.$router.params.bookName)
-    })
+    });
     // 从缓存中获取用户信息
-    const uid = Taro.getStorageSync('uid')
+    const uid = Taro.getStorageSync('uid');
     this.setState({
       uid: uid,
     }, () => {
@@ -124,6 +126,10 @@ class Index extends Component<IndexProps,IndexState > {
 
   render() {
     const { recordData, moneyManagementData } = this.props;
+    const myRecordList = recordData || [];
+    const myMoneyManageList = moneyManagementData || [];
+    const hasRecord = myRecordList.length > 0 ||
+      myMoneyManageList.length > 0;
 
     // recordData = [
     //   {record_id: 'r05', uid: 'DE90ESD290', date: '2019-03-12', username: 'zenggan', record_type: 'income', category:'sell', money: 200.32, note: ''},
@@ -157,13 +163,13 @@ class Index extends Component<IndexProps,IndexState > {
       count: 0,
       budget: 0,
     };
-    //处理收支数据
+    //处理收支数据 navBar
     let incomeList = [];
     let expenseList = [];
     let incomeData:any = {};
     let expenseData:any = {};
-    if (recordData && renderContentType == 'normal') {
-      recordData.forEach(item => {
+    if (myRecordList && renderContentType == 'normal') {
+      myRecordList.forEach(item => {
         if (item.record_type === 'income') {
           // @ts-ignore
           incomeList.push(item)
@@ -178,17 +184,16 @@ class Index extends Component<IndexProps,IndexState > {
       navBarData = {
         incomeCount: incomeData.moneyAll,
         expenseCount: expenseData.moneyAll,
-        count: 2,
-        budget: 100
+        count: myRecordList.length,
+        budget: this.state.budget
       };
     }
 
     // 处理旅游出行数据
-    let bookRecord = [];
+    // let bookRecord = [];
 
     // 处理理财投资数据
-    let moneyBookRecord = moneyManagementData;
-    if (moneyManagementData && renderContentType == 'moneyManagement') {
+    if (myMoneyManageList && renderContentType == 'moneyManagement') {
       let incomeCount = 0;
       let expenseCount = 0;
       moneyManagementData.forEach(item => {
@@ -198,6 +203,8 @@ class Index extends Component<IndexProps,IndexState > {
       navBarData.incomeCount = incomeCount;
       navBarData.expenseCount = expenseCount;
     }
+
+    console.log("账单详情获取：", incomeData, expenseData);
 
     return (
       <View className='index-wrapper'>
@@ -209,16 +216,18 @@ class Index extends Component<IndexProps,IndexState > {
             navBookType={this.state.bookType}
           />
         </View>
-        <View className='index-content'>
+        { !hasRecord && <View className='index-content' /> }
+        { hasRecord && <View className='index-content'>
           { renderContentType == 'travelParty' &&
           <TravelPartyContent
-            nowbookRecord={bookRecord}
+            income={incomeData}
+            expense={expenseData}
             nowBookType='travelParty'
             nowBookId={this.state.bookId}
           />}
           { renderContentType == 'moneyManagement' &&
           <MoneyManagementContent
-            nowBookRecord={moneyBookRecord}
+            nowBookRecord={myMoneyManageList}
             nowBookType='moneyManagement'
             nowBookId={this.state.bookId}
           />}
@@ -230,7 +239,7 @@ class Index extends Component<IndexProps,IndexState > {
             expense={expenseData.recordList}
             nowBookType={this.state.bookType}
           />}
-        </View>
+        </View> }
         <View className='index-footer'>
           { renderContentType != 'moneyManagement' &&
           <TabBar

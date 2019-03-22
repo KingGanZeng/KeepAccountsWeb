@@ -1,3 +1,5 @@
+$main_color: #2b364e;
+
 .index-wrapper {
   width: 100%;
   height: 100%;
@@ -6,6 +8,8 @@
   }
   .index-content {
     width: 100%;
+    min-height: 1000px;
+    background: $main_color;
   }
   .index-footer {
     width: 100%;

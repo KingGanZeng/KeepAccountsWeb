@@ -27,13 +27,13 @@ class BookList extends Component<BookListProps,BookListState > {
     Taro.navigateTo({
       url: "/pages/index/index?bookId=" + bookInfo.book_id +
         '&bookName=' + bookInfo.book_name +
-        '&bookType=' + bookInfo.book_type
+        '&bookType=' + bookInfo.book_type +
+        '&budget=' + bookInfo.budget
     })
   };
 
   render() {
     let hasBook = false;
-    console.log("This is component:", this.props.list)
     if (this.props.list && this.props.list.length > 0) {
       hasBook = true
     }
