@@ -7,6 +7,7 @@ import { NewBookProps, NewBookState } from './newBook.interface'
 import './newBook.scss'
 import '../../assets/iconfont/iconfont.scss'
 import ContentInput from "../../components/ContentInput/ContentInput";
+import {MAINHOST} from "../../config";
 
 
 @connect(({ newBook }) => ({
@@ -30,8 +31,11 @@ class NewBook extends Component<NewBookProps,NewBookState > {
       hasGroup: false,
       loading: false,
       hasError: false,
+      hasErrorMsg: '新建账本错误',
+      hasErrorIcon: 'close-circle',
       uid: '',
       username: '',
+      hasBookId: false,
     }
   }
 
@@ -76,13 +80,94 @@ class NewBook extends Component<NewBookProps,NewBookState > {
    * 获取账本信息
    */
   async getBookInfo() {
-    return await this.props.dispatch({
+    let result = await this.props.dispatch({
       type: 'newBook/getBookInfo',
       payload: {
-        user_name: this.state.username,
-        book_id: this.$router.params.book_id
+        uid: this.state.uid,
+        book_id: parseInt(this.$router.params.bookId)
       }
-    })
+    });
+    if(result.results.length > 0) {
+      result = result.results[0];
+      // @ts-ignore
+      this.setState({
+        hasBookId: true,
+        bookName: result.book_name,
+        budget: parseFloat(result.budget), // 账本预算
+        bookType: result.book_type,
+        bookCategoryChecked: bookNameTranslate('Chinese', result.book_type),
+      }, () => {
+        console.log(this.state)
+      })
+    }
+  }
+
+  /**
+   * 修改账本信息
+   */
+  async changeBook() {
+    const bookId = decodeURIComponent(this.$router.params.bookId);
+    const result = await Taro.request({
+      method: 'PUT',
+      url: `${MAINHOST}/api/bookChangeApi/${bookId}`,
+      data: {
+        username: this.state.username,
+        uid: this.state.uid,
+        book_name: this.state.bookName,
+        book_type: this.state.bookType,
+        budget: this.state.budget,
+      }
+    });
+    // @ts-ignore
+    if(result.data.book_id) {
+      this.setState({
+        hasError: true,
+        hasErrorMsg: '修改成功',
+        hasErrorIcon: 'check-circle',
+      }, () => {
+        // 跳转回账本页面
+        setTimeout(() => {
+          Taro.redirectTo({
+            url: '/pages/accountBook/accountBook'
+          })
+        }, 800)
+      })
+    } else {
+      this.setState({
+        hasError: true,
+        hasErrorMsg: '修改失败',
+      })
+    }
+  }
+
+  /**
+   * 删除账本
+   */
+  async deleteBook() {
+    const bookId = decodeURIComponent(this.$router.params.bookId);
+    const result = await await Taro.request({
+      method: 'DELETE',
+      url: `${MAINHOST}/api/bookChangeApi/${bookId}`,
+    });
+    if(result.data.detail) {
+      this.setState({
+        hasError: true,
+        hasErrorMsg: '暂无法删除该账本',
+      })
+    } else {
+      this.setState({
+        hasError: true,
+        hasErrorMsg: '删除成功',
+        hasErrorIcon: 'check-circle',
+      }, () => {
+        // 跳转回账本页面
+        setTimeout(() => {
+          Taro.redirectTo({
+            url: '/pages/accountBook/accountBook'
+          })
+        }, 800)
+      })
+    }
   }
 
   /**
@@ -90,7 +175,10 @@ class NewBook extends Component<NewBookProps,NewBookState > {
    */
   onSubmit () {
     if (this.state.hasGroup) {
-      this.createGroup()
+      this.createGroup();
+    } else if(this.$router.params.bookId) {
+      this.changeBook()
+      return;
     }
     const data = new Promise(async (resolve, reject) => {
       const result = await this.createBook();
@@ -118,12 +206,16 @@ class NewBook extends Component<NewBookProps,NewBookState > {
    * 重置按钮
    */
   onReset () {
-    this.setState({
-      bookType: 'dayLife',
-      bookName: '新建账本',
-      bookCategoryChecked: '日常开销',
-      hasGroup: false,
-    });
+    if(this.$router.params.bookId) {
+      this.deleteBook()
+    } else {
+      this.setState({
+        bookType: 'dayLife',
+        bookName: '新建账本',
+        bookCategoryChecked: '日常开销',
+        hasGroup: false,
+      });
+    }
   }
 
   /**
@@ -173,26 +265,35 @@ class NewBook extends Component<NewBookProps,NewBookState > {
     }
   }
 
-  componentDidMount() {
-    if (this.$router.params.book_id) {
-      this.getBookInfo()
-    }
-    // 从缓存中获取用户信息
-    const username = Taro.getStorageSync('username')
-    const uid = Taro.getStorageSync('uid')
+  /**
+   * 组件渲染前获取数据
+   */
+  async componentWillMount() {
+    const username = Taro.getStorageSync('username');
+    const uid = Taro.getStorageSync('uid');
     this.setState({
       uid: uid,
       username: username,
     })
+    if (this.$router.params.bookId) {
+      await this.getBookInfo()
+    }
   }
 
   render() {
+    // @ts-ignore
+    const pickValue = this.state.bookCategory.reduce((previousValue, currentValue, currentIndex) => {
+      if(this.state.bookCategoryChecked == currentValue) {
+        return currentIndex
+      }
+    });
+
     return (
       <View className='newBook-container'>
         <AtToast
           isOpened={this.state.hasError}
-          text='新建账本错误'
-          icon='close-circle'
+          text={this.state.hasErrorMsg}
+          icon={this.state.hasErrorIcon}
           hasMask
         />
         <AtForm
@@ -202,11 +303,13 @@ class NewBook extends Component<NewBookProps,NewBookState > {
         >
           <View className='iconfont icon-signature' />
           <ContentInput
+            value={this.state.bookName}
             onInput={this.onInputChange.bind(this)}
             inputName='bookName'
             placeholder='账本名称'
           />
           <ContentInput
+            value={this.state.budget.toString()}
             onInput={this.onInputChange.bind(this)}
             inputName='bookBudget'
             placeholder='账本预算(元)'
@@ -215,7 +318,8 @@ class NewBook extends Component<NewBookProps,NewBookState > {
             mode='selector'
             range={this.state.bookCategory}
             onChange={this.onCategoryChange}
-            value={0}
+            value={pickValue}
+            disabled={this.state.hasBookId}
           >
             <View className='picker-wrapper'>
               账本类型
@@ -273,7 +377,7 @@ class NewBook extends Component<NewBookProps,NewBookState > {
                 className='form-button submit-button'
                 loading={this.state.loading}
               >
-                提交
+                {this.$router.params.bookId ? '修改' : '提交'}
               </AtButton>
             </View>
             <View className='button-item at-col'>
@@ -282,7 +386,7 @@ class NewBook extends Component<NewBookProps,NewBookState > {
                 type='secondary'
                 className='form-button'
               >
-                重置
+                {this.$router.params.bookId ? '删除' : '重置'}
               </AtButton>
             </View>
           </View>

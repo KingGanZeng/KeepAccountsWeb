@@ -7,6 +7,6 @@ export default {
   },
   getBookInfo: {
     host: 'http://127.0.0.1:8000',
-    url: '/api/getBookInfo',
+    url: '/api/getBookList',
   }
 }

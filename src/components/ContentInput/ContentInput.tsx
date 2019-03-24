@@ -7,7 +7,7 @@ class ContentInput extends Component<ContentInputProps,ContentInputState > {
   constructor(props: ContentInputProps) {
     super(props)
     this.state = {
-      inputContent:'',
+      inputContent: '',
       focusState: false,
     }
   }
@@ -17,6 +17,7 @@ class ContentInput extends Component<ContentInputProps,ContentInputState > {
   static defaultProps:ContentInputProps = {
     placeholder: '',
     inputName: '',
+    value: '',
   }
 
   /**
@@ -50,6 +51,14 @@ class ContentInput extends Component<ContentInputProps,ContentInputState > {
       this.props.onInput(this.props.inputName, this.state.inputContent)
     })
   };
+
+  componentDidMount(): void {
+    this.setState({
+      inputContent: this.props.value,
+      focusState: true,
+      }
+    )
+  }
 
   render() {
     return (

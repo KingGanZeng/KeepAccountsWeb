@@ -134,7 +134,7 @@ class NewRecord extends Component<NewRecordProps,NewRecordState > {
   async updateRecord() {
     const recordType = this.state.current == 0 ? 'expense' : 'income'
     const record_id = this.state.recordData.recordId
-    const result = await await Taro.request({
+    const result = await Taro.request({
       method: 'PUT',
       url: `${MAINHOST}/api/recordChangeApi/${record_id}`,
       data: {

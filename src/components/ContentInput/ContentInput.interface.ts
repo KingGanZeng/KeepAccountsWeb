@@ -20,4 +20,5 @@ export interface ContentInputProps {
   placeholder: string, // placeholder值
   inputName: string, // 表明组件信息
   onInput?: any, // 用于子组件传值
+  value: string, // input框value
 }

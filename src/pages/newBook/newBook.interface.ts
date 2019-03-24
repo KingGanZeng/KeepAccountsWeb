@@ -13,7 +13,10 @@ export interface NewBookState {
   hasGroup: boolean, // 是否开启小组
   loading: boolean, // 提交状态，用于页面loading样式渲染
   bookName: string, // 账本名称
-  hasError: boolean, // 新建账本是否成功
+  hasError: boolean, // toast状态
+  hasErrorMsg: string, // toast信息
+  hasErrorIcon: string, // toast图标
+  hasBookId: boolean, // 修改账本不允许修改账本类型
   uid: string,
   username: string,
 }

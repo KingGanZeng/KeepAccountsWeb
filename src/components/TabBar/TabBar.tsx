@@ -89,7 +89,7 @@ class TabBar extends Component<TabBarProps,TabBarState > {
   changeBook() {
     this.setState({
       showLeftBar: false,
-    })
+    });
     Taro.navigateTo({
       url: '/pages/accountBook/accountBook'
     })
@@ -101,8 +101,10 @@ class TabBar extends Component<TabBarProps,TabBarState > {
   editBook() {
     this.setState({
       showLeftBar: false,
+    });
+    Taro.navigateTo({
+      url: '/pages/newBook/newBook?bookId=' + this.state.bookId
     })
-
   }
 
   render() {
