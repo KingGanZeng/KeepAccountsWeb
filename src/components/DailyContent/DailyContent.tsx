@@ -23,7 +23,6 @@ class DailyContent extends Component<DailyContentProps,DailyContentState > {
 
   /**
    * 格式化日期
-   * @param date
    */
   dateFormatter() {
     const now = new Date();
@@ -43,11 +42,19 @@ class DailyContent extends Component<DailyContentProps,DailyContentState > {
 
   /**
    * 跳转到修改记录
+   * @param item
    */
   jumpToItem(item) {
-    console.log(item);
+    console.log("跳转到详情", item, this.props.bookId);
     Taro.navigateTo({
-      url: '/pages/newRecord/newRecord?bookId=' + '321' + '&bookType=' + 'dayLife'
+      url: '/pages/newRecord/newRecord?bookId=' + this.props.bookId +
+        '&bookType=' + this.props.bookType +
+        '&recordId=' + item.recordId +
+        '&recordDate=' + item.date +
+        '&recordMoney=' + item.money +
+        '&recordNote=' + item.note +
+        '&recordType=' + item.type +
+        '&recordCategory=' + item.category
     })
   }
 

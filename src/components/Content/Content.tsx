@@ -20,6 +20,7 @@ class Content extends Component<ContentProps,ContentState > {
     income: {},
     expense: {},
     nowBookType: '',
+    nowBookId: 1,
   };
 
   handleClick (value) {
@@ -49,6 +50,7 @@ class Content extends Component<ContentProps,ContentState > {
           dailyDetail={item}
           type='income'
           bookType={this.props.nowBookType}
+          bookId={this.props.nowBookId}
         />
       )
     });
@@ -62,6 +64,7 @@ class Content extends Component<ContentProps,ContentState > {
           dailyDetail={item}
           type='expense'
           bookType={this.props.nowBookType}
+          bookId={this.props.nowBookId}
         />
       )
     });

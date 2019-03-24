@@ -95,6 +95,16 @@ class TabBar extends Component<TabBarProps,TabBarState > {
     })
   }
 
+  /**
+   * 修改账本信息
+   */
+  editBook() {
+    this.setState({
+      showLeftBar: false,
+    })
+
+  }
+
   render() {
     return (
       <View className='fx-TabBar-wrap at-row at-row__justify--between'>
@@ -116,7 +126,10 @@ class TabBar extends Component<TabBarProps,TabBarState > {
             >
               切换账本<View className='at-icon at-icon-bookmark' />
             </View>
-            <View className='drawer-item half-border-bottom border-bottom'>
+            <View
+              className='drawer-item half-border-bottom border-bottom'
+              onClick={this.editBook}
+            >
               修改账本信息<View className='at-icon at-icon-tags' />
             </View>
             <View className='drawer-item half-border-bottom border-bottom'>
@@ -132,7 +145,8 @@ class TabBar extends Component<TabBarProps,TabBarState > {
             className='at-col add-button'
             onClick={this.showRecordWay}
           >
-            <View className='at-icon at-icon-close rotate-button'/></View>
+            <View className='at-icon at-icon-close rotate-button' />
+          </View>
         </View>
         <View
           className='at-col diagram-button'

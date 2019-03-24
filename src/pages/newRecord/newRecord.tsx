@@ -8,8 +8,9 @@ import './newRecord.scss'
 // @ts-ignore
 import { CategoryList } from '../../components/CategoryList/CategoryList'
 // @ts-ignore
-import {addZero, bookNameTranslate} from "../../utils/common";
+import {addZero, bookNameTranslate, globalData } from "../../utils/common";
 import '../../assets/iconfont/iconfont.scss'
+import { MAINHOST } from "../../config";
 
 @connect(({ newRecord }) => ({
     ...newRecord,
@@ -29,7 +30,7 @@ class NewRecord extends Component<NewRecordProps,NewRecordState > {
       uid: '',
       username: '',
       current: 0,
-      recordBookType: decodeURIComponent(this.$router.params.bookType) || 'dayLife',
+      recordBookType: decodeURIComponent(this.$router.params.bookType),
       recordBookId: parseInt(decodeURIComponent(this.$router.params.bookId), 10),
       inputDate: `${year}-${month}-${day}`,
       inputMoney: 0, // 记录金额
@@ -38,7 +39,17 @@ class NewRecord extends Component<NewRecordProps,NewRecordState > {
       actionIcon: '',
       actionIconBackgroundColor: '',
       openState: false,
-      hasError: false, // toast状态
+      hasError: false,
+      hasErrorMsg: '新建账本错误',
+      hasErrorIcon: 'close-circle',
+      recordData: {
+        recordId: parseInt(decodeURIComponent(this.$router.params.recordId), 10),
+        recordDate: decodeURIComponent(this.$router.params.recordDate),
+        recordMoney: parseInt(decodeURIComponent(this.$router.params.recordMoney), 10),
+        recordNote: decodeURIComponent(this.$router.params.recordNote),
+        recordType: decodeURIComponent(this.$router.params.recordType),
+        recordCategory: decodeURIComponent(this.$router.params.recordCategory)
+      }
     }
   }
 
@@ -74,11 +85,16 @@ class NewRecord extends Component<NewRecordProps,NewRecordState > {
     const month = addZero((nowDate.getMonth()+1).toString());
     const day = addZero((nowDate.getDate()).toString());
     this.setState({
-      inputDate: `${year}-${month}-${day}`,
-      inputMoney: 0,
-      inputNote: '',
       openState: false,
     })
+    if(!this.state.recordData.recordId) {
+      // 如何是修改账单，则不清除记录信息，否则清空
+      this.setState({
+        inputDate: `${year}-${month}-${day}`,
+        inputMoney: 0,
+        inputNote: '',
+      })
+    }
   }
 
   /**
@@ -113,10 +129,88 @@ class NewRecord extends Component<NewRecordProps,NewRecordState > {
   }
 
   /**
+   * 修改账本
+   */
+  async updateRecord() {
+    const recordType = this.state.current == 0 ? 'expense' : 'income'
+    const record_id = this.state.recordData.recordId
+    const result = await await Taro.request({
+      method: 'PUT',
+      url: `${MAINHOST}/api/recordChangeApi/${record_id}`,
+      data: {
+        uid: this.state.uid,
+        username: this.state.username,
+        book_id: this.state.recordBookId,
+        category: this.state.actionIcon,
+        record_type: recordType,
+        create_timestamp: this.state.inputDate + ' 00:00',
+        money: this.state.inputMoney,
+        note: this.state.inputNote,
+      }
+    })
+    // @ts-ignore
+    if(result.data.record_id) {
+      this.setState({
+        openState: false,
+        hasError: true,
+        hasErrorMsg: '修改成功',
+        hasErrorIcon: 'check-circle',
+      }, () => {
+        // 跳转回账本页面
+        setTimeout(() => {
+          Taro.navigateBack({
+            delta: 1
+          })
+        }, 800)
+      })
+    } else {
+      this.setState({
+        hasError: true,
+        hasErrorMsg: '更新账单信息错误',
+      })
+    }
+  }
+
+  /**
+   * 删除账单
+   */
+  async deleteAction() {
+    const record_id = this.state.recordData.recordId
+    const result = await await Taro.request({
+      method: 'DELETE',
+      url: `${MAINHOST}/api/recordChangeApi/${record_id}`,
+    })
+    if(result.data.detail) {
+      this.setState({
+        hasError: true,
+        hasErrorMsg: '暂无法删除该账单',
+      })
+    } else {
+      this.setState({
+        openState: false,
+        hasError: true,
+        hasErrorMsg: '删除成功',
+        hasErrorIcon: 'check-circle',
+      }, () => {
+        // 跳转回账本页面
+        setTimeout(() => {
+          Taro.navigateBack({
+            delta: 1
+          })
+        }, 800)
+      })
+    }
+  }
+
+  /**
    * 弹出框确认
    */
   async confirmAction() {
-    await this.createRecord()
+    if(!this.state.recordData.recordId) {
+      await this.createRecord()
+    } else {
+      await this.updateRecord()
+    }
   }
 
   /**
@@ -144,6 +238,10 @@ class NewRecord extends Component<NewRecordProps,NewRecordState > {
     })
   };
 
+  /**
+   * 关闭弹出窗
+   * @param e
+   */
   closeAction = e => {
     console.log(e)
     this.cancelAction()
@@ -152,7 +250,7 @@ class NewRecord extends Component<NewRecordProps,NewRecordState > {
   componentDidMount() {
     Taro.setNavigationBarTitle({
       // @ts-ignore
-      title: bookNameTranslate('English', this.state.bookType)
+      title: bookNameTranslate('Chinese', this.state.recordBookType)
     })
     // 从缓存中获取用户信息
     const username = Taro.getStorageSync('username')
@@ -160,7 +258,27 @@ class NewRecord extends Component<NewRecordProps,NewRecordState > {
     this.setState({
       uid: uid,
       username: username,
-    })
+    });
+    // 如果是修改账单，自动唤起弹窗
+    if(this.state.recordData.recordId) {
+      console.log("弹窗信息", this.state.recordData);
+      let name = globalData.categoryList[this.state.recordBookType][this.state.recordData.recordType].map((categoryItem) => {
+        if (categoryItem.icon == this.state.recordData.recordCategory) {
+          return categoryItem
+        }
+      });
+      name = name.filter((nameItem) => {return nameItem})[0] // 数组去空
+      this.setState({
+        current: this.state.recordData.recordType == 'expense' ? 0 : 1,
+        inputDate: this.state.recordData.recordDate.split('T')[0],
+        inputMoney: this.state.recordData.recordMoney, // 记录金额
+        inputNote: this.state.recordData.recordNote, // 记录备注
+        actionTitle: name.title,
+        actionIcon: name.icon,
+        actionIconBackgroundColor: name.bgColor,
+        openState: true,
+      })
+    }
   }
 
   render() {
@@ -174,8 +292,8 @@ class NewRecord extends Component<NewRecordProps,NewRecordState > {
       <View className='newRecord-wrap'>
         <AtToast
           isOpened={this.state.hasError}
-          text='新建账单错误'
-          icon='close-circle'
+          text={this.state.hasErrorMsg}
+          icon={this.state.hasErrorIcon}
           hasMask
         />
         <AtTabs
@@ -255,6 +373,10 @@ class NewRecord extends Component<NewRecordProps,NewRecordState > {
               className={this.state.current ? 'action-button income' : 'action-button expense'}
               onClick={this.confirmAction}
             >确定</View>
+            { this.state.recordData.recordId && <View
+              className='action-button delete'
+              onClick={this.deleteAction}
+            >删除</View> }
           </AtModalContent>
         </AtModal>
       </View>

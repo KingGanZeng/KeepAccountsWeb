@@ -31,6 +31,8 @@ export const objArrReduce = arr => {
   let totalMoney = 0;
   arr.forEach((curItem) => {
     const tmpObj = {
+      recordId: curItem.record_id,
+      date: curItem.create_timestamp,
       type: curItem.record_type,
       money: parseFloat(curItem.money),
       name: curItem.username,

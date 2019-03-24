@@ -29,4 +29,5 @@ export interface DailyContentProps {
   dailyDetail: any, // 每一天的消费详情
   type: string, // 支出还是收入
   bookType: string, // 账本类型
+  bookId?: number, // 账本id
 }

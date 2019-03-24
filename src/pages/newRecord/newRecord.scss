@@ -30,7 +30,7 @@
     }
     // 弹窗样式
     .at-modal__container {
-      top: 35%;
+      top: 50%;
       background-color: #394660;
     }
   .at-modal__content {
@@ -132,6 +132,11 @@
       &.expense {
         border:1px solid #02edb0;
         background:#02edb0;
+      }
+      &.delete {
+        margin-top: 15px;
+        border:1px solid #cabe16;
+        background: #cabe16;
       }
     }
   }

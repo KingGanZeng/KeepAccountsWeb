@@ -19,6 +19,16 @@ export interface NewRecordState {
   inputNote: string, // 记录备注
   openState: boolean, // 弹出框状态
   hasError: boolean, // toast状态
+  hasErrorMsg: string, // toast信息
+  hasErrorIcon: string, // toast图标
+  recordData: {
+    recordId: number, // 账单id
+    recordDate: string, // 账单创建日期
+    recordMoney: number, // 账单金额
+    recordNote: string, // 账单备注
+    recordType: string, // 账单类型
+    recordCategory: string // 账单类别
+  }
 }
 
 /**

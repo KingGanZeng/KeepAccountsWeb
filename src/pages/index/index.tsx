@@ -238,6 +238,7 @@ class Index extends Component<IndexProps,IndexState > {
             // @ts-ignore
             expense={expenseData.recordList}
             nowBookType={this.state.bookType}
+            nowBookId={this.state.bookId}
           />}
         </View> }
         <View className='index-footer'>

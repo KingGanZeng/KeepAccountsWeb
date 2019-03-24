@@ -19,4 +19,5 @@ export interface ContentProps {
   income: Object, // 每日数据-收入信息
   expense: Object, // 每日数据-支出信息
   nowBookType: string,
+  nowBookId: number,
 }
