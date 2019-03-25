@@ -8,6 +8,7 @@ export interface AccountBookState {
   hasAuthorized: boolean, // 是否授权过
   modalOpenState: boolean, // 模态框状态
   uid: string, // uid
+  specialBookList: any,
   // toastContent: string, // toast弹窗内容
 }
 

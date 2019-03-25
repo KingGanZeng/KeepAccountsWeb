@@ -38,17 +38,6 @@ class NavBar extends Component<NavBarProps,NavBarState > {
     })
   };
 
-  /**
-   * 账本编辑按钮事件
-   */
-  jumpToEdit() {
-    const bookId = this.$router.params.bookId;
-    const bookType = this.$router.params.bookType;
-    Taro.navigateTo({
-      url: '/pages/newBook/newBook?book_id=' + bookId + '&book_type=' + bookType
-    })
-  }
-
   render() {
     // 设置时间，生成时间选择器
     const bookYear = this.state.date.split('-')[0];

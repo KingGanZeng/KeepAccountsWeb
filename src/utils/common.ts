@@ -299,7 +299,7 @@ export const globalData: any = {
         {title: '其他收入', icon: 'icon-tiyanjinicon', bgColor: 'background-color:rgb(134,192,67)'},
       ]
     },
-    ent: {
+    rent: {
       expense: [
         {title: '水费', icon: 'icon-shuikudian', bgColor: 'background-color:rgb(236,100,94)'},
         {title: '电费', icon: 'icon-weibiaoti-', bgColor: 'background-color:rgb(236,100,94)'},

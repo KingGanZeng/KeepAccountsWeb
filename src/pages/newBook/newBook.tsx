@@ -47,7 +47,9 @@ class NewBook extends Component<NewBookProps,NewBookState > {
   async createBook() {
     if(!this.state.bookName || !this.state.bookCategoryChecked){
       this.setState({
-        hasError: true
+        hasError: true,
+        hasErrorMsg: '新建账本错误',
+        hasErrorIcon: 'close-circle',
       });
       return
     }
@@ -58,7 +60,7 @@ class NewBook extends Component<NewBookProps,NewBookState > {
         uid: this.state.uid,
         book_name: this.state.bookName,
         book_type: this.state.bookType,
-        budget: this.state.budget,
+        budget: this.state.budget == 0 ? null : this.state.budget,
       }
     })
   }
@@ -96,8 +98,6 @@ class NewBook extends Component<NewBookProps,NewBookState > {
         budget: parseFloat(result.budget), // 账本预算
         bookType: result.book_type,
         bookCategoryChecked: bookNameTranslate('Chinese', result.book_type),
-      }, () => {
-        console.log(this.state)
       })
     }
   }
@@ -171,12 +171,130 @@ class NewBook extends Component<NewBookProps,NewBookState > {
   }
 
   /**
+   * 创建特殊账本
+   */
+  async createSpecialBook() {
+    const result = await Taro.request({
+      method: 'POST',
+      url: `${MAINHOST}/api/createSpecialBook`,
+      data: {
+        username: this.state.username,
+        uid: this.state.uid,
+        book_name: this.state.bookName,
+        book_type: this.state.bookType,
+        budget: this.state.budget,
+      }
+    })
+    // @ts-ignore
+    if(result.data.s_book_id) {
+      this.setState({
+        hasError: true,
+        hasErrorMsg: '创建成功',
+        hasErrorIcon: 'check-circle',
+      }, () => {
+        // 跳转回账本页面
+        setTimeout(() => {
+          Taro.redirectTo({
+            url: '/pages/accountBook/accountBook'
+          })
+        }, 800)
+      })
+    } else {
+      this.setState({
+        hasError: true,
+        hasErrorMsg: '创建失败',
+      })
+    }
+  }
+
+  /**
+   * 删除特殊账本
+   */
+  async deleteSpecialBook() {
+    const bookId = decodeURIComponent(this.$router.params.bookId);
+    const result = await await Taro.request({
+      method: 'DELETE',
+      url: `${MAINHOST}/api/changeSpecialBook/${bookId}`,
+    });
+    if(result.data.detail) {
+      this.setState({
+        hasError: true,
+        hasErrorMsg: '暂无法删除该账本',
+      })
+    } else {
+      this.setState({
+        hasError: true,
+        hasErrorMsg: '删除成功',
+        hasErrorIcon: 'check-circle',
+      }, () => {
+        // 跳转回账本页面
+        setTimeout(() => {
+          Taro.redirectTo({
+            url: '/pages/accountBook/accountBook'
+          })
+        }, 800)
+      })
+    }
+  }
+
+  /**
+   * 修改特殊账本信息
+   */
+  async changeSpecialBook() {
+    const bookId = decodeURIComponent(this.$router.params.bookId);
+    const result = await Taro.request({
+      method: 'PUT',
+      url: `${MAINHOST}/api/changeSpecialBook/${bookId}`,
+      data: {
+        username: this.state.username,
+        uid: this.state.uid,
+        book_name: this.state.bookName,
+        book_type: this.state.bookType,
+        budget: this.state.budget,
+      }
+    });
+    // @ts-ignore
+    if(result.data.s_book_id) {
+      this.setState({
+        hasError: true,
+        hasErrorMsg: '修改成功',
+        hasErrorIcon: 'check-circle',
+      }, () => {
+        // 跳转回账本页面
+        setTimeout(() => {
+          Taro.redirectTo({
+            url: '/pages/accountBook/accountBook'
+          })
+        }, 800)
+      })
+    } else {
+      this.setState({
+        hasError: true,
+        hasErrorMsg: '修改失败',
+      })
+    }
+  }
+
+  /**
    * 确定提交
    */
   onSubmit () {
+    // 是否是特殊账本
+    if (this.state.bookCategoryChecked == '出游聚会') {
+      console.log(111)
+      if (this.$router.params.bookId) {
+        this.changeSpecialBook()
+      } else {
+        this.createSpecialBook();
+      }
+      return
+    }
+    // 是否需要创建小组
     if (this.state.hasGroup) {
       this.createGroup();
-    } else if(this.$router.params.bookId) {
+    }
+    // 是否为修改账本
+    if(this.$router.params.bookId) {
       this.changeBook()
       return;
     }
@@ -206,6 +324,10 @@ class NewBook extends Component<NewBookProps,NewBookState > {
    * 重置按钮
    */
   onReset () {
+    // 是否是特殊账本
+    if (this.state.bookCategoryChecked == '出游聚会') {
+      this.deleteSpecialBook();
+    }
     if(this.$router.params.bookId) {
       this.deleteBook()
     } else {
@@ -306,7 +428,7 @@ class NewBook extends Component<NewBookProps,NewBookState > {
             value={this.state.bookName}
             onInput={this.onInputChange.bind(this)}
             inputName='bookName'
-            placeholder='账本名称'
+            placeholder='账本名称*'
           />
           <ContentInput
             value={this.state.budget.toString()}

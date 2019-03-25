@@ -90,7 +90,7 @@ class TabBar extends Component<TabBarProps,TabBarState > {
     this.setState({
       showLeftBar: false,
     });
-    Taro.navigateTo({
+    Taro.redirectTo({
       url: '/pages/accountBook/accountBook'
     })
   }

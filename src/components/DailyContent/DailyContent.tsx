@@ -45,7 +45,6 @@ class DailyContent extends Component<DailyContentProps,DailyContentState > {
    * @param item
    */
   jumpToItem(item) {
-    console.log("跳转到详情", item, this.props.bookId);
     Taro.navigateTo({
       url: '/pages/newRecord/newRecord?bookId=' + this.props.bookId +
         '&bookType=' + this.props.bookType +

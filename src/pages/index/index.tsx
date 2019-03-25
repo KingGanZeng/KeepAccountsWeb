@@ -185,7 +185,7 @@ class Index extends Component<IndexProps,IndexState > {
         incomeCount: incomeData.moneyAll,
         expenseCount: expenseData.moneyAll,
         count: myRecordList.length,
-        budget: this.state.budget
+        budget: this.state.budget || 0
       };
     }
 

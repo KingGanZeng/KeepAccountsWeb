@@ -6,9 +6,11 @@ import { AtCard, AtGrid, AtModal, AtModalContent } from "taro-ui";
 import { Request } from '../../utils/request'
 import { AccountBookProps, AccountBookState } from './accountBook.interface'
 import './accountBook.scss'
+import Tips from '../../utils/tips'
 import '../../assets/iconfont/iconfont.scss'
 // @ts-ignore
 import { BookList } from '../../components/BookList/BookList';
+import {MAINHOST} from "../../config";
 
 @connect(({ accountBook }) => ({
     ...accountBook,
@@ -24,6 +26,7 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
       hasAuthorized: false,
       modalOpenState: false,
       uid: '',
+      specialBookList: [],
     }
   }
 
@@ -38,6 +41,20 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
       payload: {
         uid: this.state.uid
       }
+    })
+  }
+
+  async getSpecialBook() {
+    Tips.loaded()
+    const result = await Taro.request({
+      method: 'GET',
+      url: `${MAINHOST}/api/getSpecialBookList`,
+      data: {
+        uid: this.state.uid,
+      }
+    });
+    this.setState({
+      specialBookList: result.data.results
     })
   }
 
@@ -133,14 +150,16 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
   /**
    * 组件渲染完成后执行
    */
-  async componentDidMount() {
+  async componentWillMount() {
     await this.getAuthorized()
     await Request.login()
     const uid = Taro.getStorageSync('uid')
     this.setState({
       uid: uid
     }, () => {
+      Tips.loading()
       this.getBook()
+      this.getSpecialBook()
     })
   }
 
@@ -156,9 +175,25 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
     //   {book_id:6, book_type: 'others', book_name: '借还记录', note: ''},
     //   {book_id:8, book_type: 'dayLife', book_name: '聚餐记账', note: '同事组'},
     // ];
-    const myBookList = data || []
+    // @ts-ignore
+    let myBookList = data.map((item) => {
+      if (item.book_type != 'travelParty') {
+        return item
+      }
+    });
+    myBookList = myBookList.filter((value) => {
+      return value
+    });
+    if (this.state.specialBookList.length > 0) {
+      this.state.specialBookList.map((item) => {
+        let tmpItem = item
+        tmpItem.book_id = item.s_book_id
+        myBookList.push(tmpItem)
+      });
+    }
     const hasBook = myBookList.length > 0;
     const date = +new Date();
+    console.log(2222, myBookList)
 
     return (
       <View className='fx-accountBook-wrap'>

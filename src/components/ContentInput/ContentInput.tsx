@@ -53,11 +53,20 @@ class ContentInput extends Component<ContentInputProps,ContentInputState > {
   };
 
   componentDidMount(): void {
-    this.setState({
-      inputContent: this.props.value,
-      focusState: true,
-      }
-    )
+    // @ts-ignore
+    if (this.props.value == 0 || this.props.value == '0') {
+      this.setState({
+          inputContent: '',
+          focusState: false,
+        }
+      )
+    } else {
+      this.setState({
+          inputContent: this.props.value,
+          focusState: true,
+        }
+      )
+    }
   }
 
   render() {
