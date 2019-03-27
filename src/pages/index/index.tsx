@@ -246,6 +246,7 @@ class Index extends Component<IndexProps,IndexState > {
           <TabBar
             nowBookId={this.state.bookId}
             nowBookType={this.state.bookType}
+            isSpecial={this.$router.params.isSpecial}
           /> }
         </View>
       </View>

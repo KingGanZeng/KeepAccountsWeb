@@ -21,4 +21,5 @@ export interface TabBarState {
 export interface TabBarProps {
   nowBookId: string, // 当前选择的账本编号
   nowBookType: string, // 账本类型
+  isSpecial: boolean, // 区分特殊账本
 }

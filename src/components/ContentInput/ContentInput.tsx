@@ -52,9 +52,15 @@ class ContentInput extends Component<ContentInputProps,ContentInputState > {
     })
   };
 
-  componentDidMount(): void {
+  componentWillReceiveProps(nextProps): void {
     // @ts-ignore
-    if (this.props.value == 0 || this.props.value == '0') {
+    if (nextProps.value == 0 || nextProps.value == '0') {
+      this.setState({
+          inputContent: '',
+          focusState: false,
+        }
+      )
+    } else if (nextProps.value == 'NaN') {
       this.setState({
           inputContent: '',
           focusState: false,
@@ -62,7 +68,7 @@ class ContentInput extends Component<ContentInputProps,ContentInputState > {
       )
     } else {
       this.setState({
-          inputContent: this.props.value,
+          inputContent: nextProps.value,
           focusState: true,
         }
       )

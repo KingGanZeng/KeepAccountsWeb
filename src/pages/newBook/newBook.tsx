@@ -82,22 +82,36 @@ class NewBook extends Component<NewBookProps,NewBookState > {
    * 获取账本信息
    */
   async getBookInfo() {
-    let result = await this.props.dispatch({
-      type: 'newBook/getBookInfo',
-      payload: {
-        uid: this.state.uid,
-        book_id: parseInt(this.$router.params.bookId)
-      }
-    });
-    if(result.results.length > 0) {
+    let result:any;
+    if (this.$router.params.isSpecial == 'true') {
+      result = await Taro.request({
+        method: 'GET',
+        url: `${MAINHOST}/api/getSpecialBookList`,
+        data: {
+          uid: this.state.uid,
+          s_book_id: parseInt(this.$router.params.bookId)
+        }
+      });
+      result = result.data;
+    } else {
+      result = await this.props.dispatch({
+        type: 'newBook/getBookInfo',
+        payload: {
+          uid: this.state.uid,
+          book_id: parseInt(this.$router.params.bookId)
+        }
+      });
+    }
+    if (result.results.length > 0) {
       result = result.results[0];
-      // @ts-ignore
       this.setState({
         hasBookId: true,
         bookName: result.book_name,
         budget: parseFloat(result.budget), // 账本预算
         bookType: result.book_type,
-        bookCategoryChecked: bookNameTranslate('Chinese', result.book_type),
+        bookCategoryChecked: bookNameTranslate('Chinese', result.book_type) || '日常开销',
+      }, () => {
+        console.log("数据获取完毕")
       })
     }
   }
@@ -253,8 +267,7 @@ class NewBook extends Component<NewBookProps,NewBookState > {
         budget: this.state.budget,
       }
     });
-    // @ts-ignore
-    if(result.data.s_book_id) {
+    if(result.data.book_name) {
       this.setState({
         hasError: true,
         hasErrorMsg: '修改成功',
@@ -281,7 +294,6 @@ class NewBook extends Component<NewBookProps,NewBookState > {
   onSubmit () {
     // 是否是特殊账本
     if (this.state.bookCategoryChecked == '出游聚会') {
-      console.log(111)
       if (this.$router.params.bookId) {
         this.changeSpecialBook()
       } else {
@@ -325,7 +337,7 @@ class NewBook extends Component<NewBookProps,NewBookState > {
    */
   onReset () {
     // 是否是特殊账本
-    if (this.state.bookCategoryChecked == '出游聚会') {
+    if (this.$router.params.bookId && this.state.bookCategoryChecked == '出游聚会') {
       this.deleteSpecialBook();
     }
     if(this.$router.params.bookId) {
@@ -390,16 +402,17 @@ class NewBook extends Component<NewBookProps,NewBookState > {
   /**
    * 组件渲染前获取数据
    */
-  async componentWillMount() {
+  componentWillMount() {
     const username = Taro.getStorageSync('username');
     const uid = Taro.getStorageSync('uid');
     this.setState({
       uid: uid,
       username: username,
-    })
-    if (this.$router.params.bookId) {
-      await this.getBookInfo()
-    }
+    }, () => {
+      if (this.$router.params.bookId) {
+        this.getBookInfo()
+      }
+    });
   }
 
   render() {

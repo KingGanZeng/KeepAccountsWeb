@@ -193,7 +193,6 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
     }
     const hasBook = myBookList.length > 0;
     const date = +new Date();
-    console.log(2222, myBookList)
 
     return (
       <View className='fx-accountBook-wrap'>

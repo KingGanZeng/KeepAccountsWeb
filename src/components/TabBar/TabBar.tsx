@@ -21,6 +21,7 @@ class TabBar extends Component<TabBarProps,TabBarState > {
   static defaultProps:TabBarProps = {
     nowBookId: '',
     nowBookType: '',
+    isSpecial: false,
   };
 
   /**
@@ -104,6 +105,7 @@ class TabBar extends Component<TabBarProps,TabBarState > {
     });
     Taro.navigateTo({
       url: '/pages/newBook/newBook?bookId=' + this.state.bookId
+      + '&isSpecial=' + this.props.isSpecial
     })
   }
 
