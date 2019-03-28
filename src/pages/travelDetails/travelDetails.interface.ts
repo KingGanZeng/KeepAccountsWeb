@@ -6,6 +6,7 @@
  * @interface TravelDetailsState
  */
 export interface TravelDetailsState {
+  sBookId: string, // 总账本编号
   bookId: string, // 内账本编号
   bookType: string, // 类型
   bookData: any, // 数据

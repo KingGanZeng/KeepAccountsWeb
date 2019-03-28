@@ -17,6 +17,7 @@ class TravelDetails extends Component<TravelDetailsProps,TravelDetailsState > {
       budget = '0.00';
     }
     this.state = {
+      sBookId: decodeURIComponent(this.$router.params.sBookId),
       bookId: decodeURIComponent(this.$router.params.bookId),
       budget: budget,
       bookType: decodeURIComponent((this.$router.params.bookType)),
@@ -63,6 +64,7 @@ class TravelDetails extends Component<TravelDetailsProps,TravelDetailsState > {
     Taro.navigateTo({
       url: '/pages/newRecord/newRecord?bookId=' + this.state.bookId
         + '&bookType=' + this.state.bookType
+        + '&sBookId=' + this.state.sBookId
     })
   }
 

@@ -133,6 +133,7 @@ class Index extends Component<IndexProps,IndexState > {
     setTimeout(() => { // 这里需要延时，不然拿不到数据
       this.setState({
         specialDataObj: {
+          specialBookId: book_id,
           expense: expenseCount,
           income: incomeCount,
           count: allCount,

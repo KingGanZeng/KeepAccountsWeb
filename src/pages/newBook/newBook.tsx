@@ -462,48 +462,6 @@ class NewBook extends Component<NewBookProps,NewBookState > {
               <View className='at-icon at-icon-chevron-right' />
             </View>
           </Picker>
-          {/*<AtInput*/}
-            {/*name='bookName'*/}
-            {/*type='text'*/}
-            {/*className='name-wrapper'*/}
-            {/*maxLength={6}*/}
-            {/*value={this.state.bookName}*/}
-            {/*placeholder={this.state.bookName}*/}
-            {/*onChange={this.handleChange.bind(this, 'bookName')}*/}
-            {/*autoFocus*/}
-            {/*border={false}*/}
-          {/*/>*/}
-          {/*<View className='book-setting-label'>账本设置</View>*/}
-          {/*<Picker*/}
-            {/*mode='selector'*/}
-            {/*range={this.state.bookCategory}*/}
-            {/*onChange={this.onCategoryChange}*/}
-            {/*value={0}*/}
-          {/*>*/}
-            {/*<View className='picker-wrapper half-border-bottom border-bottom'>*/}
-              {/*账本类型*/}
-              {/*<Text className='picker-content'>{this.state.bookCategoryChecked}</Text>*/}
-              {/*<View className='at-icon at-icon-chevron-right' />*/}
-            {/*</View>*/}
-          {/*</Picker>*/}
-          {/*<AtInput*/}
-            {/*name='bookName'*/}
-            {/*type='number'*/}
-            {/*title='账本预算'*/}
-            {/*className='name-wrapper'*/}
-            {/*value={this.state.budget}*/}
-            {/*placeholder={this.state.budget.toString()}*/}
-            {/*onChange={this.handleChange.bind(this, 'budget')}*/}
-            {/*autoFocus*/}
-          {/*/>*/}
-          {/*<AtSwitch*/}
-            {/*title='是否开启小组'*/}
-            {/*checked={this.state.hasGroup}*/}
-            {/*onChange={this.handleGroupChange}*/}
-            {/*className='input-margin-bottom'*/}
-            {/*border={false}*/}
-            {/*color='#ff5a5b'*/}
-          {/*/>*/}
           <View className='button-wrapper at-row'>
             <View className='button-item at-col'>
               <AtButton

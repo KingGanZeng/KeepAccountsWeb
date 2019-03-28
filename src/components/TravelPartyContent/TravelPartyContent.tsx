@@ -27,7 +27,8 @@ class TravelPartyContent extends Component<TravelPartyContentProps,TravelPartyCo
       url: "/pages/travelDetails/travelDetails?bookId=" + bookId +
         '&bookName=' + bookName +
         '&bookType=' + 'travelParty' +
-        '&budget=' + budget
+        '&budget=' + budget +
+        '&sBookId=' + this.props.nowBookRecord.specialBookId
     })
   }
 

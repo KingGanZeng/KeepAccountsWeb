@@ -4,7 +4,7 @@ import { View } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 // import Api from '../../utils/request'
 // import Tips from '../../utils/tips'
-import { AtImagePicker, AtInput, AtButton } from 'taro-ui'
+import {AtImagePicker, AtInput, AtButton, AtToast} from 'taro-ui'
 import { NewTravelProps, NewTravelState } from './newTravel.interface'
 import './newTravel.scss'
 import {MAINHOST} from "../../config";
@@ -20,11 +20,17 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
   constructor(props: NewTravelProps) {
     super(props)
     this.state = {
+      sBookId: decodeURIComponent(this.$router.params.bookId) || '',
+      hasBookId: false,
       imageFile: [],
       titleInput: '',
       budget: 0,
+      bookType: '',
       username: '',
       uid: '',
+      hasError: false,
+      hasErrorMsg: '新建记录错误',
+      hasErrorIcon: 'close-circle',
     }
   }
 
@@ -53,8 +59,99 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
     })
   }
 
-  getBookInfo() {
+  /**
+   * 获取账本信息
+   */
+  async getBookInfo() {
+    let result:any;
+    result = await Taro.request({
+      method: 'GET',
+      url: `${MAINHOST}/api/getBookList`,
+      data: {
+        uid: this.state.uid,
+        book_id: parseInt(this.$router.params.bookId)
+      }
+    });
+    if (result.data.results.length > 0) {
+      result = result.data.results[0];
+      this.setState({
+        hasBookId: true,
+        bookType: result.book_type,
+        imageFile: {
+          url: result.image_url,
+        },
+        titleInput: result.book_name,
+        budget: parseFloat(result.budget), // 账本预算
+      }, () => {
+        console.log("数据获取完毕")
+      })
+    }
+  }
 
+  /**
+   * 修改账本信息
+   */
+  async changeBook() {
+    const bookId = decodeURIComponent(this.$router.params.bookId);
+    const result = await Taro.request({
+      method: 'PUT',
+      url: `${MAINHOST}/api/bookChangeApi/${bookId}`,
+      data: {
+        username: this.state.username,
+        uid: this.state.uid,
+        book_name: this.state.titleInput,
+        book_type: this.state.bookType,
+        budget: this.state.budget,
+        image_url: this.state.imageFile.url
+      }
+    });
+    // @ts-ignore
+    if(result.data.book_id) {
+      this.setState({
+        hasError: true,
+        hasErrorMsg: '修改成功',
+        hasErrorIcon: 'check-circle',
+      }, () => {
+        // 跳转回账本页面
+        setTimeout(() => {
+          Taro.redirectTo({
+            url: '/pages/accountBook/accountBook'
+          })
+        }, 800)
+      })
+    } else {
+      this.setState({
+        hasError: true,
+        hasErrorMsg: '修改失败',
+      })
+    }
+  }
+
+  async deleteBook() {
+    const bookId = decodeURIComponent(this.$router.params.bookId);
+    const result = await await Taro.request({
+      method: 'DELETE',
+      url: `${MAINHOST}/api/bookChangeApi/${bookId}`,
+    });
+    if(result.data.detail) {
+      this.setState({
+        hasError: true,
+        hasErrorMsg: '暂无法删除该记录',
+      })
+    } else {
+      this.setState({
+        hasError: true,
+        hasErrorMsg: '删除成功',
+        hasErrorIcon: 'check-circle',
+      }, () => {
+        // 跳转回账本页面
+        setTimeout(() => {
+          Taro.navigateBack({
+            delta: 1
+          })
+        }, 800)
+      })
+    }
   }
 
   /**
@@ -74,18 +171,25 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
       }
     });
     result = result.data;
-    if (result.results.length > 0) {
-      result = result.results[0]
-      Taro.navigateTo({
-        url: "/pages/index/index?bookId=" + result.book_id +
-          '&bookName=' + result.book_name +
-          '&bookType=' + result.book_type
-      })
+    if (result.book_id) {
+      const addToMain = await Taro.request({
+        method: 'POST',
+        url: `${MAINHOST}/api/addSpecialBookItem`,
+        data: {
+          s_book_id: this.state.sBookId,
+          book_id: result.book_id
+        }
+      });
+      if (addToMain.data.hasAdd) {
+        Taro.navigateBack({ // 返回账本首页
+          delta: 1
+        })
+      }
     }
   }
 
   // 页面挂载时执行
-  componentDidMount() {
+  componentWillMount() {
     const username = Taro.getStorageSync('username');
     const uid = Taro.getStorageSync('uid');
     this.setState({
@@ -101,6 +205,12 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
   render() {
     return (
       <View className='newTravel-wrap'>
+        <AtToast
+          isOpened={this.state.hasError}
+          text={this.state.hasErrorMsg}
+          icon={this.state.hasErrorIcon}
+          hasMask
+        />
         <View className='image-wrapper'>
           <AtImagePicker
             files={this.state.imageFile}
@@ -117,9 +227,22 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
             clear
           />
         </View>
-        <View className='button-wrapper'>
-          <AtButton type='primary' onClick={this.jumpToNewBook}>确定</AtButton>
-        </View>
+        { this.state.hasBookId && <View className='button-wrapper'>
+          <AtButton
+            type='primary'
+            onClick={this.changeBook}
+          >确认修改</AtButton>
+          <AtButton
+            type='primary'
+            onClick={this.deleteBook}
+          >删除账本</AtButton>
+        </View>}
+        { !this.state.hasBookId && <View className='button-wrapper'>
+          <AtButton
+            type='primary'
+            onClick={this.jumpToNewBook}
+          >确定</AtButton>
+        </View> }
       </View>
     )
   }

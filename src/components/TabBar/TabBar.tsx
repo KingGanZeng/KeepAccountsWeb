@@ -54,6 +54,7 @@ class TabBar extends Component<TabBarProps,TabBarState > {
    * 显示记账选项
    */
   showRecordWay() {
+    // 如果类型是travel跳转到相应页面
     if (this.state.bookType == 'travelParty') {
       Taro.navigateTo({
         url: '/pages/newTravel/newTravel?bookId=' + this.state.bookId + '&bookType=' + this.state.bookType
