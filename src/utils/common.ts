@@ -160,6 +160,26 @@ export const moneyFormatter = (number, decimalDigit) => {
     }
 }
 
+/**
+ * 格式化django返回时间
+ * @param djangoTime
+ */
+export const dateFormatter = (djangoTime) => {
+  const now = new Date();
+  const date = djangoTime.split('T')[0];
+  const input = date ? date.split('-') : [];
+  const y = now.getFullYear().toString();
+  let m = now.getMonth().toString();
+  let d = now.getDate().toString();
+  m = addZero(m+1);
+  d = addZero(d);
+  if(input[0] == y && input[1] == m && input[2] == d) {
+    return `今天(${m}.${d})`
+  } else {
+    return `${addZero(input[1])}.${addZero(input[2])}`
+  }
+}
+
 export const globalData: any = {
   categoryList: {
     dayLife: {

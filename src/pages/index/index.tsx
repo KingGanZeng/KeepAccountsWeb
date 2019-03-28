@@ -7,6 +7,7 @@ import { IndexProps, IndexState } from './index.interface'
 import Tips from '../../utils/tips'
 import { addZero, objArrReduce } from "../../utils/common";
 import './index.scss'
+import {MAINHOST} from "../../config";
 // @ts-ignore
 import { TabBar } from '../../components/TabBar/TabBar'
 // @ts-ignore
@@ -40,6 +41,7 @@ class Index extends Component<IndexProps,IndexState > {
       bookType: urlBookType || ' ', // 账本类别
       budget: parseFloat(urlBudget), // 预算
       uid: '',
+      specialDataObj: {},
     }
   }
 
@@ -72,23 +74,73 @@ class Index extends Component<IndexProps,IndexState > {
   }
 
   /**
-   * 获取投资理财的相关信息
+   * 获取特殊账本的相关信息
    * @param year
    * @param book_id
    */
-  async getMoneyManagementData(year: string, book_id: string) {
-    const startTime = `${year}-1-1`;
-    const nextYear = parseInt(year, 10) + 1;
-    const endTime = `${nextYear}-1-1`;
-    return await this.props.dispatch({
-      type: 'index/getMoneyManagementData',
-      payload: {
-        uid: this.state.uid, // 这里需要提前获取
-        create_timestamp_min: startTime,
-        create_timestamp_max: endTime,
-        book_id: book_id,
+  async getSpecialBook(year: string, book_id: string) {
+    Tips.loading()
+    const endTime = `${year}-12-31`;
+    const prevYear = parseInt(year, 10) - 1;
+    const startTime = `${prevYear}-12-31`;
+    // 先获取账本的信息，再根据账本信息查询内容
+    let result:any =  await Taro.request({
+      method: 'GET',
+      url: `${MAINHOST}/api/getSpecialBookList?s_book_id=` + book_id,
+    });
+    result = result.data.results[0];
+
+    let expenseCount = 0; // 用于记录支出
+    let incomeCount = 0;
+    let allCount = 0; // 用于记录笔数
+    let tmpArr = []; // 用于存放每个账本记录
+    result.book.forEach(async(item) => { // 遍历每个内置账本，获取账本数据
+      let innerBookData:any = await Taro.request({ // 获取内置账本信息
+        method: 'GET',
+        url: `${MAINHOST}/api/getBookList?book_id=` + item
+      });
+      innerBookData = innerBookData.data.results[0];
+
+      const itemData = await this.props.dispatch({ // 获取账单信息
+        type: 'index/getRecordData',
+          payload: {
+          uid: this.state.uid, // 这里需要localstorage中获取
+          create_timestamp_min: startTime,
+          create_timestamp_max: endTime,
+          book_id: item
+        }
+      });
+      let innerExpense = 0;
+      itemData.forEach((innerItem) => { // 统计数据
+        if (innerItem.record_type == 'expense') {
+          expenseCount = expenseCount + parseFloat(innerItem.money);
+          innerExpense = innerExpense + parseFloat(innerItem.money);
+        } else {
+          incomeCount = incomeCount + parseFloat(innerItem.money);
+        }
+        allCount += 1;
+      })
+      const tmpObj:any = {
+        bookId: item,
+        innerBookInfo: innerBookData,
+        innerExpense: innerExpense,
+        recordArr: itemData,
+        thumbnail: itemData.slice(0, 3), // 用于展示的缩略数据
       }
+      // @ts-ignore
+      tmpArr.push(tmpObj) // 每条记录加入内置账本集合中
     })
+    setTimeout(() => { // 这里需要延时，不然拿不到数据
+      this.setState({
+        specialDataObj: {
+          expense: expenseCount,
+          income: incomeCount,
+          count: allCount,
+          bookArr: tmpArr
+        }
+      })
+      Tips.loaded()
+    }, 1000);
   }
 
   /**
@@ -99,8 +151,8 @@ class Index extends Component<IndexProps,IndexState > {
     const y = date.split('-')[0];
     const m = date.split('-')[1];
     Tips.loading();
-    if (this.state.bookType == 'moneyManagement') {
-      this.getMoneyManagementData(y, this.state.bookId)
+    if (this.state.bookType == 'moneyManagement' || this.state.bookType == 'travelParty') {
+      this.getSpecialBook(y, this.state.bookId)
     } else {
       this.getRecordData(m, y, this.state.bookId);
     }
@@ -125,11 +177,9 @@ class Index extends Component<IndexProps,IndexState > {
   }
 
   render() {
-    const { recordData, moneyManagementData } = this.props;
+    const { recordData } = this.props;
     const myRecordList = recordData || [];
-    const myMoneyManageList = moneyManagementData || [];
-    const hasRecord = myRecordList.length > 0 ||
-      myMoneyManageList.length > 0;
+    const hasRecord = myRecordList.length > 0
 
     // recordData = [
     //   {record_id: 'r05', uid: 'DE90ESD290', date: '2019-03-12', username: 'zenggan', record_type: 'income', category:'sell', money: 200.32, note: ''},
@@ -189,22 +239,12 @@ class Index extends Component<IndexProps,IndexState > {
       };
     }
 
-    // 处理旅游出行数据
-    // let bookRecord = [];
-
     // 处理理财投资数据
-    if (myMoneyManageList && renderContentType == 'moneyManagement') {
-      let incomeCount = 0;
-      let expenseCount = 0;
-      moneyManagementData.forEach(item => {
-        incomeCount += item.income;
-        expenseCount += item.expense;
-      });
-      navBarData.incomeCount = incomeCount;
-      navBarData.expenseCount = expenseCount;
+    if (renderContentType == 'moneyManagement' || renderContentType == 'travelParty') {
+      navBarData.incomeCount = this.state.specialDataObj.income;
+      navBarData.expenseCount = this.state.specialDataObj.expense;
+      navBarData.count = this.state.specialDataObj.count;
     }
-
-    console.log("账单详情获取：", incomeData, expenseData);
 
     return (
       <View className='index-wrapper'>
@@ -220,14 +260,13 @@ class Index extends Component<IndexProps,IndexState > {
         { hasRecord && <View className='index-content'>
           { renderContentType == 'travelParty' &&
           <TravelPartyContent
-            income={incomeData}
-            expense={expenseData}
+            nowBookRecord={this.state.specialDataObj}
             nowBookType='travelParty'
             nowBookId={this.state.bookId}
           />}
           { renderContentType == 'moneyManagement' &&
           <MoneyManagementContent
-            nowBookRecord={myMoneyManageList}
+            nowBookRecord={this.state.specialDataObj}
             nowBookType='moneyManagement'
             nowBookId={this.state.bookId}
           />}

@@ -7,7 +7,10 @@
  */
 export interface NewTravelState {
   imageFile: any,
-  titleInput: string
+  titleInput: string,
+  budget: number,
+  username: string,
+  uid: string,
 }
 
 /**

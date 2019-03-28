@@ -54,6 +54,17 @@ $content_border_color: #2b364e10;
     top:20px;
     border: 2px solid $border_color;
     box-shadow:0 10px 6px $header_color_second, 0 0 10px 6px $header_color_second;
+    .edit-book {
+      position: absolute;
+      top: 0;
+      right: 0;
+      padding: 20px;
+      font-size: 22px;
+      color: $body_color;
+      .at-icon {
+        margin-right: 10px;
+      }
+    }
     .card-header {
       margin-bottom: 50px;
     }
@@ -103,6 +114,9 @@ $content_border_color: #2b364e10;
       padding:20px 0;
       font-size:28px;
       border-bottom: 1px solid $content_border_color;
+      &:active {
+        background: $body_color;
+      }
       .icon-wrapper {
         display: inline-block;
         width: 50px;

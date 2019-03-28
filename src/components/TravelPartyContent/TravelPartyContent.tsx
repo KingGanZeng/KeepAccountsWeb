@@ -1,6 +1,6 @@
-import Taro, { Component } from '@tarojs/taro'
-import { View, Swiper, SwiperItem } from '@tarojs/components'
-import { TravelPartyContentProps, TravelPartyContentState } from './TravelPartyContent.interface'
+import Taro, {Component} from '@tarojs/taro'
+import {Swiper, SwiperItem, View} from '@tarojs/components'
+import {TravelPartyContentProps, TravelPartyContentState} from './TravelPartyContent.interface'
 import './TravelPartyContent.scss'
 // @ts-ignore
 // import { LineChart } from '../LineChart/LineChart'
@@ -13,20 +13,68 @@ class TravelPartyContent extends Component<TravelPartyContentProps,TravelPartyCo
   static options = {
     addGlobalClass: true
   }
-  static defaultProps:TravelPartyContentProps = {}
+  static defaultProps:TravelPartyContentProps = {
+    nowBookRecord: {},
+    nowBookType: 'travelParty',
+    nowBookId: 0
+  }
 
   /**
-   * 跳转活动内页
+   * 跳转内页
    */
-  jumpToDetailBook() {
+  jumpToDetailBook(bookId, bookName, budget) {
     Taro.navigateTo({
-      url: "/pages/travelDetails/travelDetails?bookId=" + 321 +
-        '&bookName=' + '今年旅游' +
-        '&bookType=' + 'homeDecoration'
+      url: "/pages/travelDetails/travelDetails?bookId=" + bookId +
+        '&bookName=' + bookName +
+        '&bookType=' + 'travelParty' +
+        '&budget=' + budget
     })
   }
 
+  /**
+   * 时间戳格式化
+   * @param djangoTime
+   */
+  formatterTime(djangoTime) {
+    const now = new Date(djangoTime)
+    var year = now.getFullYear(),
+      month = ("0" + (now.getMonth() + 1)).slice(-2),
+      date = ("0" + now.getDate()).slice(-2),
+      hour = ("0" + now.getHours()).slice(-2),
+      minute = ("0" + now.getMinutes()).slice(-2),
+      second = ("0" + now.getSeconds()).slice(-2);
+    return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second
+  }
+
   render() {
+    const swiperArr = this.props.nowBookRecord.bookArr.map((item, key) => {
+      const time = this.formatterTime(item.innerBookInfo.create_timestamp)
+      return (
+        <SwiperItem key={key}>
+          <View
+            className='inner-item'
+            onClick={this.jumpToDetailBook.bind(this, item.bookId, item.innerBookInfo.book_name, item.innerBookInfo.budget)}
+          >
+            <View className='item-container'>
+              <View className='item-header at-row at-row__justify--between'>
+                <View className='at-col at-col-1 at-col--auto header-left'>
+                  <View className='travel-title'>{item.innerBookInfo.book_name}</View>
+                  <View className='travel-create-time'>{time}</View>
+            </View>
+                <View className='at-col at-col-1 at-col--auto header-right'>
+                  ￥{item.innerExpense.toFixed(2)}
+                </View>
+              </View>
+              <View className='item-content at-row'>
+                <View className='at-col image-content' />
+                <View className='at-col detail-content' />
+              </View>
+            </View>
+          </View>
+        </SwiperItem>
+      )
+    });
+
     return (
       <View className='fx-TravelPartyContent-wrap'>
         <Swiper
@@ -34,82 +82,10 @@ class TravelPartyContent extends Component<TravelPartyContentProps,TravelPartyCo
           indicatorColor='#999'
           indicatorActiveColor='#ffffff'
           circular
-          indicatorDots>
-          <SwiperItem>
-            <View className='inner-item' onClick={this.jumpToDetailBook}>
-              <View className='item-container'>
-                <View className='item-header at-row at-row__justify--between'>
-                  <View className='at-col at-col-1 at-col--auto header-left'>
-                    <View className='travel-title'>我在这里啊啊啊啊啊啊啊</View>
-                    <View className='travel-create-time'>2019年3月16日</View>
-                  </View>
-                  <View className='at-col at-col-1 at-col--auto header-right'>
-                    ￥2578.00
-                  </View>
-                </View>
-                <View className='item-content at-row'>
-                  <View className='at-col image-content' />
-                  <View className='at-col detail-content'></View>
-                </View>
-              </View>
-            </View>
-          </SwiperItem>
-          <SwiperItem>
-            <View className='inner-item' onClick={this.jumpToDetailBook}>
-              <View className='item-container'>
-                <View className='item-header at-row at-row__justify--between'>
-                  <View className='at-col at-col-1 at-col--auto header-left'>
-                    <View className='travel-title'>我在这里啊啊啊啊啊啊啊</View>
-                    <View className='travel-create-time'>2019年3月16日</View>
-                  </View>
-                  <View className='at-col at-col-1 at-col--auto header-right'>
-                    ￥2578.00
-                  </View>
-                </View>
-                <View className='item-content at-row'>
-                  <View className='at-col image-content' />
-                  <View className='at-col detail-content'>
-
-                    <View className='at-row at-row__justify--between detail-item'>
-                      <View className='at-col at-col-1 at-col--auto item-title'>
-                        <View className='at-row at-row__align--start'>
-                          <View className='at-col at-icon at-icon-shopping-bag-2'></View>
-                          <View className='at-col title-wrapper'>
-                            <View className='title-name'>交通</View>
-                          </View>
-                        </View>
-                      </View>
-                      <View className='at-col at-col-1 at-col--auto item-money'>
-                        ￥936
-                      </View>
-                    </View>
-
-                  </View>
-                </View>
-              </View>
-            </View>
-          </SwiperItem>
-          <SwiperItem>
-            <View className='inner-item' onClick={this.jumpToDetailBook}>
-              <View className='item-container'>
-                <View className='item-header at-row at-row__justify--between'>
-                  <View className='at-col at-col-1 at-col--auto header-left'>
-                    <View className='travel-title'>我在这里啊啊啊啊啊啊啊</View>
-                    <View className='travel-create-time'>2019年3月16日</View>
-                  </View>
-                  <View className='at-col at-col-1 at-col--auto header-right'>
-                    ￥2578.00
-                  </View>
-                </View>
-                <View className='item-content at-row'>
-                  <View className='at-col image-content' />
-                  <View className='at-col detail-content' />
-                </View>
-              </View>
-            </View>
-          </SwiperItem>
+          indicatorDots
+        >
+          {swiperArr}
         </Swiper>
-        <LineChart />
       </View>
     )
   }

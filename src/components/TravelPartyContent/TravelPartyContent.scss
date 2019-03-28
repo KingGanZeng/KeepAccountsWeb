@@ -1,6 +1,8 @@
 $main_color: #2b364e;
 $border_color: #05e4ab60;
 $item-background: #4a556c60;
+$income_color: #f65858;
+$expense_color: #4ffa93;
 
 .fx-TravelPartyContent-wrap {
   width:100%;
@@ -14,6 +16,19 @@ $item-background: #4a556c60;
   .inner-item {
     margin: 30px;
     padding: 20px;
+  }
+  .iconfont {
+    display:inline-block;
+    width:50px;
+    line-height:50px;
+    border-radius:50%;
+    font-size:35px;
+    color:#fff;
+    -webkit-box-sizing:border-box;
+    box-sizing:border-box;
+    text-align:center;
+    margin:0 20px 0 0;
+
   }
   .item-container {
     border-radius: 20px;
@@ -38,7 +53,7 @@ $item-background: #4a556c60;
       margin-bottom: 36px;
     }
     .header-right {
-      color: #f54552;
+      color: $expense_color;
       font-weight: bold;
     }
   }

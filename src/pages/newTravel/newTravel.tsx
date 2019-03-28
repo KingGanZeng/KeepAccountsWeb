@@ -7,6 +7,7 @@ import { connect } from '@tarojs/redux'
 import { AtImagePicker, AtInput, AtButton } from 'taro-ui'
 import { NewTravelProps, NewTravelState } from './newTravel.interface'
 import './newTravel.scss'
+import {MAINHOST} from "../../config";
 
 @connect(({ newTravel }) => ({
     ...newTravel,
@@ -21,6 +22,9 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
     this.state = {
       imageFile: [],
       titleInput: '',
+      budget: 0,
+      username: '',
+      uid: '',
     }
   }
 
@@ -49,18 +53,49 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
     })
   }
 
-  jumpToNewBook() {
-    // TODO: 生成新账本
-    Taro.navigateTo({
-      url: "/pages/index/index?bookId=" + 2222 +
-        '&bookName=' + '旅行聚会2' +
-        '&bookType=' + 'homeDecoration'
-    })
+  getBookInfo() {
+
+  }
+
+  /**
+   * 生成新账本并跳转
+   */
+  async jumpToNewBook() {
+    let result:any = await Taro.request({
+      method: 'POST',
+      url: `${MAINHOST}/api/createBook`,
+      data: {
+        username: this.state.username,
+        uid: this.state.uid,
+        book_name: this.state.titleInput,
+        book_type: 'travelParty',
+        budget: this.state.budget,
+        imageFile: this.state.imageFile.url,
+      }
+    });
+    result = result.data;
+    if (result.results.length > 0) {
+      result = result.results[0]
+      Taro.navigateTo({
+        url: "/pages/index/index?bookId=" + result.book_id +
+          '&bookName=' + result.book_name +
+          '&bookType=' + result.book_type
+      })
+    }
   }
 
   // 页面挂载时执行
   componentDidMount() {
-
+    const username = Taro.getStorageSync('username');
+    const uid = Taro.getStorageSync('uid');
+    this.setState({
+      uid: uid,
+      username: username,
+    }, () => {
+      if (this.$router.params.bookId) {
+        this.getBookInfo()
+      }
+    });
   }
 
   render() {

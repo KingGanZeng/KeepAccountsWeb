@@ -4,7 +4,7 @@ export const getRecordData = (data) => {
   return Api.getRecordData(data)
 };
 
-export const getMoneyManagementData = (data) => {
-  return Api.getMoneyManagementData(data)
+export const getSpecialBook = (data) => {
+  return Api.getSpecialBook(data)
 };
 

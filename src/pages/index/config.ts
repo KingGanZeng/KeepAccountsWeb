@@ -3,8 +3,8 @@ export default {
     host: 'http://127.0.0.1:8000',
     url: '/api/recordDataApi'
   },
-  getMoneyManagementData :{
+  getSpecialBook :{
     host: 'http://127.0.0.1:8000',
-    url: '/api/getMoneyManagementData'
+    url: '/api/getSpecialBook'
   }
 }

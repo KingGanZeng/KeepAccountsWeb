@@ -33,9 +33,9 @@ export default {
       }
       return result.results
     },
-    * getMoneyManagementData({ payload }, { select, call, put }) {
+    * getSpecialBook({ payload }, { select, call, put }) {
       const { key, v } = yield select(state => state.index);
-      const result = yield call(indexApi.getMoneyManagementData, {
+      const result = yield call(indexApi.getSpecialBook, {
         key,
         v,
         ...payload
@@ -44,19 +44,20 @@ export default {
         yield put({
           type: 'updateState',
           payload: {
-            moneyManagementData: result.results
+            specialBookData: result.results
           }
         })
       } else {
         yield put({
           type: 'updateState',
           payload: {
-            moneyManagementData: [
-              {management_name: '支付宝理财', income: 2000, expense: 3000.02, manage_id: 'm01', create_time: '2019-03-01'}
+            specialBookData: [
+              // {management_name: '支付宝理财', income: 2000, expense: 3000.02, manage_id: 'm01', create_time: '2019-03-01'}
             ]
           }
         })
       }
+      return result.results;
     }
   },
 
