@@ -19,7 +19,16 @@
     }
   }
   .button-wrapper {
-    margin: 80px 40px;
+    margin: 40px 60px;
     box-sizing: border-box;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    .button-item {
+      background: #ff5a5b;
+      border-color: #ff5a5b;
+      margin-bottom: 40px;
+    }
   }
 }

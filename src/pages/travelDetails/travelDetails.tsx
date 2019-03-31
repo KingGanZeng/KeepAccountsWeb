@@ -82,7 +82,6 @@ class TravelDetails extends Component<TravelDetailsProps,TravelDetailsState > {
    * @param item
    */
   jumpToItem(item) {
-    console.log(item);
     Taro.navigateTo({
       url: '/pages/newRecord/newRecord?bookId=' + this.state.bookId +
         '&bookType=' + this.state.bookType +

@@ -319,6 +319,37 @@ export const globalData: any = {
         {title: '其他收入', icon: 'icon-tiyanjinicon', bgColor: 'background-color:rgb(134,192,67)'},
       ]
     },
+    moneyManagementInner: {
+      expense: [
+        {title: '股票', icon: 'icon-iconfont-zijinmingxi', bgColor: 'background-color:rgb(236,100,94)'},
+        {title: '基金', icon: 'icon-iconfont-dezhi', bgColor: 'background-color:rgb(236,100,94)'},
+        {title: '信托', icon: 'icon-iconfont-denglumima-', bgColor: 'background-color:rgb(236,100,94)'},
+        {title: '保险', icon: 'icon-baozhang1', bgColor: 'background-color:rgb(134,192,67)'},
+        {title: '理财产品', icon: 'icon-zijintuoguan1', bgColor: 'background-color:rgb(89,175,193)'},
+        {title: '众筹私募', icon: 'icon-jiaoyi', bgColor: 'background-color:rgb(77,135,237)'},
+        {title: '债券国债', icon: 'icon-zhengquan', bgColor: 'background-color:rgb(162,135,242)'},
+        {title: 'P2P网贷', icon: 'icon-iconfonthuankuankuai', bgColor: 'background-color:rgb(236,100,94)'},
+        {title: '收藏品', icon: 'icon-iconfont-jiaoyimima-', bgColor: 'background-color:rgb(236,100,94)'},
+        {title: '期贷', icon: 'icon-iconfont-shipanjiaoyi', bgColor: 'background-color:rgb(236,100,94)'},
+        {title: '外汇', icon: 'icon-meiyuan', bgColor: 'background-color:rgb(134,192,67)'},
+        {title: '黄金', icon: 'icon-jiaoyimingxiicon', bgColor: 'background-color:rgb(89,175,193)'},
+        {title: '股权投资', icon: 'icon-jiaxiquanicon', bgColor: 'background-color:rgb(77,135,237)'},
+        {title: '其他投资', icon: 'icon-tiyanjinicon', bgColor: 'background-color:rgb(162,135,242)'},
+      ],
+      income: [
+        {title: '股票收入', icon: 'icon-iconfont-zijinmingxi', bgColor: 'background-color:rgb(236,100,94)'},
+        {title: '基金收入', icon: 'icon-iconfont-dezhi', bgColor: 'background-color:rgb(236,100,94)'},
+        {title: '信托收入', icon: 'icon-iconfont-denglumima-', bgColor: 'background-color:rgb(236,100,94)'},
+        {title: '保险收入', icon: 'icon-baozhang1', bgColor: 'background-color:rgb(134,192,67)'},
+        {title: '理财收入', icon: 'icon-zijintuoguan1', bgColor: 'background-color:rgb(89,175,193)'},
+        {title: '私募收入', icon: 'icon-jiaoyi', bgColor: 'background-color:rgb(77,135,237)'},
+        {title: '期贷收入', icon: 'icon-iconfont-shipanjiaoyi', bgColor: 'background-color:rgb(162,135,242)'},
+        {title: '外汇收入', icon: 'icon-meiyuan', bgColor: 'background-color:rgb(236,100,94)'},
+        {title: '黄金收入', icon: 'icon-jiaoyimingxiicon', bgColor: 'background-color:rgb(236,100,94)'},
+        {title: '股权收入', icon: 'icon-jiaxiquanicon', bgColor: 'background-color:rgb(236,100,94)'},
+        {title: '其他收入', icon: 'icon-tiyanjinicon', bgColor: 'background-color:rgb(134,192,67)'},
+      ]
+    },
     rent: {
       expense: [
         {title: '水费', icon: 'icon-shuikudian', bgColor: 'background-color:rgb(236,100,94)'},

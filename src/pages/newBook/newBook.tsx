@@ -293,7 +293,7 @@ class NewBook extends Component<NewBookProps,NewBookState > {
    */
   onSubmit () {
     // 是否是特殊账本
-    if (this.state.bookCategoryChecked == '出游聚会') {
+    if (this.state.bookCategoryChecked == '出游聚会' || this.state.bookCategoryChecked == '投资理财') {
       if (this.$router.params.bookId) {
         this.changeSpecialBook()
       } else {
@@ -337,7 +337,7 @@ class NewBook extends Component<NewBookProps,NewBookState > {
    */
   onReset () {
     // 是否是特殊账本
-    if (this.$router.params.bookId && this.state.bookCategoryChecked == '出游聚会') {
+    if (this.$router.params.bookId && ( this.state.bookCategoryChecked == '出游聚会' || this.state.bookCategoryChecked == '投资理财')) {
       this.deleteSpecialBook();
     }
     if(this.$router.params.bookId) {

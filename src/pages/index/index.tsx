@@ -59,9 +59,16 @@ class Index extends Component<IndexProps,IndexState > {
 
   // 获取Content账单数据
   async getRecordData(month: string, year: string, book_id: string) {
-    const startTime = `${year}-${month}-1`;
-    const nextMonth = parseInt(month, 10) + 1;
-    const endTime = `${year}-${nextMonth}-1`;
+    let startTime;
+    let endTime;
+    if (month == "undefined" || !month) {
+      startTime = `${parseInt(year)-1}-12-31`;
+      endTime = `${year}-12-31`
+    } else {
+      startTime = `${year}-${month}-1`;
+      const nextMonth = parseInt(month, 10) + 1;
+      endTime = `${year}-${nextMonth}-1`;
+    }
     return await this.props.dispatch({
       type: 'index/getRecordData',
       payload: {
@@ -180,7 +187,7 @@ class Index extends Component<IndexProps,IndexState > {
   render() {
     const { recordData } = this.props;
     const myRecordList = recordData || [];
-    const hasRecord = myRecordList.length > 0
+    let hasRecord = myRecordList.length > 0
 
     // recordData = [
     //   {record_id: 'r05', uid: 'DE90ESD290', date: '2019-03-12', username: 'zenggan', record_type: 'income', category:'sell', money: 200.32, note: ''},
@@ -242,9 +249,10 @@ class Index extends Component<IndexProps,IndexState > {
 
     // 处理理财投资数据
     if (renderContentType == 'moneyManagement' || renderContentType == 'travelParty') {
-      navBarData.incomeCount = this.state.specialDataObj.income;
-      navBarData.expenseCount = this.state.specialDataObj.expense;
+      navBarData.incomeCount = this.state.specialDataObj.income || 0;
+      navBarData.expenseCount = this.state.specialDataObj.expense || 0;
       navBarData.count = this.state.specialDataObj.count;
+      hasRecord = true;
     }
 
     return (
@@ -282,12 +290,11 @@ class Index extends Component<IndexProps,IndexState > {
           />}
         </View> }
         <View className='index-footer'>
-          { renderContentType != 'moneyManagement' &&
           <TabBar
             nowBookId={this.state.bookId}
             nowBookType={this.state.bookType}
             isSpecial={this.$router.params.isSpecial}
-          /> }
+          />
         </View>
       </View>
     )

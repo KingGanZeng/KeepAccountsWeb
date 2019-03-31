@@ -261,7 +261,6 @@ class NewRecord extends Component<NewRecordProps,NewRecordState > {
     });
     // 如果是修改账单，自动唤起弹窗
     if(this.state.recordData.recordId) {
-      console.log("弹窗信息", this.state.recordData);
       let name = globalData.categoryList[this.state.recordBookType][this.state.recordData.recordType].map((categoryItem) => {
         if (categoryItem.icon == this.state.recordData.recordCategory) {
           return categoryItem

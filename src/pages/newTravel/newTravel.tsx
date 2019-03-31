@@ -231,9 +231,11 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
           <AtButton
             type='primary'
             onClick={this.changeBook}
+            className='button-item'
           >确认修改</AtButton>
           <AtButton
             type='primary'
+            className='button-item'
             onClick={this.deleteBook}
           >删除账本</AtButton>
         </View>}

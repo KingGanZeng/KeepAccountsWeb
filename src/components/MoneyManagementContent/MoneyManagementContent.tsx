@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import {View, Text, Button} from '@tarojs/components'
+import {View, Text} from '@tarojs/components'
 import { MoneyManagementContentProps, MoneyManagementContentState } from './MoneyManagementContent.interface'
 import './MoneyManagementContent.scss'
 
@@ -12,9 +12,9 @@ class MoneyManagementContent extends Component<MoneyManagementContentProps,Money
     addGlobalClass: true
   };
   static defaultProps:MoneyManagementContentProps = {
-    nowBookRecord: [], // 账本信息
+    nowBookRecord: {}, // 账本信息
     nowBookType: 'moneyManagement',
-    nowBookId: 'm01',
+    nowBookId: 0,
   };
 
   /**
@@ -23,44 +23,46 @@ class MoneyManagementContent extends Component<MoneyManagementContentProps,Money
    */
   jumpToManagement = (item) => {
     Taro.navigateTo({
-      url: "/pages/index/index?bookId=" + item.manage_id +
-        '&bookName=' + item.management_name +
-        '&bookType=' + 'moneyManagementInner'
+      url: "/pages/index/index?bookId=" + item.bookId +
+        '&bookName=' + item.innerBookInfo.book_name +
+        '&bookType=' + 'moneyManagementInner' +
+        '&budget=' + item.innerBookInfo.budget +
+        '&isSpecial=' + 'false' +
+        'sBookId=' + this.props.nowBookRecord.specialBookId
     })
   };
 
-  /**
-   * 跳转到新建投资项目
-   * @param e
-   */
-  jumpToNewManagement = e => {
-    console.log(e);
-    Taro.navigateTo({
-      url: '/pages/newManagement/newManagement?moneyManageBookId=' + this.props.nowBookId
-    })
-  }
-
   render() {
     const recordArr = this.props.nowBookRecord;
-    const content = recordArr.map(item => {
+    const content = recordArr.bookArr.map(item => {
+      let income = 0;
+      let expense = 0;
+      item.recordArr.forEach( recordItem => {
+        if (recordItem.record_type == 'income') {
+          income += parseFloat(recordItem.money)
+        } else {
+          expense += parseFloat(recordItem.money)
+        }
+      })
+
       return (
         <View
           className='at-row at-row__justify--between at-row__align--end item-wrapper'
-          key={String(item.manage_id)}
+          key={String(item.bookId)}
           onClick={this.jumpToManagement.bind(this, item)}
         >
           <View className='at-col at-col-1 at-col--auto item-intro'>
-            <View className='item-name'>{item.management_name}</View>
+            <View className='item-name'>{item.innerBookInfo.book_name}</View>
             <View className='item-money'>
-              进账: <Text className='income'>￥{item.income}</Text>
+              进账: <Text className='income'>￥{income}</Text>
             </View>
             <View className='item-money'>
-              出账: <Text className='expense'>￥{item.expense}</Text>
+              出账: <Text className='expense'>￥{expense}</Text>
             </View>
           </View>
           <View className='at-col at-col-3 item-count'>
             <View className='count-title'>差额</View>
-            <View className='count-money'>￥{item.income-item.expense}</View>
+            <View className='count-money'>￥{income-expense}</View>
           </View>
         </View>
       )
@@ -69,9 +71,6 @@ class MoneyManagementContent extends Component<MoneyManagementContentProps,Money
     return (
       <View className='fx-MoneyManagementContent-wrap'>
         {content}
-        <View className='single-button-footer' onClick={this.jumpToNewManagement.bind(this)}>
-          <Button className='single-button'>新建项目</Button>
-        </View>
       </View>
     )
   }

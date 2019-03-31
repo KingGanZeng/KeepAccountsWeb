@@ -177,7 +177,8 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
     // ];
     // @ts-ignore
     let myBookList = data.map((item) => {
-      if (item.book_type != 'travelParty') {
+      // 禁止渲染特殊账本及相关
+      if (item.book_type != 'travelParty' && item.book_type != 'moneyManagement' && item.book_type != 'moneyManagementInner') {
         return item
       }
     });

@@ -59,6 +59,11 @@ class TabBar extends Component<TabBarProps,TabBarState > {
       Taro.navigateTo({
         url: '/pages/newTravel/newTravel?bookId=' + this.state.bookId + '&bookType=' + this.state.bookType
       })
+      // 如果类型是money跳转到相应页面
+    } else if (this.state.bookType == 'moneyManagement') {
+      Taro.navigateTo({
+        url: '/pages/newManagement/newManagement?bookId=' + this.state.bookId
+      })
     } else {
       this.setState({
         isOpen: true,
@@ -104,10 +109,16 @@ class TabBar extends Component<TabBarProps,TabBarState > {
     this.setState({
       showLeftBar: false,
     });
-    Taro.navigateTo({
-      url: '/pages/newBook/newBook?bookId=' + this.state.bookId
-      + '&isSpecial=' + this.props.isSpecial
-    })
+    if (this.state.bookType == 'moneyManagementInner') {
+      Taro.navigateTo({
+        url: '/pages/newManagement/newManagement?bookId=' + this.state.bookId
+      })
+    } else {
+      Taro.navigateTo({
+        url: '/pages/newBook/newBook?bookId=' + this.state.bookId
+          + '&isSpecial=' + this.props.isSpecial
+      })
+    }
   }
 
   render() {

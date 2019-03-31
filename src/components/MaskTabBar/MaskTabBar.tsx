@@ -10,7 +10,7 @@ class MaskTabBar extends Component<MaskTabBarProps,MaskTabBarState > {
     this.state = {
       openState: this.props.isOpened,
       bookId: this.props.nowBookId,
-      bookType: this.props.nowBookType,
+      bookType: this.props.nowBookType == 'moneyManagementInner' ? 'moneyManagement' : this.props.nowBookType,
     }
   }
   static options = {
@@ -48,7 +48,7 @@ class MaskTabBar extends Component<MaskTabBarProps,MaskTabBarState > {
 
     return (
       <View className='fx-MaskTabBar-wrap'>
-        {isOpened && <View className='diagram-mask' onClick={this.closeRecordWay.bind(this)}/> }
+        {isOpened && <View className='diagram-mask' onClick={this.closeRecordWay.bind(this)} /> }
         {isOpened && <View className='fx-TabBar-wrap at-row at-row__justify--between'>
           <View className='at-col menu-button'>
             <View className='at-icon at-icon-list' />
