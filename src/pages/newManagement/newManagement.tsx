@@ -160,7 +160,7 @@ class NewManagement extends Component<NewManagementProps,NewManagementState > {
         username: this.state.username,
         uid: this.state.uid,
         book_name: this.state.projectName,
-        book_type: 'moneyMangentInner',
+        book_type: 'moneyManagementInner',
       }
     });
     // @ts-ignore
@@ -172,8 +172,8 @@ class NewManagement extends Component<NewManagementProps,NewManagementState > {
       }, () => {
         // 跳转回账本页面
         setTimeout(() => {
-          Taro.redirectTo({
-            url: '/pages/accountBook/accountBook'
+          Taro.navigateBack({
+            delta: 1
           })
         }, 800)
       })
@@ -245,7 +245,7 @@ class NewManagement extends Component<NewManagementProps,NewManagementState > {
               onInput={this.onInputChange}
               value={this.state.projectName}
               placeholderStyle='color: rgba(0,0,0,0)'
-              maxLength={8}
+              maxLength={20}
             />
             <Label
               className={this.state.focusState ? 'input-label input-label-active' : 'input-label'}
