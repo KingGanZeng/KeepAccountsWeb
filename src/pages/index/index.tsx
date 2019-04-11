@@ -139,6 +139,7 @@ class Index extends Component<IndexProps,IndexState > {
       // @ts-ignore
       tmpArr.push(tmpObj) // 每条记录加入内置账本集合中
     })
+    // 这里需要注意setState需要执行两次，不然刷新不出来
     this.setState({
       specialDataObj: {
         specialBookId: book_id,
