@@ -18,7 +18,9 @@ import {MAINHOST} from "../../config";
 
 class AccountBook extends Component<AccountBookProps,AccountBookState> {
   config:Config = {
-    navigationBarTitleText: '选择账本场景'
+    navigationBarTitleText: '选择账本场景',
+    enablePullDownRefresh: true,
+    backgroundTextStyle: "dark"
   };
   constructor(props: AccountBookProps) {
     super(props);
@@ -148,6 +150,14 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
   }
 
   /**
+   * 下拉刷新
+   */
+  onPullDownRefresh() {
+    this.getBook()
+    this.getSpecialBook()
+  }
+
+  /**
    * 组件渲染完成后执行
    */
   async componentWillMount() {
@@ -204,7 +214,7 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
           <AtModalContent>
             <View className='login-title'>欢迎</View>
             <View className='iconfont icon-signature' />
-            <View className='login-intro'>xx记账小程序可以帮你快速记录生活的点滴，点击开始，开启你的记账旅程吧</View>
+            <View className='login-intro'>智能记账小程序可以帮你快速记录生活的点滴，点击开始，开启你的记账旅程吧</View>
             <View className='login-button-wrapper'>
               <Button
                 className='login-button'

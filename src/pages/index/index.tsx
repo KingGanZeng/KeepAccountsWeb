@@ -25,7 +25,9 @@ import { MoneyManagementContent } from '../../components/MoneyManagementContent/
 
 class Index extends Component<IndexProps,IndexState > {
   config:Config = {
-    navigationBarTitleText: '我的账本' // 标题栏标题
+    navigationBarTitleText: '我的账本', // 标题栏标题
+    enablePullDownRefresh: true,
+    backgroundTextStyle: "dark"
   };
   constructor(props: IndexProps) {
     super(props);
@@ -137,6 +139,15 @@ class Index extends Component<IndexProps,IndexState > {
       // @ts-ignore
       tmpArr.push(tmpObj) // 每条记录加入内置账本集合中
     })
+    this.setState({
+      specialDataObj: {
+        specialBookId: book_id,
+        expense: expenseCount,
+        income: incomeCount,
+        count: allCount,
+        bookArr: tmpArr
+      }
+    })
     setTimeout(() => { // 这里需要延时，不然拿不到数据
       this.setState({
         specialDataObj: {
@@ -168,6 +179,13 @@ class Index extends Component<IndexProps,IndexState > {
       .then(() => {
         this.render();
       })
+  }
+
+  /**
+   * 下拉刷新
+   */
+  onPullDownRefresh() {
+    this.getDateData(this.state.yearMonth);
   }
 
   // 页面挂载时执行

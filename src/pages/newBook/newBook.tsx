@@ -142,7 +142,11 @@ class NewBook extends Component<NewBookProps,NewBookState > {
         // 跳转回账本页面
         setTimeout(() => {
           Taro.redirectTo({
-            url: '/pages/accountBook/accountBook'
+            url: "/pages/index/index?bookId=" + result.data.book_id +
+              '&bookName=' + this.state.bookName +
+              '&bookType=' + this.state.bookType +
+              '&budget=' + this.state.budget +
+              '&isSpecial=' + false
           })
         }, 800)
       })
@@ -174,7 +178,7 @@ class NewBook extends Component<NewBookProps,NewBookState > {
         hasErrorMsg: '删除成功',
         hasErrorIcon: 'check-circle',
       }, () => {
-        // 跳转回账本页面
+        // 跳转回账本列表
         setTimeout(() => {
           Taro.redirectTo({
             url: '/pages/accountBook/accountBook'
@@ -206,10 +210,14 @@ class NewBook extends Component<NewBookProps,NewBookState > {
         hasErrorMsg: '创建成功',
         hasErrorIcon: 'check-circle',
       }, () => {
-        // 跳转回账本页面
+        // 跳转到账本详情
         setTimeout(() => {
           Taro.redirectTo({
-            url: '/pages/accountBook/accountBook'
+            url: "/pages/index/index?bookId=" + result.data.s_book_id +
+              '&bookName=' + this.state.bookName +
+              '&bookType=' + this.state.bookType +
+              '&budget=' + this.state.budget +
+              '&isSpecial=' + true
           })
         }, 800)
       })
@@ -276,7 +284,11 @@ class NewBook extends Component<NewBookProps,NewBookState > {
         // 跳转回账本页面
         setTimeout(() => {
           Taro.redirectTo({
-            url: '/pages/accountBook/accountBook'
+            url: "/pages/index/index?bookId=" + bookId +
+              '&bookName=' + this.state.bookName +
+              '&bookType=' + this.state.bookType +
+              '&budget=' + this.state.budget +
+              '&isSpecial=' + true
           })
         }, 800)
       })
@@ -320,8 +332,12 @@ class NewBook extends Component<NewBookProps,NewBookState > {
         return
       }
       Taro.redirectTo({
-        url: '/pages/accountBook/accountBook'
-      });
+        url: "/pages/index/index?bookId=" + result.book_id +
+          '&bookName=' + this.state.bookName +
+          '&bookType=' + this.state.bookType +
+          '&budget=' + this.state.budget +
+          '&isSpecial=' + true
+      })
       resolve()
     });
     setTimeout(() => {

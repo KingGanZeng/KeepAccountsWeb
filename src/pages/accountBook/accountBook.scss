@@ -97,4 +97,7 @@ $underline_color: #cabe16;
       font-weight: bold;
     }
   }
+  .at-modal--active .at-modal__overlay {
+    background: rgba(0,0,0,0.9);
+  }
 }

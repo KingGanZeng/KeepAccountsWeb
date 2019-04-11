@@ -53,10 +53,21 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
     console.log(index, file)
   }
 
-  handleInputChange (titleInput) {
-    this.setState({
-      titleInput
-    })
+  /**
+   * 处理输入框
+   * @param inputLabel
+   * @param input
+   */
+  handleInputChange (inputLabel, input) {
+    if (inputLabel == 'titleInput') {
+      this.setState({
+        titleInput: input
+      })
+    } else if (inputLabel == 'budget') {
+      this.setState({
+        budget: input
+      })
+    }
   }
 
   /**
@@ -115,7 +126,11 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
         // 跳转回账本页面
         setTimeout(() => {
           Taro.redirectTo({
-            url: '/pages/accountBook/accountBook'
+            url: "/pages/travelDetails/travelDetails?bookId=" + result.data.book_id +
+              '&bookName=' + this.state.titleInput +
+              '&bookType=' + 'travelParty' +
+              '&budget=' + this.state.budget +
+              '&sBookId=' + this.state.sBookId
           })
         }, 800)
       })
@@ -147,7 +162,7 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
         // 跳转回账本页面
         setTimeout(() => {
           Taro.navigateBack({
-            delta: 1
+            delta: 2
           })
         }, 800)
       })
@@ -181,8 +196,12 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
         }
       });
       if (addToMain.data.hasAdd) {
-        Taro.navigateBack({ // 返回账本首页
-          delta: 1
+        Taro.redirectTo({
+          url: "/pages/travelDetails/travelDetails?bookId=" + result.book_id +
+            '&bookName=' + this.state.titleInput +
+            '&bookType=' + 'travelParty' +
+            '&budget=' + this.state.budget +
+            '&sBookId=' + this.state.sBookId
         })
       }
     }
@@ -223,8 +242,15 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
             value={this.state.titleInput}
             type='text'
             placeholder='请输入旅行聚会的额名称，如:台湾环岛游'
-            onChange={this.handleInputChange.bind(this)}
+            onChange={this.handleInputChange.bind(this, 'titleInput')}
             clear
+          />
+          <AtInput
+            name='value'
+            value={this.state.budget}
+            type='number'
+            placeholder='请设置预算'
+            onChange={this.handleInputChange.bind(this, 'budget')}
           />
         </View>
         { this.state.hasBookId && <View className='button-wrapper'>

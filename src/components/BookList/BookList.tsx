@@ -25,7 +25,7 @@ class BookList extends Component<BookListProps,BookListState > {
    */
   onClickBook = (bookInfo) => {
     const bool = bookInfo.book_type == 'travelParty' || bookInfo.book_type == 'moneyManagement';
-    Taro.navigateTo({
+    Taro.redirectTo({
       url: "/pages/index/index?bookId=" + bookInfo.book_id +
         '&bookName=' + bookInfo.book_name +
         '&bookType=' + bookInfo.book_type +

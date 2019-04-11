@@ -30,7 +30,7 @@ class BarChart extends Component<BarChartProps,BarChartState > {
   getData() {
     const tmpBarDateData = ['3-22', '3-22', '3-22', '3-22', '3-22', '3-22']
     const tmpBarData = {
-      count: [ 200,300,400,500,600,700],
+      count: [ 190,280,370,460,550,640], // 收支差额
       income: [ 200,300,400,500,600,700],
       expense: [ -10,-20,-30,-40,-50,-60],
     }
