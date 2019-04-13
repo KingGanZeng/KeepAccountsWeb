@@ -18,7 +18,7 @@ import {MAINHOST} from "../../config";
 
 class AccountBook extends Component<AccountBookProps,AccountBookState> {
   config:Config = {
-    navigationBarTitleText: '选择账本场景',
+    navigationBarTitleText: '选择账本类别',
     enablePullDownRefresh: true,
     backgroundTextStyle: "dark"
   };
@@ -125,13 +125,15 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
       hasAuthorized: authorizeState,
       modalOpenState: openState
     }, () => {
+      // 当用户已授权后
       if(this.state.hasAuthorized) {
         // 获取用户的相关信息
         Taro.getUserInfo()
           .then(result => {
             const userInfo = JSON.parse(result.rawData)
-            // 将用户名存入localStorage
-            Taro.setStorageSync('username', userInfo.nickName)
+            // 将用户名及头像信息存入localStorage
+            Taro.setStorageSync('username', userInfo.nickName);
+            Taro.setStorageSync('portrait', userInfo.avatarUrl);
           })
       }
     })

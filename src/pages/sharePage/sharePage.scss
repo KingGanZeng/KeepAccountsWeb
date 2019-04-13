@@ -1,5 +1,25 @@
-
-sharePage-wrap {
+.sharePage-wrap {
+  width: 100%;
+  min-height: 100vh;
+  .shareInfo {
+    text-align: center;
+    font-size: 28px;
+    color: #333333;
+    padding: 100px 200px;
+  }
+  .at-form {
     width: 100%;
-    min-height: 100vh;
+    margin: 200px auto 0;
+    box-sizing: border-box;
+    text-align: center;
+    .button-check-item.at-button--primary {
+      background: $income_color;
+      display: inline-block;
+      margin: 0 40px;
+    }
+    .button-trash-item.at-button--primary {
+      background: $expense_color;
+      display: inline-block;
+      marin: 0 40px;
+  }
 }

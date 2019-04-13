@@ -22,7 +22,7 @@ class App extends Component {
       'pages/accountBook/accountBook', // 选择账本页
       'pages/newBook/newBook', // 新建账本页
       'pages/index/index', // 账本详情页
-      'pages/newRecord/newRecord'
+      'pages/newRecord/newRecord',
     ],
     permission: {
       "scope.userLocation": {
@@ -52,6 +52,12 @@ class App extends Component {
         root: 'pages/newManagement',
         pages: [
           'newManagement', // 新建理财项目
+        ]
+      },
+      {
+        root: 'pages/sharePage',
+        pages: [
+          'sharePage', // 分享展示页
         ]
       }
     ],

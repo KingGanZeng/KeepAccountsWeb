@@ -1,13 +1,10 @@
-
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
-// import Api from '../../utils/request'
-// import Tips from '../../utils/tips'
-import {AtImagePicker, AtInput, AtButton, AtToast} from 'taro-ui'
+import { AtInput, AtButton, AtToast } from 'taro-ui'
 import { NewTravelProps, NewTravelState } from './newTravel.interface'
 import './newTravel.scss'
-import {MAINHOST} from "../../config";
+import { MAINHOST } from "../../config";
 import ShareComponent from "../../components/ShareComponent/ShareComponent";
 
 @connect(({ newTravel }) => ({
@@ -16,42 +13,24 @@ import ShareComponent from "../../components/ShareComponent/ShareComponent";
 
 class NewTravel extends Component<NewTravelProps,NewTravelState > {
   config:Config = {
-    navigationBarTitleText: '创建旅行聚会'
+    navigationBarTitleText: '创建新项目'
   }
   constructor(props: NewTravelProps) {
     super(props)
     this.state = {
       sBookId: decodeURIComponent(this.$router.params.bookId) || '',
       hasBookId: false,
-      imageFile: [],
       titleInput: '',
       budget: 0,
       bookType: '',
       username: '',
       uid: '',
+      is_shared: false,
       hasError: false,
       hasErrorMsg: '新建记录错误',
       hasErrorIcon: 'close-circle',
+      groupIdInfo: '',
     }
-  }
-
-  /**
-   * 照片修改时
-   * @param imageFile
-   */
-  onImageChange(imageFile, operationType, index) {
-    console.log(imageFile, operationType, index)
-    this.setState({
-      imageFile
-    })
-  }
-
-  onFail (mes) {
-    console.log(mes)
-  }
-
-  onImageClick (index, file) {
-    console.log(index, file)
   }
 
   /**
@@ -75,12 +54,10 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
    * 获取账本信息
    */
   async getBookInfo() {
-    let result:any;
-    result = await Taro.request({
+    let result:any = await Taro.request({
       method: 'GET',
       url: `${MAINHOST}/api/getBookList`,
       data: {
-        uid: this.state.uid,
         book_id: parseInt(this.$router.params.bookId)
       }
     });
@@ -89,14 +66,18 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
       this.setState({
         hasBookId: true,
         bookType: result.book_type,
-        imageFile: {
-          url: result.image_url,
-        },
         titleInput: result.book_name,
         budget: parseFloat(result.budget), // 账本预算
+        is_shared: result.is_shared, // 是否为共享账本
       }, () => {
         console.log("数据获取完毕")
       })
+      if (result.is_shared) {
+        // 当项目为共享项目时，groupIdInfo为uid
+        this.setState({
+          groupIdInfo: result.uid
+        })
+      }
     }
   }
 
@@ -105,16 +86,19 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
    */
   async changeBook() {
     const bookId = decodeURIComponent(this.$router.params.bookId);
+    let createId = this.state.uid; // 先设定修改人uid
+    if (this.state.is_shared) {
+      createId = this.state.groupIdInfo // 修改人为group
+    }
     const result = await Taro.request({
       method: 'PUT',
       url: `${MAINHOST}/api/bookChangeApi/${bookId}`,
       data: {
         username: this.state.username,
-        uid: this.state.uid,
+        uid: createId,
         book_name: this.state.titleInput,
         book_type: this.state.bookType,
         budget: this.state.budget,
-        image_url: this.state.imageFile.url
       }
     });
     // @ts-ignore
@@ -143,6 +127,9 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
     }
   }
 
+  /**
+   * 删除项目
+   */
   async deleteBook() {
     const bookId = decodeURIComponent(this.$router.params.bookId);
     const result = await await Taro.request({
@@ -171,19 +158,46 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
   }
 
   /**
+   * 创建新的共享小组，先将为当前用户创建组员信息，并设置为组长
+   */
+  async createNewGroup() {
+    const uid = Taro.getStorageSync('uid');
+    let result:any = await Taro.request({
+      method: "POST",
+      url: `${MAINHOST}/api/createGroupMember`,
+      data: {
+        group_id: this.state.groupIdInfo,
+        uid: uid,
+        is_admin: true,
+      }
+    });
+    return result.data;
+  }
+
+  /**
    * 生成新账本并跳转
    */
   async jumpToNewBook() {
+    // 先将创建者设为uid
+    let createId = this.state.uid;
+    // 如果有组信息的话先创建小组
+    if (this.state.is_shared) {
+      const groupInfo = await this.createNewGroup();
+      // 将创建者id更换为组id
+      createId = groupInfo.group_id;
+    }
+
+    // 新建账本
     let result:any = await Taro.request({
       method: 'POST',
       url: `${MAINHOST}/api/createBook`,
       data: {
         username: this.state.username,
-        uid: this.state.uid,
+        uid: createId,
         book_name: this.state.titleInput,
         book_type: 'travelParty',
         budget: this.state.budget,
-        imageFile: this.state.imageFile.url,
+        is_shared: this.state.is_shared,
       }
     });
     result = result.data;
@@ -208,6 +222,46 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
     }
   }
 
+  /**
+   * 分享信息
+   */
+  onShareAppMessage() {
+    console.log(2222, this.state.titleInput, this.state.groupIdInfo);
+    const username = Taro.getStorageSync('username');
+    return {
+      title: `【${username}】邀请你加入组群【${this.state.titleInput}】`,
+      path: `/pages/sharePage?inviteUser=${username}&groupId=${this.state.groupIdInfo}&projectName=${this.state.titleInput}`,
+      success: function (res) {
+        console.log(res);
+        console.log("转发成功:" + JSON.stringify(res));
+      },
+      fail: function (res) {
+        // 转发失败
+        console.log("转发失败:" + JSON.stringify(res));
+      }
+    }
+  }
+
+  /**
+   * 监听子组件小组id修改
+   * @param groupId
+   */
+  onChangeGroupInfo(groupId) {
+    this.setState({
+      groupIdInfo: groupId,
+    })
+  }
+
+  /**
+   * 监听子组件小组共享状态修改
+   * @param shareState
+   */
+  onChangeShareState(shareState) {
+    this.setState({
+      is_shared: shareState,
+    })
+  }
+
   // 页面挂载时执行
   componentWillMount() {
     const username = Taro.getStorageSync('username');
@@ -217,7 +271,10 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
       username: username,
     }, () => {
       if (this.$router.params.bookId) {
-        this.getBookInfo()
+        this.getBookInfo();
+        Taro.setNavigationBarTitle({ // 设置标题栏
+          title: '修改项目信息'
+        });
       }
     });
   }
@@ -231,47 +288,57 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
           icon={this.state.hasErrorIcon}
           hasMask
         />
-        <View className='image-wrapper'>
-          <AtImagePicker
-            files={this.state.imageFile}
-            onChange={this.onImageClick.bind(this)}
-          />
-        </View>
         <View className='input-wrapper'>
           <AtInput
             name='value'
             value={this.state.titleInput}
             type='text'
-            placeholder='请输入旅行聚会的额名称，如:台湾环岛游'
+            placeholder='请输入项目名称，如:台湾游'
             onChange={this.handleInputChange.bind(this, 'titleInput')}
             clear
           />
           <AtInput
             name='value'
-            value={this.state.budget}
+            value={this.state.budget || ''}
             type='number'
             placeholder='请设置预算'
             onChange={this.handleInputChange.bind(this, 'budget')}
           />
-          <ShareComponent />
+          <ShareComponent
+            sharedState={this.state.is_shared}
+            groupIdInfo={this.state.groupIdInfo}
+            projectName={this.state.titleInput}
+            onGroupId={this.onChangeGroupInfo.bind(this)}
+            onShareState={this.onChangeShareState.bind(this)}
+          />
         </View>
         { this.state.hasBookId && <View className='button-wrapper'>
           <AtButton
+            circle
             type='primary'
             onClick={this.changeBook}
-            className='button-item'
-          >确认修改</AtButton>
+            className='button-check-item'
+          >
+            <View className='at-icon at-icon-check' />
+          </AtButton>
           <AtButton
+            circle
             type='primary'
-            className='button-item'
+            className='button-trash-item'
             onClick={this.deleteBook}
-          >删除账本</AtButton>
+          >
+            <View className='at-icon at-icon-trash' />
+          </AtButton>
         </View>}
         { !this.state.hasBookId && <View className='button-wrapper'>
           <AtButton
+            circle
             type='primary'
+            className='button-check-item'
             onClick={this.jumpToNewBook}
-          >确定</AtButton>
+          >
+            <View className='at-icon at-icon-check' />
+          </AtButton>
         </View> }
       </View>
     )

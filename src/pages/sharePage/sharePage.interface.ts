@@ -5,7 +5,14 @@
  * @export
  * @interface SharePageState
  */
-export interface SharePageState {}
+export interface SharePageState {
+  groupId: string, // 小组id
+  projectName: string, // 项目名称
+  inviteUser: string, // 邀请人
+  hasAuthorized: boolean, // 注册状态
+  modalOpenState: boolean, // 模态框状态
+  confirmMsg: string, // 确认信息
+}
 
 /**
  * sharePage.props 参数类型

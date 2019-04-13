@@ -1,34 +1,82 @@
+$main_color: #2b364e;
+$border_color: #05e4ab60;
+$item-background: #4a556c60;
+$income_color: #f65858;
+$expense_color: #4ffa93;
+
 .newTravel-wrap {
   width: 100%;
   min-height: 100vh;
+  padding: 60px;
   background: #2b364e;
+  box-sizing: border-box;
   .input-wrapper {
-    margin: 80px 0;
     box-sizing: border-box;
     .at-input {
       color: #ffffff;
       padding:20px 50px;
       background: #4a5d6c;
-      margin: 0 0 20px 0;
-      -webkit-box-sizing: border-box;
-      -moz-box-sizing: border-box;
+      margin: 40px 0;
       box-sizing: border-box;
+      border-radius: 15px 15px 0 0;
       input[placeholder] {
         color: #e3e3e3;
       }
     }
   }
   .button-wrapper {
-    margin: 40px 60px;
+    width: 100%;
+    margin: 200px auto 0;
     box-sizing: border-box;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    .button-item {
-      background: #ff5a5b;
-      border-color: #ff5a5b;
-      margin-bottom: 40px;
+    text-align: center;
+    .button-check-item.at-button--primary {
+      background: $income_color;
+      display: inline-block;
+      margin: 0 40px;
+    }
+    .button-trash-item.at-button--primary {
+      background: $expense_color;
+      display: inline-block;
+      marin: 0 40px;
+    }
+  }
+  // 子组件taro-ui重写
+  .fx-ShareComponent-wrap {
+    .at-form {
+      background: #4a5d6c;
+      border-radius: 15px 15px 0 0;
+    }
+    .at-form::before, .at-form::after {
+      width: 0;
+      height: 0;
+      border:none
+    }
+    .at-switch {
+      background: #4a5d6c;
+      color: #ffffff;
+      margin: 0;
+      padding-left: 50px;
+      border-radius: 15px 15px 0 0;
+    }
+    .at-switch__title {
+      color: #ffffff;
+    }
+    .at-switch__container {
+      background: #4a5d6c;
+    }
+    .at-button {
+      height: 120px;
+      border-style: dotted;
+    }
+    .member-add .at-icon {
+      color: #e3e3e3;
+      font-size: 28px;
+      line-height: 160px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      text-align: center;
     }
   }
 }

@@ -155,8 +155,8 @@ export class Request {
         data: { uid: uid }
       });
       Taro.setStorageSync('username', data.results[0].username);
+      Taro.setStorageSync('portrait', data.results[0].portrait);
       const username = Taro.getStorageSync('username');
-      console.log(22222, uid, username);
 
       // 未注册用户自动注册
       if (!data.results || data.results.length == 0) {

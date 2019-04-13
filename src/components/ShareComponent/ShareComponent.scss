@@ -1,4 +1,35 @@
+$main_color: #2b364e;
+$border_color: #05e4ab60;
+$item-background: #4a556c60;
+$income_color: #f65858;
+$expense_color: #4ffa93;
 
 .fx-ShareComponent-wrap {
-    width: 100%;
+  width: 100%;
+  background: $main_color;
+  .group-wrapper {
+    margin-top: 40px;
+  }
+  .member-wrapper {
+    padding: 20px;
+    text-align: center;
+    border-radius: 8px;
+    .portrait-wrapper {
+      width: 100%;
+      height: 120px;
+      display: inline-block;
+      background: #979797;
+      border-radius: 15px;
+    }
+    .name-wrapper {
+      font-size: 24px;
+      color: #e3e3e3;
+      padding: 5px;
+      box-sizing: border-box;
+    }
+  }
+  .member-add {
+    position: relative;
+    color: #e3e3e3;
+  }
  }
