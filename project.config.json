@@ -7,10 +7,11 @@
 		"urlCheck": false,
 		"es6": false,
 		"postcss": false,
-		"minified": false,
+		"minified": true,
 		"newFeature": true,
 		"autoAudits": false
 	},
 	"compileType": "miniprogram",
+	"libVersion": "2.6.5",
 	"condition": {}
 }

@@ -22,8 +22,6 @@ class App extends Component {
       'pages/accountBook/accountBook', // 选择账本页
       'pages/newBook/newBook', // 新建账本页
       'pages/index/index', // 账本详情页
-      'pages/newTravel/newTravel', // 新建旅游聚会页
-      'pages/newManagement/newManagement', // 新建投资项目
       'pages/newRecord/newRecord'
     ],
     permission: {
@@ -44,6 +42,18 @@ class App extends Component {
           'travelDetails' // 旅游聚会内页
         ]
       },
+      {
+        root: 'pages/newTravel',
+        pages: [
+          'newTravel', // 新建旅游记账
+        ]
+      },
+      {
+        root: 'pages/newManagement',
+        pages: [
+          'newManagement', // 新建理财项目
+        ]
+      }
     ],
     window: {
       backgroundTextStyle: 'light',

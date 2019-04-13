@@ -8,6 +8,7 @@ import {AtImagePicker, AtInput, AtButton, AtToast} from 'taro-ui'
 import { NewTravelProps, NewTravelState } from './newTravel.interface'
 import './newTravel.scss'
 import {MAINHOST} from "../../config";
+import ShareComponent from "../../components/ShareComponent/ShareComponent";
 
 @connect(({ newTravel }) => ({
     ...newTravel,
@@ -252,6 +253,7 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
             placeholder='请设置预算'
             onChange={this.handleInputChange.bind(this, 'budget')}
           />
+          <ShareComponent />
         </View>
         { this.state.hasBookId && <View className='button-wrapper'>
           <AtButton
