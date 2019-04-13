@@ -9,6 +9,8 @@ export interface AccountBookState {
   modalOpenState: boolean, // 模态框状态
   uid: string, // uid
   specialBookList: any,
+  groupAdminProjectList: any, // 共享项目信息（管理员）
+  groupProjectList: any, // 共享项目信息
   // toastContent: string, // toast弹窗内容
 }
 

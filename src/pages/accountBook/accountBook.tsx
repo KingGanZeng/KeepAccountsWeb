@@ -29,6 +29,8 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
       modalOpenState: false,
       uid: '',
       specialBookList: [],
+      groupProjectList: [],
+      groupAdminProjectList: [],
     }
   }
 
@@ -46,8 +48,10 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
     })
   }
 
+  /**
+   * 获取特殊账本
+   */
   async getSpecialBook() {
-    Tips.loaded()
     const result = await Taro.request({
       method: 'GET',
       url: `${MAINHOST}/api/getSpecialBookList`,
@@ -58,6 +62,57 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
     this.setState({
       specialBookList: result.data.results
     })
+  }
+
+  /**
+   * 获取共享账本/项目
+   */
+  async getGroupBook() {
+    Tips.loaded()
+    // 首先获取我的小组列表
+    const groupList = await Taro.request({
+      method: 'GET',
+      url: `${MAINHOST}/api/getGroupMembers`,
+      data: {
+        uid: this.state.uid,
+      }
+    })
+    if (groupList.data.results.length > 0) {
+      // 如果小组列表不为空，则遍历获取gid再拿到账本信息
+      groupList.data.results.forEach(async(item) => {
+        const bookList = await Taro.request({
+          method: 'GET',
+          url: `${MAINHOST}/api/getBookList`,
+          data: {
+            uid: item.group_id,
+          }
+        })
+        // 向groupBookList中添加项目
+        let tmpGroupBookList:any;
+        if (item.is_admin) {
+          // 如果是创建者，则groupAdminProjectList内容添加，否则groupProject添加
+          tmpGroupBookList = this.state.groupAdminProjectList;
+          tmpGroupBookList.push({
+            ...bookList.data.results[0],
+            is_admin: item.is_admin,
+          })
+          this.setState({
+            groupAdminProjectList: tmpGroupBookList,
+          })
+        } else {
+          tmpGroupBookList = this.state.groupProjectList;
+          tmpGroupBookList.push({
+            ...bookList.data.results[0],
+            is_admin: item.is_admin,
+          })
+          this.setState({
+            groupProjectList: tmpGroupBookList,
+          })
+        }
+      });
+    } else {
+      return;
+    }
   }
 
   /**
@@ -172,21 +227,12 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
       Tips.loading()
       this.getBook()
       this.getSpecialBook()
+      this.getGroupBook()
     })
   }
 
   render() {
     const { data } = this.props
-    // const myBookList = [
-    //   {book_id:1, book_type: 'dayLife', book_name: '日常开销', note: ''},
-    //   {book_id:2, book_type: 'travelParty', book_name: '出游聚会', note: ''},
-    //   {book_id:3, book_type: 'homeDecoration', book_name: '居家装修', note: ''},
-    //   {book_id:4, book_type: 'socialRelation', book_name: '人情往来', note: ''},
-    //   {book_id:5, book_type: 'moneyManagement', book_name: '投资理财', note: ''},
-    //   {book_id:5, book_type: 'rent', book_name: '租房居住', note: ''},
-    //   {book_id:6, book_type: 'others', book_name: '借还记录', note: ''},
-    //   {book_id:8, book_type: 'dayLife', book_name: '聚餐记账', note: '同事组'},
-    // ];
     // @ts-ignore
     let myBookList = data.map((item) => {
       // 禁止渲染特殊账本及相关
@@ -205,7 +251,10 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
       });
     }
     const hasBook = myBookList.length > 0;
+    const hasGroupAdminProjects = this.state.groupAdminProjectList.length > 0;
+    const hasGroupProjects = this.state.groupProjectList.length > 0;
     const date = +new Date();
+    console.log(111, this.state.groupProjectList, this.state.groupAdminProjectList)
 
     return (
       <View className='fx-accountBook-wrap'>
@@ -227,7 +276,6 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
             </View>
           </AtModalContent>
         </AtModal>
-        { hasBook && <BookList title='我的账本' date={date} list={myBookList} />}
         <AtCard
           className='choice-wrapper'
           title='选择账本场景'
@@ -271,6 +319,21 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
             onClick={this.toNewAccountBook}
           />
         </AtCard>
+        { hasBook && <BookList title='我的账本' date={date} list={myBookList} />}
+        { hasGroupAdminProjects &&
+        <BookList
+          title='我创建的共享'
+          date={date}
+          list={this.state.groupAdminProjectList}
+        />
+        }
+        { hasGroupProjects &&
+        <BookList
+          title='我的共享项目'
+          date={date}
+          list={this.state.groupProjectList}
+        />
+        }
       </View>
     )
   }

@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
-import {AtForm, AtSwitch, AtButton, AtToast} from 'taro-ui'
+import {AtForm, AtSwitch, AtButton } from 'taro-ui'
 import { ShareComponentProps, ShareComponentState } from './ShareComponent.interface'
 import './ShareComponent.scss'
 // @ts-ignore

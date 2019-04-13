@@ -40,6 +40,7 @@ class BookList extends Component<BookListProps,BookListState > {
       hasBook = true
     }
     const books = this.props.list.map((book, index) => {
+      console.log(333, book, book.book_name);
       const bookClass = book.book_type + '-book';
       return (
         <View
