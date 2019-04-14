@@ -17,6 +17,7 @@ export interface NewTravelState {
   hasErrorMsg: string,
   hasErrorIcon: string,
   groupIdInfo: string, // 组id
+  groupMembers: any, // 小组成员列表
   is_shared: boolean, // 项目是否共享
 }
 

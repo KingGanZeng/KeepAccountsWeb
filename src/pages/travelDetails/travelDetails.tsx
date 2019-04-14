@@ -73,7 +73,7 @@ class TravelDetails extends Component<TravelDetailsProps,TravelDetailsState > {
    */
   jumpToChangeRecord() {
     Taro.navigateTo({
-      url: '/pages/newTravel/newTravel?bookId=' + this.state.bookId
+      url: '/pages/newTravel/newTravel?projectId=' + this.state.bookId
     })
   }
 

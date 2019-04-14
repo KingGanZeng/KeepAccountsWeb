@@ -48,33 +48,37 @@ class TravelPartyContent extends Component<TravelPartyContentProps,TravelPartyCo
   }
 
   render() {
-    const swiperArr = this.props.nowBookRecord.bookArr.map((item, key) => {
-      const time = this.formatterTime(item.innerBookInfo.create_timestamp)
-      return (
-        <SwiperItem key={key}>
-          <View
-            className='inner-item'
-            onClick={this.jumpToDetailBook.bind(this, item.bookId, item.innerBookInfo.book_name, item.innerBookInfo.budget)}
-          >
-            <View className='item-container'>
-              <View className='item-header at-row at-row__justify--between'>
-                <View className='at-col at-col-1 at-col--auto header-left'>
-                  <View className='travel-title'>{item.innerBookInfo.book_name}</View>
-                  <View className='travel-create-time'>{time}</View>
-            </View>
-                <View className='at-col at-col-1 at-col--auto header-right'>
-                  ￥{item.innerExpense.toFixed(2)}
+    console.log("组件渲染", this.props);
+    let swiperArr:any;
+    if (this.props.nowBookRecord.bookArr && this.props.nowBookRecord.bookArr.length > 0) {
+      swiperArr = this.props.nowBookRecord.bookArr.map((item, key) => {
+        const time = this.formatterTime(item.innerBookInfo.create_timestamp)
+        return (
+          <SwiperItem key={key}>
+            <View
+              className='inner-item'
+              onClick={this.jumpToDetailBook.bind(this, item.bookId, item.innerBookInfo.book_name, item.innerBookInfo.budget)}
+            >
+              <View className='item-container'>
+                <View className='item-header at-row at-row__justify--between'>
+                  <View className='at-col at-col-1 at-col--auto header-left'>
+                    <View className='travel-title'>{item.innerBookInfo.book_name}</View>
+                    <View className='travel-create-time'>{time}</View>
+                  </View>
+                  <View className='at-col at-col-1 at-col--auto header-right'>
+                    ￥{item.innerExpense.toFixed(2)}
+                  </View>
+                </View>
+                <View className='item-content at-row'>
+                  <View className='at-col image-content' />
+                  <View className='at-col detail-content' />
                 </View>
               </View>
-              <View className='item-content at-row'>
-                <View className='at-col image-content' />
-                <View className='at-col detail-content' />
-              </View>
             </View>
-          </View>
-        </SwiperItem>
-      )
-    });
+          </SwiperItem>
+        )
+      });
+    }
 
     return (
       <View className='fx-TravelPartyContent-wrap'>

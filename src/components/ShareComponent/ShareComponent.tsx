@@ -10,8 +10,8 @@ class ShareComponent extends Component<ShareComponentProps,ShareComponentState >
   constructor(props: ShareComponentProps) {
     super(props)
     this.state = {
-      groupState: this.props.sharedState,
-      groupMembers: this.props.groupMemberList,
+      groupState: false,
+      groupMembers: [],
     }
   }
   static options = {
@@ -73,6 +73,18 @@ class ShareComponent extends Component<ShareComponentProps,ShareComponentState >
     });
   }
 
+  /**
+   * 组件获取到props的变化，更新状态
+   */
+  componentWillReceiveProps(nextProps): void {
+    if (nextProps.sharedState) {
+      this.setState({
+        groupState: nextProps.sharedState,
+        groupMembers: nextProps.groupMemberList,
+      })
+    }
+  }
+
   render() {
     const memberList = this.state.groupMembers.map((member, index) => {
       return (
@@ -94,7 +106,7 @@ class ShareComponent extends Component<ShareComponentProps,ShareComponentState >
           />
         </AtForm>
         {this.state.groupState && <View className='at-row at-row--wrap group-wrapper'>
-          {memberList}
+          {this.state.groupMembers.length > 0 && memberList}
           <View className='at-col at-col-3 member-wrapper member-add'>
             <AtButton openType='share' />
             <View className='at-icon at-icon-add' />

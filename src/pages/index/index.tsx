@@ -71,7 +71,7 @@ class Index extends Component<IndexProps,IndexState > {
       const nextMonth = parseInt(month, 10) + 1;
       endTime = `${year}-${nextMonth}-1`;
     }
-    return await this.props.dispatch({
+    const result =  await this.props.dispatch({
       type: 'index/getRecordData',
       payload: {
         uid: this.state.uid, // 这里需要localstorage中获取
@@ -80,6 +80,8 @@ class Index extends Component<IndexProps,IndexState > {
         book_id: book_id
       }
     })
+    Tips.loaded();
+    return result;
   }
 
   /**
@@ -88,12 +90,11 @@ class Index extends Component<IndexProps,IndexState > {
    * @param book_id
    */
   async getSpecialBook(year: string, book_id: string) {
-    Tips.loading()
     const endTime = `${year}-12-31`;
     const prevYear = parseInt(year, 10) - 1;
     const startTime = `${prevYear}-12-31`;
     // 先获取账本的信息，再根据账本信息查询内容
-    let result:any =  await Taro.request({
+    let result:any = await Taro.request({
       method: 'GET',
       url: `${MAINHOST}/api/getSpecialBookList?s_book_id=` + book_id,
     });
@@ -103,7 +104,7 @@ class Index extends Component<IndexProps,IndexState > {
     let incomeCount = 0;
     let allCount = 0; // 用于记录笔数
     let tmpArr = []; // 用于存放每个账本记录
-    result.book.forEach(async(item) => { // 遍历每个内置账本，获取账本数据
+    for (const item of result.book) { // 遍历每个内置账本，获取账本数据
       let innerBookData:any = await Taro.request({ // 获取内置账本信息
         method: 'GET',
         url: `${MAINHOST}/api/getBookList?book_id=` + item
@@ -120,7 +121,7 @@ class Index extends Component<IndexProps,IndexState > {
         }
       });
       let innerExpense = 0;
-      itemData.forEach((innerItem) => { // 统计数据
+      for (const innerItem of itemData) { // 统计数据
         if (innerItem.record_type == 'expense') {
           expenseCount = expenseCount + parseFloat(innerItem.money);
           innerExpense = innerExpense + parseFloat(innerItem.money);
@@ -128,7 +129,7 @@ class Index extends Component<IndexProps,IndexState > {
           incomeCount = incomeCount + parseFloat(innerItem.money);
         }
         allCount += 1;
-      })
+      }
       const tmpObj:any = {
         bookId: item,
         innerBookInfo: innerBookData,
@@ -138,7 +139,8 @@ class Index extends Component<IndexProps,IndexState > {
       }
       // @ts-ignore
       tmpArr.push(tmpObj) // 每条记录加入内置账本集合中
-    })
+    }
+    console.log("数据获取完毕", tmpArr);
     // 这里需要注意setState需要执行两次，不然刷新不出来
     this.setState({
       specialDataObj: {
@@ -148,19 +150,21 @@ class Index extends Component<IndexProps,IndexState > {
         count: allCount,
         bookArr: tmpArr
       }
-    })
-    setTimeout(() => { // 这里需要延时，不然拿不到数据
-      this.setState({
-        specialDataObj: {
-          specialBookId: book_id,
-          expense: expenseCount,
-          income: incomeCount,
-          count: allCount,
-          bookArr: tmpArr
-        }
-      })
+    }, () => {
       Tips.loaded()
-    }, 1000);
+    })
+    // setTimeout(() => { // 这里需要延时，不然拿不到数据
+    //   this.setState({
+    //     specialDataObj: {
+    //       specialBookId: book_id,
+    //       expense: expenseCount,
+    //       income: incomeCount,
+    //       count: allCount,
+    //       bookArr: tmpArr
+    //     }
+    //   })
+    //   Tips.loaded()
+    // }, 1000);
   }
 
   /**
@@ -176,10 +180,6 @@ class Index extends Component<IndexProps,IndexState > {
     } else {
       this.getRecordData(m, y, this.state.bookId);
     }
-    Tips.loaded()
-      .then(() => {
-        this.render();
-      })
   }
 
   /**

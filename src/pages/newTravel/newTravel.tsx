@@ -1,6 +1,7 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
+import Tips from '../../utils/tips'
 import { AtInput, AtButton, AtToast } from 'taro-ui'
 import { NewTravelProps, NewTravelState } from './newTravel.interface'
 import './newTravel.scss'
@@ -30,6 +31,7 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
       hasErrorMsg: '新建记录错误',
       hasErrorIcon: 'close-circle',
       groupIdInfo: '',
+      groupMembers: [],
     }
   }
 
@@ -58,24 +60,33 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
       method: 'GET',
       url: `${MAINHOST}/api/getBookList`,
       data: {
-        book_id: parseInt(this.$router.params.bookId)
+        book_id: parseInt(this.$router.params.projectId)
       }
     });
     if (result.data.results.length > 0) {
       result = result.data.results[0];
-      this.setState({
-        hasBookId: true,
-        bookType: result.book_type,
-        titleInput: result.book_name,
-        budget: parseFloat(result.budget), // 账本预算
-        is_shared: result.is_shared, // 是否为共享账本
-      }, () => {
-        console.log("数据获取完毕")
-      })
       if (result.is_shared) {
-        // 当项目为共享项目时，groupIdInfo为uid
+        const groupMemberInfoList:any = await this.getGroupMembers(result.uid);
         this.setState({
-          groupIdInfo: result.uid
+          hasBookId: true,
+          bookType: result.book_type,
+          titleInput: result.book_name,
+          budget: parseFloat(result.budget), // 账本预算
+          is_shared: result.is_shared, // 是否为共享账本
+          groupIdInfo: result.uid,
+          groupMembers: groupMemberInfoList,
+        }, () => {
+          console.log("共享，数据获取完毕", this.state)
+        })
+      } else {
+        this.setState({
+          hasBookId: true,
+          bookType: result.book_type,
+          titleInput: result.book_name,
+          budget: parseFloat(result.budget),
+          is_shared: result.is_shared,
+        }, () => {
+          console.log("数据获取完毕", this.state)
         })
       }
     }
@@ -85,11 +96,12 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
    * 修改账本信息
    */
   async changeBook() {
-    const bookId = decodeURIComponent(this.$router.params.bookId);
+    const bookId = decodeURIComponent(this.$router.params.projectId); // 获取项目id
     let createId = this.state.uid; // 先设定修改人uid
     if (this.state.is_shared) {
-      createId = this.state.groupIdInfo // 修改人为group
+      createId = this.state.groupIdInfo // 修改人更新为group
     }
+    // 修改项目信息
     const result = await Taro.request({
       method: 'PUT',
       url: `${MAINHOST}/api/bookChangeApi/${bookId}`,
@@ -131,7 +143,7 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
    * 删除项目
    */
   async deleteBook() {
-    const bookId = decodeURIComponent(this.$router.params.bookId);
+    const bookId = decodeURIComponent(this.$router.params.projectId);
     const result = await await Taro.request({
       method: 'DELETE',
       url: `${MAINHOST}/api/bookChangeApi/${bookId}`,
@@ -162,6 +174,7 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
    */
   async createNewGroup() {
     const uid = Taro.getStorageSync('uid');
+    const portrait = Taro.getStorageSync('portrait');
     let result:any = await Taro.request({
       method: "POST",
       url: `${MAINHOST}/api/createGroupMember`,
@@ -169,9 +182,24 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
         group_id: this.state.groupIdInfo,
         uid: uid,
         is_admin: true,
+        portrait: portrait,
       }
     });
     return result.data;
+  }
+
+  /**
+   * 获取小组成员信息
+   */
+  async getGroupMembers(group_id) {
+    let result:any = await Taro.request({
+      method: "GET",
+      url: `${MAINHOST}/api/getGroupMembers`,
+      data: {
+        group_id: group_id,
+      }
+    });
+    return result.data.results;
   }
 
   /**
@@ -226,13 +254,11 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
    * 分享信息
    */
   onShareAppMessage() {
-    console.log(2222, this.state.titleInput, this.state.groupIdInfo);
     const username = Taro.getStorageSync('username');
     return {
       title: `【${username}】邀请你加入组群【${this.state.titleInput}】`,
       path: `/pages/sharePage/sharePage?inviteUser=${username}&groupId=${this.state.groupIdInfo}&projectName=${this.state.titleInput}`,
       success: function (res) {
-        console.log(res);
         console.log("转发成功:" + JSON.stringify(res));
       },
       fail: function (res) {
@@ -263,20 +289,21 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
   }
 
   // 页面挂载时执行
-  componentWillMount() {
+  async componentDidShow() {
+    Tips.loading()
     const username = Taro.getStorageSync('username');
     const uid = Taro.getStorageSync('uid');
     this.setState({
       uid: uid,
       username: username,
-    }, () => {
-      if (this.$router.params.bookId) {
-        this.getBookInfo();
-        Taro.setNavigationBarTitle({ // 设置标题栏
-          title: '修改项目信息'
-        });
-      }
     });
+    if (this.$router.params.projectId) {
+      await this.getBookInfo();
+      Taro.setNavigationBarTitle({ // 设置标题栏
+        title: '修改项目信息'
+      });
+    }
+    Tips.loaded()
   }
 
   render() {
@@ -308,6 +335,7 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
             sharedState={this.state.is_shared}
             groupIdInfo={this.state.groupIdInfo}
             projectName={this.state.titleInput}
+            groupMemberList={this.state.groupMembers}
             onGroupId={this.onChangeGroupInfo.bind(this)}
             onShareState={this.onChangeShareState.bind(this)}
           />

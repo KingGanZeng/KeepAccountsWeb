@@ -8,6 +8,12 @@ $expense_color-active: #4ffa9360;
 $underline_color: #cabe16;
 
 .fx-accountBook-wrap {
+  background: $main_color;
+  padding-top: 25px;
+  overflow: hidden;
+  box-sizing: border-box;
+  min-height: 100vh;
+
   .at-modal__container {
     top: 45%;
   }
@@ -58,11 +64,6 @@ $underline_color: #cabe16;
       }
     }
   }
-
-  background: $main_color;
-  padding-top: 25px;
-  overflow: hidden;
-  box-sizing: border-box;
   .choice-wrapper {
     margin-top:40px;
     background: linear-gradient(120deg, $main_color, $item-background);

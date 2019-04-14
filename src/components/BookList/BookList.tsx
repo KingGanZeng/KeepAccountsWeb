@@ -24,14 +24,24 @@ class BookList extends Component<BookListProps,BookListState > {
    * @param bookInfo
    */
   onClickBook = (bookInfo) => {
-    const bool = bookInfo.book_type == 'travelParty' || bookInfo.book_type == 'moneyManagement';
-    Taro.redirectTo({
-      url: "/pages/index/index?bookId=" + bookInfo.book_id +
-        '&bookName=' + bookInfo.book_name +
-        '&bookType=' + bookInfo.book_type +
-        '&budget=' + bookInfo.budget +
-        '&isSpecial=' + bool
-    })
+    if (this.state.bookTitle === '我的共享项目') {
+      Taro.redirectTo({
+        url: "/pages/travelDetails/travelDetails?bookId=" + bookInfo.book_id +
+          '&bookName=' + bookInfo.book_name +
+          '&bookType=' + bookInfo.book_type +
+          '&budget=' + bookInfo.budget +
+          '&sBookId=' + false
+      })
+    } else {
+      const bool = bookInfo.book_type == 'travelParty' || bookInfo.book_type == 'moneyManagement';
+      Taro.redirectTo({
+        url: "/pages/index/index?bookId=" + bookInfo.book_id +
+          '&bookName=' + bookInfo.book_name +
+          '&bookType=' + bookInfo.book_type +
+          '&budget=' + bookInfo.budget +
+          '&isSpecial=' + bool
+      })
+    }
   };
 
   render() {
@@ -40,7 +50,6 @@ class BookList extends Component<BookListProps,BookListState > {
       hasBook = true
     }
     const books = this.props.list.map((book, index) => {
-      console.log(333, book, book.book_name);
       const bookClass = book.book_type + '-book';
       return (
         <View

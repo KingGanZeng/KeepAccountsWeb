@@ -68,7 +68,6 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
    * 获取共享账本/项目
    */
   async getGroupBook() {
-    Tips.loaded()
     // 首先获取我的小组列表
     const groupList = await Taro.request({
       method: 'GET',
@@ -79,7 +78,9 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
     })
     if (groupList.data.results.length > 0) {
       // 如果小组列表不为空，则遍历获取gid再拿到账本信息
-      groupList.data.results.forEach(async(item) => {
+      const tmpAdminGroupBookList:any = [];
+      const tmpGroupBookList:any = [];
+      for(const item of groupList.data.results) {
         const bookList = await Taro.request({
           method: 'GET',
           url: `${MAINHOST}/api/getBookList`,
@@ -88,29 +89,27 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
           }
         })
         // 向groupBookList中添加项目
-        let tmpGroupBookList:any;
         if (item.is_admin) {
           // 如果是创建者，则groupAdminProjectList内容添加，否则groupProject添加
-          tmpGroupBookList = this.state.groupAdminProjectList;
-          tmpGroupBookList.push({
+          tmpAdminGroupBookList.push({
             ...bookList.data.results[0],
             is_admin: item.is_admin,
-          })
-          this.setState({
-            groupAdminProjectList: tmpGroupBookList,
           })
         } else {
-          tmpGroupBookList = this.state.groupProjectList;
           tmpGroupBookList.push({
             ...bookList.data.results[0],
             is_admin: item.is_admin,
           })
-          this.setState({
-            groupProjectList: tmpGroupBookList,
-          })
         }
-      });
+      }
+      console.log(tmpAdminGroupBookList, tmpGroupBookList)
+      this.setState({
+        groupAdminProjectList: tmpAdminGroupBookList,
+        groupProjectList: tmpGroupBookList,
+      })
+      Tips.loaded()
     } else {
+      Tips.loaded()
       return;
     }
   }
@@ -251,7 +250,7 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
       });
     }
     const hasBook = myBookList.length > 0;
-    const hasGroupAdminProjects = this.state.groupAdminProjectList.length > 0;
+    // const hasGroupAdminProjects = this.state.groupAdminProjectList.length > 0;
     const hasGroupProjects = this.state.groupProjectList.length > 0;
     const date = +new Date();
     console.log(111, this.state.groupProjectList, this.state.groupAdminProjectList)
@@ -320,19 +319,7 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
           />
         </AtCard>
         { hasBook && <BookList title='我的账本' date={date} list={myBookList} />}
-        { hasGroupAdminProjects &&
-        <BookList
-          title='我创建的共享'
-          date={date}
-          list={this.state.groupAdminProjectList}
-        />
-        }
-        { hasGroupProjects &&
-        <BookList
-          title='我的共享项目'
-          date={date}
-          list={this.state.groupProjectList}
-        />
+        { hasGroupProjects && <BookList title='我的共享项目' date={date} list={this.state.groupProjectList} />
         }
       </View>
     )
