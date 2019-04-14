@@ -75,7 +75,7 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
       data: {
         uid: this.state.uid,
       }
-    })
+    });
     if (groupList.data.results.length > 0) {
       // 如果小组列表不为空，则遍历获取gid再拿到账本信息
       const tmpAdminGroupBookList:any = [];
@@ -87,7 +87,7 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
           data: {
             uid: item.group_id,
           }
-        })
+        });
         // 向groupBookList中添加项目
         if (item.is_admin) {
           // 如果是创建者，则groupAdminProjectList内容添加，否则groupProject添加
@@ -102,14 +102,14 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
           })
         }
       }
-      console.log(tmpAdminGroupBookList, tmpGroupBookList)
+      console.log(tmpAdminGroupBookList, tmpGroupBookList);
       this.setState({
         groupAdminProjectList: tmpAdminGroupBookList,
         groupProjectList: tmpGroupBookList,
-      })
+      });
       Tips.loaded()
     } else {
-      Tips.loaded()
+      Tips.loaded();
       return;
     }
   }
@@ -122,7 +122,7 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
     if(!this.state.hasAuthorized) {
       this.setState({
         modalOpenState: true,
-      })
+      });
       return ;
     }
     let type = '';
@@ -163,18 +163,18 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
    * 已认证从数据库获取信息
    */
   async getAuthorized() {
-    let authorizeState = false
-    let openState= false
+    let authorizeState = false;
+    let openState= false;
     await Taro.getSetting({
       success(res) {
         if(!res.authSetting['scope.userInfo']) {
-          authorizeState = false
+          authorizeState = false;
           openState = true
         } else {
           authorizeState = true
         }
       }
-    })
+    });
     this.setState({
       hasAuthorized: authorizeState,
       modalOpenState: openState
@@ -184,10 +184,24 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
         // 获取用户的相关信息
         Taro.getUserInfo()
           .then(result => {
-            const userInfo = JSON.parse(result.rawData)
+            const userInfo = JSON.parse(result.rawData);
             // 将用户名及头像信息存入localStorage
             Taro.setStorageSync('username', userInfo.nickName);
             Taro.setStorageSync('portrait', userInfo.avatarUrl);
+          })
+          .then(() => {
+            Request.login()
+          })
+          .then(() => {
+            const uid = Taro.getStorageSync('uid');
+            this.setState({
+              uid: uid
+            }, () => {
+              Tips.loading();
+              this.getBook();
+              this.getSpecialBook();
+              this.getGroupBook()
+            })
           })
       }
     })
@@ -201,15 +215,27 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
     this.setState({
       hasAuthorized: true,
       modalOpenState: false,
-    })
+    }, () => {
+      Taro.getUserInfo()
+        .then(result => {
+          const userInfo = JSON.parse(result.rawData);
+          // 将用户名及头像信息存入localStorage
+          Taro.setStorageSync('username', userInfo.nickName);
+          Taro.setStorageSync('portrait', userInfo.avatarUrl);
+        })
+        .then(() => {
+          // 将信息存入后再登录注册
+          Request.login()
+        })
+    });
     console.log(e)
-  }
+  };
 
   /**
    * 下拉刷新
    */
   onPullDownRefresh() {
-    this.getBook()
+    this.getBook();
     this.getSpecialBook()
   }
 
@@ -218,20 +244,10 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
    */
   async componentWillMount() {
     await this.getAuthorized()
-    await Request.login()
-    const uid = Taro.getStorageSync('uid')
-    this.setState({
-      uid: uid
-    }, () => {
-      Tips.loading()
-      this.getBook()
-      this.getSpecialBook()
-      this.getGroupBook()
-    })
   }
 
   render() {
-    const { data } = this.props
+    const { data } = this.props;
     // @ts-ignore
     let myBookList = data.map((item) => {
       // 禁止渲染特殊账本及相关
@@ -244,8 +260,8 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
     });
     if (this.state.specialBookList.length > 0) {
       this.state.specialBookList.map((item) => {
-        let tmpItem = item
-        tmpItem.book_id = item.s_book_id
+        let tmpItem = item;
+        tmpItem.book_id = item.s_book_id;
         myBookList.push(tmpItem)
       });
     }
@@ -253,7 +269,6 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
     // const hasGroupAdminProjects = this.state.groupAdminProjectList.length > 0;
     const hasGroupProjects = this.state.groupProjectList.length > 0;
     const date = +new Date();
-    console.log(111, this.state.groupProjectList, this.state.groupAdminProjectList)
 
     return (
       <View className='fx-accountBook-wrap'>
@@ -318,8 +333,8 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
             onClick={this.toNewAccountBook}
           />
         </AtCard>
-        { hasBook && <BookList title='我的账本' date={date} list={myBookList} />}
-        { hasGroupProjects && <BookList title='我的共享项目' date={date} list={this.state.groupProjectList} />
+        { hasBook && <BookList title='我创建的' date={date} list={myBookList} />}
+        { hasGroupProjects && <BookList title='我参与的' date={date} list={this.state.groupProjectList} />
         }
       </View>
     )

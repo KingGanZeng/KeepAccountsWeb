@@ -274,6 +274,7 @@ class Index extends Component<IndexProps,IndexState > {
             nowBookRecord={this.state.specialDataObj}
             nowBookType='travelParty'
             nowBookId={this.state.bookId}
+            isAdmin={decodeURIComponent(this.$router.params.is_admin)}
           />}
           { renderContentType == 'moneyManagement' &&
           <MoneyManagementContent

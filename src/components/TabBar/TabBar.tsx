@@ -57,7 +57,10 @@ class TabBar extends Component<TabBarProps,TabBarState > {
     // 如果类型是travel跳转到相应页面
     if (this.state.bookType == 'travelParty') {
       Taro.navigateTo({
-        url: '/pages/newTravel/newTravel?bookId=' + this.state.bookId + '&bookType=' + this.state.bookType
+        url: '/pages/newTravel/newTravel?bookId=' + this.state.bookId +
+          '&bookType=' + this.state.bookType +
+          '&is_admin=' + true +
+          '&first_create=' + true
       })
       // 如果类型是money跳转到相应页面
     } else if (this.state.bookType == 'moneyManagement') {

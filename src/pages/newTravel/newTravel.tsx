@@ -174,6 +174,7 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
    */
   async createNewGroup() {
     const uid = Taro.getStorageSync('uid');
+    const username = Taro.getStorageSync('username');
     const portrait = Taro.getStorageSync('portrait');
     let result:any = await Taro.request({
       method: "POST",
@@ -181,6 +182,7 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
       data: {
         group_id: this.state.groupIdInfo,
         uid: uid,
+        username: username,
         is_admin: true,
         portrait: portrait,
       }
@@ -206,22 +208,12 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
    * 生成新账本并跳转
    */
   async jumpToNewBook() {
-    // 先将创建者设为uid
-    let createId = this.state.uid;
-    // 如果有组信息的话先创建小组
-    if (this.state.is_shared) {
-      const groupInfo = await this.createNewGroup();
-      // 将创建者id更换为组id
-      createId = groupInfo.group_id;
-    }
-
-    // 新建账本
     let result:any = await Taro.request({
       method: 'POST',
       url: `${MAINHOST}/api/createBook`,
       data: {
         username: this.state.username,
-        uid: createId,
+        uid: this.state.uid,
         book_name: this.state.titleInput,
         book_type: 'travelParty',
         budget: this.state.budget,
@@ -244,7 +236,8 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
             '&bookName=' + this.state.titleInput +
             '&bookType=' + 'travelParty' +
             '&budget=' + this.state.budget +
-            '&sBookId=' + this.state.sBookId
+            '&sBookId=' + this.state.sBookId +
+            '&is_admin=' + true
         })
       }
     }
@@ -278,6 +271,12 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
     })
   }
 
+  onChangeGroupMemberList(groupMemberList) {
+    this.setState({
+      groupMembers: groupMemberList,
+    })
+  }
+
   /**
    * 监听子组件小组共享状态修改
    * @param shareState
@@ -307,6 +306,8 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
   }
 
   render() {
+    const isAdmin = decodeURIComponent(this.$router.params.is_admin) === 'true'
+    const first_create = decodeURIComponent(this.$router.params.first_create) === 'true'
     return (
       <View className='newTravel-wrap'>
         <AtToast
@@ -320,6 +321,7 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
             name='value'
             value={this.state.titleInput}
             type='text'
+            disabled={!isAdmin}
             placeholder='请输入项目名称，如:台湾游'
             onChange={this.handleInputChange.bind(this, 'titleInput')}
             clear
@@ -328,6 +330,7 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
             name='value'
             value={this.state.budget || ''}
             type='number'
+            disabled={!isAdmin}
             placeholder='请设置预算'
             onChange={this.handleInputChange.bind(this, 'budget')}
           />
@@ -336,13 +339,17 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
             groupIdInfo={this.state.groupIdInfo}
             projectName={this.state.titleInput}
             groupMemberList={this.state.groupMembers}
+            isAdmin={isAdmin}
+            firstCreate={first_create}
             onGroupId={this.onChangeGroupInfo.bind(this)}
+            onGroupMemberList={this.onChangeGroupMemberList.bind(this)}
             onShareState={this.onChangeShareState.bind(this)}
           />
         </View>
         { this.state.hasBookId && <View className='button-wrapper'>
           <AtButton
             circle
+            disabled={!isAdmin}
             type='primary'
             onClick={this.changeBook}
             className='button-check-item'
@@ -351,23 +358,27 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
           </AtButton>
           <AtButton
             circle
+            disabled={!isAdmin}
             type='primary'
             className='button-trash-item'
             onClick={this.deleteBook}
           >
             <View className='at-icon at-icon-trash' />
           </AtButton>
-        </View>}
-        { !this.state.hasBookId && <View className='button-wrapper'>
+          </View>
+        }
+        {!this.state.hasBookId && <View className='button-wrapper'>
           <AtButton
             circle
             type='primary'
+            disabled={!isAdmin}
             className='button-check-item'
             onClick={this.jumpToNewBook}
           >
-            <View className='at-icon at-icon-check' />
+              <View className='at-icon at-icon-check' />
           </AtButton>
-        </View> }
+        </View>
+        }
       </View>
     )
   }

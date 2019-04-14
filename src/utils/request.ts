@@ -154,12 +154,10 @@ export class Request {
         url: `${MAINHOST}${requestConfig.loginUrl}`,
         data: { uid: uid }
       });
-      Taro.setStorageSync('username', data.results[0].username);
-      const username = Taro.getStorageSync('username');
-
       // 未注册用户自动注册
       if (!data.results || data.results.length == 0) {
         const portrait = Taro.getStorageSync('portrait');
+        const username = Taro.getStorageSync('username');
         const registerData = await Taro.request({
           method: 'POST',
           url: `${MAINHOST}${requestConfig.registerUrl}`,
@@ -173,6 +171,8 @@ export class Request {
           reject()
           return
         }
+      } else {
+        Taro.setStorageSync('username', data.results[0].username);
       }
 
       // Taro.setStorageSync('token', data.data.token)

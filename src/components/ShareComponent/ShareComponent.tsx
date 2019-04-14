@@ -8,7 +8,7 @@ import { randomWord } from '../../utils/common'
 
 class ShareComponent extends Component<ShareComponentProps,ShareComponentState > {
   constructor(props: ShareComponentProps) {
-    super(props)
+    super(props);
     this.state = {
       groupState: false,
       groupMembers: [],
@@ -16,19 +16,22 @@ class ShareComponent extends Component<ShareComponentProps,ShareComponentState >
   }
   static options = {
     addGlobalClass: true
-  }
+  };
   static defaultProps:ShareComponentProps = {
     sharedState: false,
     projectName: '',
     groupIdInfo: '',
     groupMemberList: [],
-  }
+    isAdmin: false,
+    firstCreate: false,
+  };
 
   /**
    * 开启小组
    */
   handleGroupSwitchChange() {
     if (!this.state.groupState) {
+      console.log("创建小组");
       const nowUserPortrait = Taro.getStorageSync('portrait');
       const nowUsername = Taro.getStorageSync('username');
       const nowUserId = Taro.getStorageSync('uid');
@@ -36,26 +39,30 @@ class ShareComponent extends Component<ShareComponentProps,ShareComponentState >
       // 当用户开启小组时，将用户信息push进小组
       newGroup.push({
         uid: nowUserId,
-        name: nowUsername,
+        username: nowUsername,
         portrait: nowUserPortrait,
       });
+      console.log(newGroup);
       // 随机生成小组id
       // @ts-ignore
       const groupId = randomWord(false, 32);
       this.setState({
         groupMembers: newGroup,
-      })
+      }, () => {
+        // 同步父组件信息
+        this.props.onGroupMemberList(newGroup)
+      });
       // 设置Taro开启小组信息获取
       Taro.showShareMenu({
         withShareTicket: true
-      })
+      });
       // 如果未创建小组，则向父组件传小组id,否则不对组id做修改
       if (!this.props.groupIdInfo) {
         this.props.onGroupId(groupId)
       }
     } else {
-      // 在关闭小组时，如果是已创建好的组，不做操作；对未在系统注册的组，清空组信息
-      if (this.props.groupMemberList.length === 0) {
+      // 在关闭小组时，如果是已创建好的组(不是第一次创建的)，不做操作；对未在系统注册的组，清空组信息
+      if (this.props.groupMemberList.length === 1) {
         this.setState({
           groupMembers: [],
         })
@@ -90,10 +97,10 @@ class ShareComponent extends Component<ShareComponentProps,ShareComponentState >
       return (
         <View className='at-col at-col-3 member-wrapper' key={index}>
           <Image className='portrait-wrapper' src={member.portrait} />
-          <View className='name-wrapper'>{member.name}</View>
+          <View className='name-wrapper'>{member.username}</View>
         </View>
       )
-    })
+    });
     return (
       <View className='fx-ShareComponent-wrap'>
         <AtForm>
@@ -101,16 +108,17 @@ class ShareComponent extends Component<ShareComponentProps,ShareComponentState >
             checked={this.state.groupState}
             onChange={this.handleGroupSwitchChange}
             border={false}
-            disabled={this.props.projectName === ''}
+            disabled={this.props.projectName === '' || !this.props.isAdmin || this.props.firstCreate}
             title='是否开启小组'
           />
+          {this.props.firstCreate && <View className='open-group-toast'>开启小组需先完成账本创建</View>}
         </AtForm>
         {this.state.groupState && <View className='at-row at-row--wrap group-wrapper'>
           {this.state.groupMembers.length > 0 && memberList}
-          <View className='at-col at-col-3 member-wrapper member-add'>
+          {this.props.isAdmin && <View className='at-col at-col-3 member-wrapper member-add'>
             <AtButton openType='share' />
             <View className='at-icon at-icon-add' />
-          </View>
+          </View>}
         </View>}
       </View>
     )

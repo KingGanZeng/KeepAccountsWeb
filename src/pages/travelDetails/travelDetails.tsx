@@ -72,8 +72,11 @@ class TravelDetails extends Component<TravelDetailsProps,TravelDetailsState > {
    * 跳转修改账本页
    */
   jumpToChangeRecord() {
+    console.log(3333, decodeURIComponent(this.$router.params.is_admin));
     Taro.navigateTo({
-      url: '/pages/newTravel/newTravel?projectId=' + this.state.bookId
+      url: '/pages/newTravel/newTravel?projectId=' +
+        this.state.bookId +
+        '&is_admin=' + decodeURIComponent(this.$router.params.is_admin)
     })
   }
 
@@ -145,7 +148,7 @@ class TravelDetails extends Component<TravelDetailsProps,TravelDetailsState > {
               className='edit-book'
               onClick={this.jumpToChangeRecord}
             >
-              <View className='at-icon at-icon-edit' />修改账本
+              <View className='at-icon at-icon-edit' />修改项目
             </View>
             <View className='card-header'>
               <View className='total-expense'>

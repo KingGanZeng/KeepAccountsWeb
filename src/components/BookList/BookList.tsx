@@ -24,13 +24,14 @@ class BookList extends Component<BookListProps,BookListState > {
    * @param bookInfo
    */
   onClickBook = (bookInfo) => {
-    if (this.state.bookTitle === '我的共享项目') {
-      Taro.redirectTo({
+    if (this.state.bookTitle === '我参与的') {
+      Taro.navigateTo({
         url: "/pages/travelDetails/travelDetails?bookId=" + bookInfo.book_id +
           '&bookName=' + bookInfo.book_name +
           '&bookType=' + bookInfo.book_type +
           '&budget=' + bookInfo.budget +
-          '&sBookId=' + false
+          '&sBookId=' + false  +
+          '&is_admin=' + false
       })
     } else {
       const bool = bookInfo.book_type == 'travelParty' || bookInfo.book_type == 'moneyManagement';
@@ -39,7 +40,8 @@ class BookList extends Component<BookListProps,BookListState > {
           '&bookName=' + bookInfo.book_name +
           '&bookType=' + bookInfo.book_type +
           '&budget=' + bookInfo.budget +
-          '&isSpecial=' + bool
+          '&isSpecial=' + bool +
+          '&is_admin=' + true
       })
     }
   };

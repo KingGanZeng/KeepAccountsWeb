@@ -5,8 +5,8 @@ import { connect } from '@tarojs/redux'
 import { ChartPageProps, ChartPageState } from './chartPage.interface'
 import './chartPage.scss'
 // @ts-ignore
-import BarChart from "../../components/BarChart/BarChart";
-import PieChart from "../../components/PieChart/PieChart";
+// import BarChart from "../../components/BarChart/BarChart";
+// import PieChart from "../../components/PieChart/PieChart";
 
 @connect(({ chartPage }) => ({
     ...chartPage,
@@ -25,8 +25,8 @@ class ChartPage extends Component<ChartPageProps,ChartPageState > {
   render() {
     return (
       <View className='chartPage-wrap'>
-        <BarChart />
-        <PieChart />
+        {/*<BarChart />*/}
+        {/*<PieChart />*/}
       </View>
     )
   }

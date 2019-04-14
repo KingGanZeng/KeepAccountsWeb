@@ -31,12 +31,6 @@ class App extends Component {
     },
     subPackages: [ // 分包加载
       {
-        root: 'pages/chartPage',
-        pages: [
-          'chartPage' // 图表页面
-        ]
-      },
-      {
         root: 'pages/travelDetails',
         pages: [
           'travelDetails' // 旅游聚会内页

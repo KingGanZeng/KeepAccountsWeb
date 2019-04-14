@@ -17,4 +17,5 @@ export interface TravelPartyContentProps {
   nowBookRecord: any, // 数据源
   nowBookType: string, // 账本类型
   nowBookId: number, // 当前总账本id
+  isAdmin: boolean, // 是否有管理员权限
 }
