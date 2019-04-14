@@ -5,6 +5,7 @@ import { SharePageProps, SharePageState } from './sharePage.interface'
 import './sharePage.scss'
 import {MAINHOST} from "../../config";
 import {Request} from "../../utils/request";
+import Tips from "../../utils/tips";
 
 class SharePage extends Component<SharePageProps,SharePageState > {
   config:Config = {
@@ -28,10 +29,11 @@ class SharePage extends Component<SharePageProps,SharePageState > {
   /**
    * 确认加入小组
    */
-  confirmJoin() {
+  async confirmJoin() {
     const uid = Taro.getStorageSync('uid');
+    Tips.loading();
     try {
-      let result:any = Taro.request({
+      let result:any = await Taro.request({
         method: 'POST',
         url: `${MAINHOST}/api/createGroupMember`,
         data: {
@@ -40,15 +42,17 @@ class SharePage extends Component<SharePageProps,SharePageState > {
           is_admin: false,
         }
       })
-      result = result.data
+      result = result.data;
+      console.log(result, result.group_id);
       if(result.group_id) {
-        let projectInfo:any = Taro.request({
-          method: 'POST',
+        let projectInfo:any = await Taro.request({
+          method: 'GET',
           url: `${MAINHOST}/api/getBookList`,
           data: {
-            uid: parseInt(result.data.group_id),
+            uid: result.group_id,
           }
         })
+        Tips.loaded();
         if (projectInfo.data.results.length > 0) {
           projectInfo = projectInfo.data.results[0]
           // 跳转到项目列表
@@ -62,7 +66,8 @@ class SharePage extends Component<SharePageProps,SharePageState > {
         }
       }
     } catch (e) {
-
+      Tips.loaded();
+      console.log(e);
     }
   }
 

@@ -230,7 +230,7 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
     const username = Taro.getStorageSync('username');
     return {
       title: `【${username}】邀请你加入组群【${this.state.titleInput}】`,
-      path: `/pages/sharePage?inviteUser=${username}&groupId=${this.state.groupIdInfo}&projectName=${this.state.titleInput}`,
+      path: `/pages/sharePage/sharePage?inviteUser=${username}&groupId=${this.state.groupIdInfo}&projectName=${this.state.titleInput}`,
       success: function (res) {
         console.log(res);
         console.log("转发成功:" + JSON.stringify(res));
