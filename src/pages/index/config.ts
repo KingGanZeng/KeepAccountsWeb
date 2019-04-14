@@ -1,10 +1,12 @@
+import { MAINHOST } from '../../config'
+
 export default {
   getRecordData: {
-    host: 'http://127.0.0.1:8000',
+    host: MAINHOST,
     url: '/api/recordDataApi'
   },
   getSpecialBook :{
-    host: 'http://127.0.0.1:8000',
+    host: MAINHOST,
     url: '/api/getSpecialBook'
   }
 }
