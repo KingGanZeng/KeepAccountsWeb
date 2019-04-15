@@ -32,6 +32,7 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
       hasErrorIcon: 'close-circle',
       groupIdInfo: '',
       groupMembers: [],
+      firstShare: false,
     }
   }
 
@@ -66,6 +67,7 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
     if (result.data.results.length > 0) {
       result = result.data.results[0];
       if (result.is_shared) {
+        // 用户已开启共享，获取小组成员信息
         const groupMemberInfoList:any = await this.getGroupMembers(result.uid);
         this.setState({
           hasBookId: true,
@@ -79,12 +81,14 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
           console.log("共享，数据获取完毕", this.state)
         })
       } else {
+        // 用户未开启共享，标注firstShare属性
         this.setState({
           hasBookId: true,
           bookType: result.book_type,
           titleInput: result.book_name,
           budget: parseFloat(result.budget),
           is_shared: result.is_shared,
+          firstShare: !result.is_shared,
         }, () => {
           console.log("数据获取完毕", this.state)
         })
@@ -98,8 +102,23 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
   async changeBook() {
     const bookId = decodeURIComponent(this.$router.params.projectId); // 获取项目id
     let createId = this.state.uid; // 先设定修改人uid
+    console.log("修改账本信息", this.state.is_shared, this.state.firstShare)
     if (this.state.is_shared) {
       createId = this.state.groupIdInfo // 修改人更新为group
+      console.log(this.state.firstShare)
+      if (this.state.firstShare) {
+        // 判断如果是首次开启共享，则创建小组
+        const result = await this.createNewGroup();
+        console.log("创建小组", result);
+        if (!result.group_id) {
+          this.setState({
+            hasError: true,
+            hasErrorMsg: '开启共享失败，请稍后再试',
+            hasErrorIcon: 'close-circle',
+          })
+          return;
+        }
+      }
     }
     // 修改项目信息
     const result = await Taro.request({
@@ -111,6 +130,7 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
         book_name: this.state.titleInput,
         book_type: this.state.bookType,
         budget: this.state.budget,
+        is_shared: this.state.is_shared,
       }
     });
     // @ts-ignore
@@ -127,7 +147,8 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
               '&bookName=' + this.state.titleInput +
               '&bookType=' + 'travelParty' +
               '&budget=' + this.state.budget +
-              '&sBookId=' + this.state.sBookId
+              '&sBookId=' + this.state.sBookId +
+              '&is_admin=' + true
           })
         }, 800)
       })
@@ -135,6 +156,7 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
       this.setState({
         hasError: true,
         hasErrorMsg: '修改失败',
+        hasErrorIcon: 'close-circle',
       })
     }
   }
@@ -152,6 +174,7 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
       this.setState({
         hasError: true,
         hasErrorMsg: '暂无法删除该记录',
+        hasErrorIcon: 'close-circle',
       })
     } else {
       this.setState({
@@ -271,6 +294,10 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
     })
   }
 
+  /**
+   * 监听子组件小组成员列表的变化
+   * @param groupMemberList
+   */
   onChangeGroupMemberList(groupMemberList) {
     this.setState({
       groupMembers: groupMemberList,
@@ -282,9 +309,30 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
    * @param shareState
    */
   onChangeShareState(shareState) {
+    console.log("父组件监听", shareState);
     this.setState({
       is_shared: shareState,
     })
+  }
+
+  /**
+   * 监听子组件信息，删除某个组成员
+   * @param group_member_id
+   */
+  async onDeleteGroupMember(group_member_id) {
+    let result:any = await Taro.request({
+      method: 'DELETE',
+      url: `${MAINHOST}/api/changeGroupMember/${group_member_id}`,
+    })
+    if (!result.data) {
+      await this.getBookInfo();
+    } else {
+      this.setState({
+        hasError: true,
+        hasErrorMsg: '删除失败',
+        hasErrorIcon: 'close-circle',
+      })
+    }
   }
 
   // 页面挂载时执行
@@ -344,6 +392,7 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
             onGroupId={this.onChangeGroupInfo.bind(this)}
             onGroupMemberList={this.onChangeGroupMemberList.bind(this)}
             onShareState={this.onChangeShareState.bind(this)}
+            onGroupMember={this.onDeleteGroupMember.bind(this)}
           />
         </View>
         { this.state.hasBookId && <View className='button-wrapper'>

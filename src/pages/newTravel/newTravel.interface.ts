@@ -19,6 +19,7 @@ export interface NewTravelState {
   groupIdInfo: string, // 组id
   groupMembers: any, // 小组成员列表
   is_shared: boolean, // 项目是否共享
+  firstShare: boolean, // 判断是否是第一次共享，用于在用户首次开启共享时创建小组
 }
 
 /**

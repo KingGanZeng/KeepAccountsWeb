@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
-import {AtForm, AtSwitch, AtButton } from 'taro-ui'
+import { AtForm, AtSwitch, AtButton, AtModal } from 'taro-ui'
 import { ShareComponentProps, ShareComponentState } from './ShareComponent.interface'
 import './ShareComponent.scss'
 // @ts-ignore
@@ -12,6 +12,8 @@ class ShareComponent extends Component<ShareComponentProps,ShareComponentState >
     this.state = {
       groupState: false,
       groupMembers: [],
+      modalOpenState: false,
+      modalContent: '',
     }
   }
   static options = {
@@ -35,23 +37,26 @@ class ShareComponent extends Component<ShareComponentProps,ShareComponentState >
       const nowUserPortrait = Taro.getStorageSync('portrait');
       const nowUsername = Taro.getStorageSync('username');
       const nowUserId = Taro.getStorageSync('uid');
-      const newGroup = this.state.groupMembers;
+      const newGroup = this.state.groupMembers.map(item => item);
       // 当用户开启小组时，将用户信息push进小组
       newGroup.push({
         uid: nowUserId,
         username: nowUsername,
         portrait: nowUserPortrait,
       });
-      console.log(newGroup);
       // 随机生成小组id
       // @ts-ignore
       const groupId = randomWord(false, 32);
-      this.setState({
-        groupMembers: newGroup,
-      }, () => {
-        // 同步父组件信息
-        this.props.onGroupMemberList(newGroup)
-      });
+      console.log(this.state.groupMembers, this.state.groupMembers.length)
+      if (this.state.groupMembers.length < 1) {
+        // 只有当组成员为0时，将用户信息添加进去，否则不做修改
+        this.setState({
+          groupMembers: newGroup,
+        }, () => {
+          // 同步父组件信息
+          this.props.onGroupMemberList(newGroup)
+        });
+      }
       // 设置Taro开启小组信息获取
       Taro.showShareMenu({
         withShareTicket: true
@@ -81,10 +86,45 @@ class ShareComponent extends Component<ShareComponentProps,ShareComponentState >
   }
 
   /**
+   * 从小组中删除某个用户，弹窗二次确认
+   * @param memberInfo
+   */
+  handleDeleteMember(memberInfo) {
+    this.setState({
+      modalOpenState: true,
+      modalContent: `确认将【${memberInfo.username}】从小组中移除？`,
+      deleteGroupMemberId: memberInfo.group_info_id
+    })
+  }
+
+  /**
+   * 弹出框取消事件
+   */
+  handleDeleteCancel() {
+    this.setState({
+      modalOpenState: false,
+      modalContent: '',
+      deleteGroupMemberId: 0,
+    })
+  }
+
+  /**
+   * 弹出框确认事件，删除该用户
+   */
+  handleDeleteConfirm() {
+    this.props.onGroupMember(this.state.deleteGroupMemberId)
+    this.setState({
+      modalOpenState: false,
+      modalContent: '',
+      deleteGroupMemberId: 0,
+    })
+  }
+
+  /**
    * 组件获取到props的变化，更新状态
    */
   componentWillReceiveProps(nextProps): void {
-    if (nextProps.sharedState) {
+    if (nextProps.sharedState === true) {
       this.setState({
         groupState: nextProps.sharedState,
         groupMembers: nextProps.groupMemberList,
@@ -92,17 +132,42 @@ class ShareComponent extends Component<ShareComponentProps,ShareComponentState >
     }
   }
 
+  componentDidMount(): void {
+    this.setState({
+      groupState: this.props.sharedState,
+      groupMembers: this.props.groupMemberList,
+    })
+  }
+
   render() {
+    const uid = Taro.getStorageSync('uid')
     const memberList = this.state.groupMembers.map((member, index) => {
+      const isNowUser = member.uid === uid
+      const needDeleteButton = !isNowUser && this.props.isAdmin // 为管理员且不是本人显示删除按钮
       return (
         <View className='at-col at-col-3 member-wrapper' key={index}>
           <Image className='portrait-wrapper' src={member.portrait} />
           <View className='name-wrapper'>{member.username}</View>
+          { needDeleteButton &&
+            <View
+              onClick={this.handleDeleteMember.bind(this, member)}
+              className='at-icon at-icon-subtract-circle delete-icon'
+            />}
         </View>
       )
     });
     return (
       <View className='fx-ShareComponent-wrap'>
+        <AtModal
+          isOpened={this.state.modalOpenState}
+          title='确认删除'
+          cancelText='取消'
+          confirmText='确认'
+          onClose={ this.handleDeleteCancel }
+          onCancel={this.handleDeleteCancel}
+          onConfirm={this.handleDeleteConfirm}
+          content={this.state.modalContent}
+        />
         <AtForm>
           <AtSwitch
             checked={this.state.groupState}
