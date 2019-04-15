@@ -18,11 +18,36 @@ class SharePage extends Component<SharePageProps,SharePageState > {
     const inviteUser = decodeURIComponent(this.$router.params.inviteUser);
     this.state = {
       projectName: projectName,
-      groupId: groupId || '8TxG5GwPHVMM8IaIJtBfXD6btHBK7mmr',
-      inviteUser: inviteUser || '淦',
+      groupId: groupId,
+      inviteUser: inviteUser,
       hasAuthorized: false,
       modalOpenState: false,
       confirmMsg: '',
+      hasAdd: false,
+    }
+  }
+
+  async checkAddState() {
+    const uid = Taro.getStorageSync('uid');
+    try {
+      let result:any = await Taro.request({
+        method: "GET",
+        url: `${MAINHOST}/api/getGroupMembers`,
+        data: {
+          group_id: this.state.groupId,
+        }
+      });
+      result = result.data.results
+      for (const member of result) {
+        if (member.uid == uid) {
+          this.setState({
+            hasAdd: true,
+            confirmMsg: '已加入'
+          })
+        }
+      }
+    } catch (e) {
+      console.log(e)
     }
   }
 
@@ -31,6 +56,8 @@ class SharePage extends Component<SharePageProps,SharePageState > {
    */
   async confirmJoin() {
     const uid = Taro.getStorageSync('uid');
+    const username = Taro.getStorageSync('username')
+    const portrait = Taro.getStorageSync('portrait')
     Tips.loading();
     try {
       let result:any = await Taro.request({
@@ -39,6 +66,8 @@ class SharePage extends Component<SharePageProps,SharePageState > {
         data: {
           group_id: this.state.groupId,
           uid: uid,
+          username: username,
+          portrait: portrait,
           is_admin: false,
         }
       })
@@ -61,7 +90,8 @@ class SharePage extends Component<SharePageProps,SharePageState > {
               '&bookName=' + projectInfo.book_name +
               '&bookType=' + 'travelParty' +
               '&budget=' + projectInfo.budget +
-              '&sBookId=' + false
+              '&sBookId=' + false +
+              '&is_admin=' + false
           })
         }
       }
@@ -86,32 +116,36 @@ class SharePage extends Component<SharePageProps,SharePageState > {
    * 已认证从数据库获取信息
    */
   async getAuthorized() {
-    let authorizeState = false
-    let openState= false
-    //  判断微信小程序是否授权过
+    let authorizeState = false;
+    let openState= false;
     await Taro.getSetting({
       success(res) {
         if(!res.authSetting['scope.userInfo']) {
-          authorizeState = false
+          authorizeState = false;
           openState = true
         } else {
           authorizeState = true
         }
       }
-    })
+    });
     this.setState({
       hasAuthorized: authorizeState,
       modalOpenState: openState
     }, () => {
       // 当用户已授权后
+      console.log('状态', this.state.hasAuthorized)
       if(this.state.hasAuthorized) {
         // 获取用户的相关信息
         Taro.getUserInfo()
           .then(result => {
-            const userInfo = JSON.parse(result.rawData)
-            // 将用户名与头像信息存入localStorage
-            Taro.setStorageSync('username', userInfo.nickName)
+            const userInfo = JSON.parse(result.rawData);
+            console.log('userinfo', userInfo)
+            // 将用户名及头像信息存入localStorage
+            Taro.setStorageSync('username', userInfo.nickName);
             Taro.setStorageSync('portrait', userInfo.avatarUrl);
+          })
+          .then(() => {
+            Request.login()
           })
       }
     })
@@ -146,6 +180,8 @@ class SharePage extends Component<SharePageProps,SharePageState > {
     this.setState({
       projectName: projectName,
       groupId: groupId,
+    }, () => {
+      this.checkAddState()
     })
   }
 
@@ -154,7 +190,10 @@ class SharePage extends Component<SharePageProps,SharePageState > {
    */
   async componentDidMount() {
     await this.getAuthorized()
-    await Request.login()
+    const uid = Taro.getStorageSync('uid')
+    const username = Taro.getStorageSync('username')
+    const portrait = Taro.getStorageSync('portrait')
+    console.log('用户信息', uid, username, portrait)
   }
 
   render() {
@@ -180,12 +219,12 @@ class SharePage extends Component<SharePageProps,SharePageState > {
           </AtModalAction>
         </AtModal>
         <View className='shareInfo'>
-          【{this.state.inviteUser}】邀请您加入{this.state.projectName}
+          【{this.state.inviteUser}】邀请您加入【{this.state.projectName}】
         </View>
-        <AtForm>
+        { !this.state.hasAdd && <AtForm>
           <AtButton type='primary' className='button-check-item' onClick={this.confirmJoin}>确认加入</AtButton>
           <AtButton type='primary' className='button-trash-item' onClick={this.refuseJoin}>拒绝</AtButton>
-        </AtForm>
+        </AtForm>}
         <View className='shareInfo'>
           {this.state.confirmMsg}
         </View>

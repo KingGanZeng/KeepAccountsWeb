@@ -12,6 +12,7 @@ export interface SharePageState {
   hasAuthorized: boolean, // 注册状态
   modalOpenState: boolean, // 模态框状态
   confirmMsg: string, // 确认信息
+  hasAdd: boolean, // 是否已加入该小组
 }
 
 /**

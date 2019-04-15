@@ -5,7 +5,7 @@ import { connect } from '@tarojs/redux'
 // import { Request } from '../../utils/request'
 import { IndexProps, IndexState } from './index.interface'
 import Tips from '../../utils/tips'
-import { addZero, objArrReduce } from "../../utils/common";
+import { addZero } from "../../utils/common";
 import './index.scss'
 import {MAINHOST} from "../../config";
 // @ts-ignore
@@ -13,7 +13,7 @@ import { TabBar } from '../../components/TabBar/TabBar'
 // @ts-ignore
 import { NavBar } from '../../components/NavBar/NavBar'
 // @ts-ignore
-import { Content } from '../../components/Content/Content'
+// import { Content } from '../../components/Content/Content'
 // @ts-ignore
 import { TravelPartyContent } from '../../components/TravelPartyContent/TravelPartyContent'
 // @ts-ignore
@@ -36,12 +36,12 @@ class Index extends Component<IndexProps,IndexState > {
     const month = addZero((nowDate.getMonth()+1).toString());
     const urlBookId = decodeURIComponent(this.$router.params.bookId);
     const urlBookType = decodeURIComponent(this.$router.params.bookType);
-    const urlBudget = decodeURIComponent(this.$router.params.budget);
+    // const urlBudget = decodeURIComponent(this.$router.params.budget);
     this.state = {
       yearMonth: `${year}-${month}`, // 用于存储日期，并传递给NavBar
       bookId: urlBookId || ' ',
       bookType: urlBookType || ' ', // 账本类别
-      budget: parseFloat(urlBudget), // 预算
+      // budget: parseFloat(urlBudget), // 预算
       uid: '',
       specialDataObj: {},
     }
@@ -173,13 +173,14 @@ class Index extends Component<IndexProps,IndexState > {
    */
   getDateData(date:string) {
     const y = date.split('-')[0];
-    const m = date.split('-')[1];
+    // const m = date.split('-')[1];
     Tips.loading();
-    if (this.state.bookType == 'moneyManagement' || this.state.bookType == 'travelParty') {
-      this.getSpecialBook(y, this.state.bookId)
-    } else {
-      this.getRecordData(m, y, this.state.bookId);
-    }
+    this.getSpecialBook(y, this.state.bookId)
+    // if (this.state.bookType == 'moneyManagement' || this.state.bookType == 'travelParty') {
+    //   this.getSpecialBook(y, this.state.bookId)
+    // } else {
+    //   this.getRecordData(m, y, this.state.bookId);
+    // }
   }
 
   /**
@@ -204,17 +205,15 @@ class Index extends Component<IndexProps,IndexState > {
   }
 
   render() {
-    const { recordData } = this.props;
-    const myRecordList = recordData || [];
-    let hasRecord = myRecordList.length > 0
+    // const { recordData } = this.props;
+    // const myRecordList = recordData || [];
+    // let hasRecord = myRecordList.length > 0
 
     let renderContentType = '';
-    if (this.state.bookType == 'travelParty') {
-      renderContentType = 'travelParty';
-    } else if (this.state.bookType == 'moneyManagement') {
+    if (this.state.bookType == 'moneyManagement') {
       renderContentType = 'moneyManagement'
     } else {
-      renderContentType = 'normal' // 除出游和理财外的其他项
+      renderContentType = 'travelParty';
     }
 
     let navBarData = { // 顶部数据集，不同类型做不同处理
@@ -224,38 +223,37 @@ class Index extends Component<IndexProps,IndexState > {
       budget: 0,
     };
     //处理收支数据 navBar
-    let incomeList = [];
-    let expenseList = [];
-    let incomeData:any = {};
-    let expenseData:any = {};
-    if (myRecordList && renderContentType == 'normal') {
-      myRecordList.forEach(item => {
-        if (item.record_type === 'income') {
-          // @ts-ignore
-          incomeList.push(item)
-        } else if (item.record_type === 'expense') {
-          // @ts-ignore
-          expenseList.push(item)
-        }
-      });
-      incomeData = objArrReduce(incomeList);
-      expenseData = objArrReduce(expenseList);
-      // @ts-ignore
-      navBarData = {
-        incomeCount: incomeData.moneyAll,
-        expenseCount: expenseData.moneyAll,
-        count: myRecordList.length,
-        budget: this.state.budget || 0
-      };
-    }
+    // let incomeList = [];
+    // let expenseList = [];
+    // let incomeData:any = {};
+    // let expenseData:any = {};
+    // if (myRecordList && renderContentType == 'normal') {
+    //   myRecordList.forEach(item => {
+    //     if (item.record_type === 'income') {
+    //       // @ts-ignore
+    //       incomeList.push(item)
+    //     } else if (item.record_type === 'expense') {
+    //       // @ts-ignore
+    //       expenseList.push(item)
+    //     }
+    //   });
+    //   incomeData = objArrReduce(incomeList);
+    //   expenseData = objArrReduce(expenseList);
+    //   // @ts-ignore
+    //   navBarData = {
+    //     incomeCount: incomeData.moneyAll,
+    //     expenseCount: expenseData.moneyAll,
+    //     count: myRecordList.length,
+    //     budget: this.state.budget || 0
+    //   };
+    // }
 
-    // 处理理财投资数据
-    if (renderContentType == 'moneyManagement' || renderContentType == 'travelParty') {
-      navBarData.incomeCount = this.state.specialDataObj.income || 0;
-      navBarData.expenseCount = this.state.specialDataObj.expense || 0;
-      navBarData.count = this.state.specialDataObj.count;
-      hasRecord = true;
-    }
+    // 处理navBar数据
+    navBarData.incomeCount = this.state.specialDataObj.income || 0;
+    navBarData.expenseCount = this.state.specialDataObj.expense || 0;
+    navBarData.count = this.state.specialDataObj.count;
+    const hasRecord = true;
+    const navBarType = this.state.bookType == 'moneyManagement' ? 'moneyManagement' : 'travelParty'
 
     return (
       <View className='index-wrapper'>
@@ -264,15 +262,14 @@ class Index extends Component<IndexProps,IndexState > {
             yearMonthStr={this.state.yearMonth}
             onDateState={this.onDateChange.bind(this)}
             navBarData={navBarData}
-            navBookType={this.state.bookType}
+            navBookType={navBarType}
           />
         </View>
-        { !hasRecord && <View className='index-content' /> }
         { hasRecord && <View className='index-content'>
           { renderContentType == 'travelParty' &&
           <TravelPartyContent
             nowBookRecord={this.state.specialDataObj}
-            nowBookType='travelParty'
+            nowBookType={this.state.bookType}
             nowBookId={this.state.bookId}
             isAdmin={decodeURIComponent(this.$router.params.is_admin)}
           />}
@@ -282,15 +279,15 @@ class Index extends Component<IndexProps,IndexState > {
             nowBookType='moneyManagement'
             nowBookId={this.state.bookId}
           />}
-          { renderContentType == 'normal' &&
-          <Content
-            // @ts-ignore
-            income={incomeData.recordList}
-            // @ts-ignore
-            expense={expenseData.recordList}
-            nowBookType={this.state.bookType}
-            nowBookId={this.state.bookId}
-          />}
+          {/*{ renderContentType == 'normal' &&*/}
+          {/*<Content*/}
+          {/*  // @ts-ignore*/}
+          {/*  income={incomeData.recordList}*/}
+          {/*  // @ts-ignore*/}
+          {/*  expense={expenseData.recordList}*/}
+          {/*  nowBookType={this.state.bookType}*/}
+          {/*  nowBookId={this.state.bookId}*/}
+          {/*/>}*/}
         </View> }
         <View className='index-footer'>
           <TabBar

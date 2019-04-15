@@ -28,7 +28,6 @@ class NewBook extends Component<NewBookProps,NewBookState > {
       bookCategoryChecked: bookNameTranslate('Chinese', defBookType) || '日常开销',
       bookName: defBookName==='undefined' ? '新建账本' : defBookName,
       budget: 0, // 账本预算
-      hasGroup: false,
       loading: false,
       hasError: false,
       hasErrorMsg: '新建账本错误',
@@ -61,19 +60,6 @@ class NewBook extends Component<NewBookProps,NewBookState > {
         book_name: this.state.bookName,
         book_type: this.state.bookType,
         budget: this.state.budget == 0 ? null : this.state.budget,
-      }
-    })
-  }
-
-  /**
-   * 创建小组
-   */
-  async createGroup() {
-    return await this.props.dispatch({
-      type: 'newBook/createGroup',
-      payload: {
-        user_name: this.state.username,
-        uid: this.state.uid,
       }
     })
   }
@@ -304,48 +290,40 @@ class NewBook extends Component<NewBookProps,NewBookState > {
    * 确定提交
    */
   onSubmit () {
-    // 是否是特殊账本
-    if (this.state.bookCategoryChecked == '出游聚会' || this.state.bookCategoryChecked == '投资理财') {
-      if (this.$router.params.bookId) {
-        this.changeSpecialBook()
-      } else {
-        this.createSpecialBook();
-      }
-      return
-    }
-    // 是否需要创建小组
-    if (this.state.hasGroup) {
-      this.createGroup();
+    if (this.$router.params.bookId) {
+      this.changeSpecialBook()
+    } else {
+      this.createSpecialBook();
     }
     // 是否为修改账本
-    if(this.$router.params.bookId) {
-      this.changeBook()
-      return;
-    }
-    const data = new Promise(async (resolve, reject) => {
-      const result = await this.createBook();
-      if (!result) {
-        reject();
-        this.setState({
-          hasError: true
-        });
-        return
-      }
-      Taro.redirectTo({
-        url: "/pages/index/index?bookId=" + result.book_id +
-          '&bookName=' + this.state.bookName +
-          '&bookType=' + this.state.bookType +
-          '&budget=' + this.state.budget +
-          '&isSpecial=' + true
-      })
-      resolve()
-    });
-    setTimeout(() => {
-      this.setState({
-        hasError: false
-      })
-    },500);
-    return data
+    // if(this.$router.params.bookId) {
+    //   this.changeBook()
+    //   return;
+    // }
+    // const data = new Promise(async (resolve, reject) => {
+    //   const result = await this.createBook();
+    //   if (!result) {
+    //     reject();
+    //     this.setState({
+    //       hasError: true
+    //     });
+    //     return
+    //   }
+    //   Taro.redirectTo({
+    //     url: "/pages/index/index?bookId=" + result.book_id +
+    //       '&bookName=' + this.state.bookName +
+    //       '&bookType=' + this.state.bookType +
+    //       '&budget=' + this.state.budget +
+    //       '&isSpecial=' + true
+    //   })
+    //   resolve()
+    // });
+    // setTimeout(() => {
+    //   this.setState({
+    //     hasError: false
+    //   })
+    // },500);
+    // return data
   }
 
   /**
@@ -363,7 +341,6 @@ class NewBook extends Component<NewBookProps,NewBookState > {
         bookType: 'dayLife',
         bookName: '新建账本',
         bookCategoryChecked: '日常开销',
-        hasGroup: false,
       });
     }
   }
@@ -379,17 +356,6 @@ class NewBook extends Component<NewBookProps,NewBookState > {
       this.setState({
         bookType: bookNameTranslate('English', this.state.bookCategoryChecked) || '',
       })
-    })
-  };
-
-  /**
-   * 切换小组状态
-   *
-   * @param value
-   */
-  handleGroupChange = value => {
-    this.setState({
-      hasGroup: value,
     })
   };
 

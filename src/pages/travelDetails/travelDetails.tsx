@@ -135,6 +135,7 @@ class TravelDetails extends Component<TravelDetailsProps,TravelDetailsState > {
           </View>
           <View className='detail-money at-col at-col-1 at-col--auto'>
             {moneyType}￥{parseFloat(item.money)}
+            <View className='edit-user'>编辑人:{item.username}</View>
           </View>
         </View>
       )

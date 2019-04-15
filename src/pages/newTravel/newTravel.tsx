@@ -1,8 +1,8 @@
 import Taro, { Component, Config } from '@tarojs/taro'
+import { AtInput, AtButton, AtToast } from 'taro-ui'
 import { View } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import Tips from '../../utils/tips'
-import { AtInput, AtButton, AtToast } from 'taro-ui'
 import { NewTravelProps, NewTravelState } from './newTravel.interface'
 import './newTravel.scss'
 import { MAINHOST } from "../../config";
@@ -23,7 +23,7 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
       hasBookId: false,
       titleInput: '',
       budget: 0,
-      bookType: '',
+      bookType: decodeURIComponent(this.$router.params.bookType) || 'travelParty',
       username: '',
       uid: '',
       is_shared: false,
@@ -145,7 +145,7 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
           Taro.redirectTo({
             url: "/pages/travelDetails/travelDetails?bookId=" + result.data.book_id +
               '&bookName=' + this.state.titleInput +
-              '&bookType=' + 'travelParty' +
+              '&bookType=' + this.state.bookType +
               '&budget=' + this.state.budget +
               '&sBookId=' + this.state.sBookId +
               '&is_admin=' + true
@@ -238,7 +238,7 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
         username: this.state.username,
         uid: this.state.uid,
         book_name: this.state.titleInput,
-        book_type: 'travelParty',
+        book_type: this.state.bookType,
         budget: this.state.budget,
         is_shared: this.state.is_shared,
       }
@@ -257,7 +257,7 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
         Taro.redirectTo({
           url: "/pages/travelDetails/travelDetails?bookId=" + result.book_id +
             '&bookName=' + this.state.titleInput +
-            '&bookType=' + 'travelParty' +
+            '&bookType=' + this.state.bookType +
             '&budget=' + this.state.budget +
             '&sBookId=' + this.state.sBookId +
             '&is_admin=' + true
@@ -336,7 +336,7 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
   }
 
   // 页面挂载时执行
-  async componentDidShow() {
+  async componentDidMount() {
     Tips.loading()
     const username = Taro.getStorageSync('username');
     const uid = Taro.getStorageSync('uid');

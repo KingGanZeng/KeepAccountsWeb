@@ -15,7 +15,7 @@ class TravelPartyContent extends Component<TravelPartyContentProps,TravelPartyCo
   }
   static defaultProps:TravelPartyContentProps = {
     nowBookRecord: {},
-    nowBookType: 'travelParty',
+    nowBookType: '',
     nowBookId: 0,
     isAdmin: false, // 是否为管理员
   }
@@ -27,7 +27,7 @@ class TravelPartyContent extends Component<TravelPartyContentProps,TravelPartyCo
     Taro.navigateTo({
       url: "/pages/travelDetails/travelDetails?bookId=" + bookId +
         '&bookName=' + bookName +
-        '&bookType=' + 'travelParty' +
+        '&bookType=' + this.props.nowBookType +
         '&budget=' + budget +
         '&sBookId=' + this.props.nowBookRecord.specialBookId +
         '&is_admin=' + true

@@ -18,7 +18,7 @@ import {MAINHOST} from "../../config";
 
 class AccountBook extends Component<AccountBookProps,AccountBookState> {
   config:Config = {
-    navigationBarTitleText: '选择账本类别',
+    navigationBarTitleText: '选择账本类型',
     enablePullDownRefresh: true,
     backgroundTextStyle: "dark"
   };
@@ -235,8 +235,8 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
    * 下拉刷新
    */
   onPullDownRefresh() {
-    this.getBook();
     this.getSpecialBook()
+    this.getGroupBook()
   }
 
   /**
@@ -247,17 +247,19 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
   }
 
   render() {
-    const { data } = this.props;
+    // const { data } = this.props;
     // @ts-ignore
-    let myBookList = data.map((item) => {
-      // 禁止渲染特殊账本及相关
-      if (item.book_type != 'travelParty' && item.book_type != 'moneyManagement' && item.book_type != 'moneyManagementInner') {
-        return item
-      }
-    });
-    myBookList = myBookList.filter((value) => {
-      return value
-    });
+    // let myBookList = data.map((item) => {
+    //   // 禁止渲染特殊账本及相关
+    //   console.log(item.book_type)
+    //   if (item.book_type != 'travelParty' && item.book_type != 'moneyManagement' && item.book_type != 'moneyManagementInner') {
+    //     return item
+    //   }
+    // });
+    // myBookList = myBookList.filter((value) => {
+    //   return value
+    // });
+    let myBookList:any = [];
     if (this.state.specialBookList.length > 0) {
       this.state.specialBookList.map((item) => {
         let tmpItem = item;
@@ -292,8 +294,8 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
         </AtModal>
         <AtCard
           className='choice-wrapper'
-          title='选择账本场景'
-          note='*新建账本需先选择账本场景'
+          title='账本类型'
+          note='*新建账本需先选择账本类型'
         >
           <AtGrid
             className='choice-block'

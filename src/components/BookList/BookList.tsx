@@ -34,13 +34,12 @@ class BookList extends Component<BookListProps,BookListState > {
           '&is_admin=' + false
       })
     } else {
-      const bool = bookInfo.book_type == 'travelParty' || bookInfo.book_type == 'moneyManagement';
       Taro.redirectTo({
         url: "/pages/index/index?bookId=" + bookInfo.book_id +
           '&bookName=' + bookInfo.book_name +
           '&bookType=' + bookInfo.book_type +
           '&budget=' + bookInfo.budget +
-          '&isSpecial=' + bool +
+          '&isSpecial=' + true +
           '&is_admin=' + true
       })
     }

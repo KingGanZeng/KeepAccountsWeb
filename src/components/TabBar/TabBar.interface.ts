@@ -6,7 +6,6 @@
  * @interface TabBarState
  */
 export interface TabBarState {
-  isOpen: boolean,
   showLeftBar: boolean,
   bookId: string,
   bookType: string,

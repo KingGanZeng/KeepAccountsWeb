@@ -147,6 +147,12 @@ $content_border_color: #2b364e10;
       .detail-money {
         color: #333333;
         letter-spacing: 1px;
+        text-align: right;
+      }
+      .edit-user {
+        margin-top: 5px;
+        font-size: 20px;
+        color: #979797;
       }
     }
   }
