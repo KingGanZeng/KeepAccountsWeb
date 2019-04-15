@@ -53,6 +53,18 @@ class App extends Component {
         pages: [
           'sharePage', // 分享展示页
         ]
+      },
+      {
+        root: 'pages/wish',
+        pages: [
+          'wish', // 愿望记账页面
+        ]
+      },
+      {
+        root: 'pages/newWish',
+        pages: [
+          'newWish', // 新建愿望
+        ]
       }
     ],
     window: {

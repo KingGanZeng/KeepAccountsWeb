@@ -204,7 +204,35 @@ export const randomWord = (randomFlag, min, max) => {
   return str;
 }
 
+/**
+ * 转义一级类目
+ * @param nowCategory
+ */
+export const wishCategoryTranslate = (nowCategory) => {
+  let levelTwoCategory:any = '';
+  if (nowCategory === '旅游')  {
+    levelTwoCategory = 'travel'
+  } else if (nowCategory === '聚会') {
+    levelTwoCategory = 'party'
+  } else if (nowCategory === '装修') {
+    levelTwoCategory = 'decoration'
+  } else if (nowCategory === '汽车') {
+    levelTwoCategory = 'car'
+  } else if (nowCategory === '育儿') {
+    levelTwoCategory = 'childRearing'
+  }
+  return levelTwoCategory;
+}
+
 export const globalData: any = {
+  wishLevelOneCategory: ['旅游', '聚会', '装修', '汽车', '育儿'],
+  wishLevelTwoCategory: {
+    travel: ['国内游', '出国游'],
+    party: ['美食', '购物', '娱乐'],
+    decoration: ['家具', '家装设计'],
+    car: ['养车', '购车'],
+    childRearing: ['母婴产品', '兴趣班'],
+  },
   categoryList: {
     dayLife: {
       expense: [

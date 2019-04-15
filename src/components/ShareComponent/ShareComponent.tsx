@@ -163,7 +163,7 @@ class ShareComponent extends Component<ShareComponentProps,ShareComponentState >
           title='确认删除'
           cancelText='取消'
           confirmText='确认'
-          onClose={ this.handleDeleteCancel }
+          onClose={this.handleDeleteCancel}
           onCancel={this.handleDeleteCancel}
           onConfirm={this.handleDeleteConfirm}
           content={this.state.modalContent}

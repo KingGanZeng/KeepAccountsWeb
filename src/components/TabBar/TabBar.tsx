@@ -71,6 +71,18 @@ class TabBar extends Component<TabBarProps,TabBarState > {
     })
   }
 
+  /**
+   * 跳转到愿望列表页
+   */
+  jumpToWish() {
+    this.setState({
+      showLeftBar: false,
+    })
+    Taro.navigateTo({
+      url: '/pages/wish/wish'
+    })
+  }
+
   render() {
     return (
       <View className='fx-TabBar-wrap at-row at-row__justify--between'>
@@ -94,7 +106,10 @@ class TabBar extends Component<TabBarProps,TabBarState > {
             <View className='drawer-item half-border-bottom border-bottom'>
               发现<View className='at-icon at-icon-eye' />
             </View>
-            <View className='drawer-item half-border-bottom border-bottom'>
+            <View
+              className='drawer-item half-border-bottom border-bottom'
+              onClick={this.jumpToWish}
+            >
               愿望记账<View className='at-icon at-icon-heart-2' />
             </View>
           </AtDrawer>

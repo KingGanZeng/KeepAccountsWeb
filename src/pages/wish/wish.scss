@@ -1,5 +1,62 @@
+$main_color: #2b364e;
+$border_color: #05e4ab60;
+$item-background: #4a556c60;
+$income_color: #f65858;
+$expense_color: #4ffa93;
 
-wish-wrap {
-    width: 100%;
-    min-height: 100vh;
+.wish-wrap {
+  width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+  background: $main_color;
+  color: #ffffff;
+  font-size: 28px;
+  .wish-container {
+    padding: 40px;
+    .wish-item {
+      margin-bottom: 40px;
+      background:-webkit-linear-gradient(330deg, $main_color, $item-background);
+      background:-o-linear-gradient(330deg, main_color, $item-background);
+      background:linear-gradient(330deg, main_color, $item-background);
+      border:1px solid $border_color;
+      border-radius:20px;
+      .wish-header {
+        font-size: 32px;
+        padding: 20px;
+        border-bottom: 1px solid $border_color;
+        box-sizing: border-box;
+        .finished-check-box {
+          border: 1px solid $border_color;
+          height: 42px;
+          width: 42px;
+          .at-icon-check {
+            vertical-align: middle;
+            line-height: 40px;
+            width: 40px;
+            text-align: center;
+            font-weight: bold;
+            background: $expense_color;
+          }
+        }
+        .wish-name {
+          padding-left: 20px;
+        }
+        .wish-weight {
+          text-align: right;
+        }
+      }
+      .wish-content {
+        padding: 20px;
+        color: #e3e3e390;
+        .wish-category-wrapper {
+          margin-bottom: 10px;
+        }
+      }
+    }
+  }
+  .single-button {
+    background: $income_color;
+    font-weight: bold;
+    text-align: center;
+  }
 }
