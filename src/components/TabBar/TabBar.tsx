@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { AtDrawer } from 'taro-ui'
+import { AtDrawer, AtAvatar } from 'taro-ui'
 import { TabBarProps, TabBarState } from './TabBar.interface'
 import './TabBar.scss'
 
@@ -84,9 +84,11 @@ class TabBar extends Component<TabBarProps,TabBarState > {
   }
 
   render() {
+    const portrait = Taro.getStorageSync('portrait')
+    const username = Taro.getStorageSync('username')
     return (
       <View className='fx-TabBar-wrap at-row at-row__justify--between'>
-        <View className='at-col menu-button'>
+        <View className='at-col at-col-3 menu-button'>
           <View
             className='at-icon at-icon-list'
             onClick={this.showLeftBar}
@@ -96,7 +98,14 @@ class TabBar extends Component<TabBarProps,TabBarState > {
             mask
             onClose={this.onClose.bind(this)}
           >
-            <View className='drawer-top-item' />
+            <View className='drawer-top-item'>
+              <AtAvatar
+                size='large'
+                circle
+                image={portrait}
+              />
+              <View className='username'>{username}</View>
+            </View>
             <View
               className='drawer-item half-border-bottom border-bottom'
               onClick={this.changeBook}
@@ -114,13 +123,18 @@ class TabBar extends Component<TabBarProps,TabBarState > {
             </View>
           </AtDrawer>
         </View>
-        <View className='at-col at-row at-row__align-content--center'>
+        <View className='at-col at-col-3 at-row at-row__align-content--center'>
           <View
             className='at-col add-button'
             onClick={this.showRecordWay}
           >
             <View className='at-icon at-icon-close rotate-button' />
           </View>
+        </View>
+        <View className='at-col at-col-3 chart-button'>
+          <View
+            className='at-icon at-icon-list'
+          />
         </View>
       </View>
     )

@@ -48,8 +48,19 @@
     }
   }
 
+  .chart-button {
+    .at-icon {
+      color: #4a5d6c;
+
+    }
+  }
+
   .drawer-top-item {
     height: 230px;
+    padding:100px 110px 0;
+    .username {
+      padding-top: 32px;
+    }
   }
   .drawer-item {
     padding: 40px 25px;
