@@ -5,6 +5,7 @@ import {AtToast} from "taro-ui";
 import { DiscoveryDetailProps, DiscoveryDetailState } from './discoveryDetail.interface'
 import './discoveryDetail.scss'
 import {MAINHOST} from "../../config";
+import Tips from '../../utils/tips'
 
 
 class DiscoveryDetail extends Component<DiscoveryDetailProps,DiscoveryDetailState > {
@@ -160,8 +161,10 @@ class DiscoveryDetail extends Component<DiscoveryDetailProps,DiscoveryDetailStat
   }
 
   async componentDidMount() {
+    Tips.loading()
     await this.getRecommendInfo()
     await this.getUserRecommendList()
+    Tips.loaded()
   }
 
   render() {

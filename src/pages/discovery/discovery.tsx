@@ -1,9 +1,9 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import {AtButton} from 'taro-ui'
 import { DiscoveryProps, DiscoveryState } from './discovery.interface'
 import './discovery.scss'
 import {MAINHOST} from "../../config";
+import Tips from '../../utils/tips'
 
 class Discovery extends Component<DiscoveryProps,DiscoveryState > {
   config:Config = {
@@ -13,6 +13,8 @@ class Discovery extends Component<DiscoveryProps,DiscoveryState > {
     super(props)
     this.state = {
       discoveryList: [],
+      nextPageUrl: `${MAINHOST}/api/getRecommendInfoList?page=1`,
+      hasNext: true,
     }
   }
 
@@ -24,15 +26,22 @@ class Discovery extends Component<DiscoveryProps,DiscoveryState > {
     try {
       const result = await Taro.request({
         method: "GET",
-        url: `${MAINHOST}/api/getRecommendInfoList`,
+        url: this.state.nextPageUrl,
       })
       if (result.data) {
+        const tmpList = this.state.discoveryList
+        tmpList.push(...result.data.results)
         this.setState({
-          discoveryList: result.data.results
+          discoveryList: tmpList,
+          nextPageUrl: result.data.next,
+          hasNext: result.data.next !== null,
+        }, () => {
+          Tips.loaded()
         })
       }
     } catch (e) {
       console.log(e)
+      Tips.loaded()
     }
   }
 
@@ -42,7 +51,14 @@ class Discovery extends Component<DiscoveryProps,DiscoveryState > {
     })
   }
 
+  async onReachBottom() {
+    if (this.state.hasNext) {
+      await this.getDiscoveryData()
+    }
+  }
+
   async componentDidMount() {
+    Tips.loading()
     await this.getDiscoveryData()
   }
 
@@ -74,9 +90,7 @@ class Discovery extends Component<DiscoveryProps,DiscoveryState > {
     return (
       <View className='discovery-wrap'>
         {contentView}
-        <View className='more-button-wrapper'>
-          <AtButton className='more-button'>查看更多</AtButton>
-        </View>
+        {!this.state.hasNext && <View className='no-more-toast'>已全部加载完毕</View>}
       </View>
     )
   }
