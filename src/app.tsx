@@ -65,6 +65,24 @@ class App extends Component {
         pages: [
           'newWish', // 新建愿望
         ]
+      },
+      {
+        root: 'pages/discovery',
+        pages: [
+          'discovery', // 发现页面
+        ]
+      },
+      {
+        root: 'pages/discoveryDetail',
+        pages: [
+          'discoveryDetail', // 发现页面
+        ]
+      },
+      {
+        root: 'pages/collection',
+        pages: [
+          'collection', // 发现页面
+        ]
       }
     ],
     window: {

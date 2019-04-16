@@ -1,4 +1,70 @@
+$main_color: #2b364e;
+$border_color: #05e4ab60;
+$item-background: #4a556c60;
+$income_color: #f65858;
+$expense_color: #4ffa93;
+
 .discovery-wrap {
-    width: 100%;
-    min-height: 100vh;
+  width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+  background: $main_color;
+  color: #ffffff;
+  font-size: 28px;
+  padding: 40px;
+  .discovery-item {
+    margin-bottom: 40px;
+    background:-webkit-linear-gradient(330deg, $main_color, $item-background);
+    background:-o-linear-gradient(330deg, main_color, $item-background);
+    background:linear-gradient(330deg, main_color, $item-background);
+    border:1px solid $border_color;
+    border-radius:20px;
+    .discovery-header {
+      padding: 20px;
+      border-bottom: 1px solid $border_color;
+      box-sizing: border-box;
+      .discovery-name {
+        width: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-size: 32px;
+      }
+      .discovery-time {
+        color: #979797;
+      }
+    }
+    .category-wrapper {
+      margin:10px 20px 0 0;
+      padding:0 10px;
+      border-radius:10px;
+      display:inline-block;
+      &.first-category {
+        color: #979797;
+        border: 1px solid $income_color;
+      }
+      &.second-category {
+        color: #979797;
+        border: 1px solid $expense_color;
+      }
+    }
+    .discovery-brief-content {
+      width: 100%;
+      padding: 20px  20px 0;
+      box-sizing: border-box;
+      display:-webkit-box;
+      -webkit-box-orient:vertical;
+      -webkit-line-clamp:2;
+      word-break:break-all;
+      overflow:hidden;
+    }
+    .content-more {
+      color: #979797;
+      padding: 20px;
+      text-align: right;
+    }
+  }
+  .more-button {
+    color: #ffffff!important;
+  }
 }

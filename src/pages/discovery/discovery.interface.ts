@@ -5,7 +5,9 @@
  * @export
  * @interface DiscoveryState
  */
-export interface DiscoveryState {}
+export interface DiscoveryState {
+  discoveryList: any,
+}
 
 /**
  * discovery.props 参数类型

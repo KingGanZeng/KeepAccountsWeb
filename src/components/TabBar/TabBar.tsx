@@ -83,6 +83,30 @@ class TabBar extends Component<TabBarProps,TabBarState > {
     })
   }
 
+  /**
+   * 跳转到发现页
+   */
+  jumpToDiscovery() {
+    this.setState({
+      showLeftBar: false,
+    })
+    Taro.navigateTo({
+      url: '/pages/discovery/discovery'
+    })
+  }
+
+  /**
+   * 跳转到收藏页
+   */
+  jumpToCollection() {
+    this.setState({
+      showLeftBar: false,
+    })
+    Taro.navigateTo({
+      url: '/pages/collection/collection'
+    })
+  }
+
   render() {
     const portrait = Taro.getStorageSync('portrait')
     const username = Taro.getStorageSync('username')
@@ -112,8 +136,17 @@ class TabBar extends Component<TabBarProps,TabBarState > {
             >
               切换账本<View className='at-icon at-icon-bookmark' />
             </View>
-            <View className='drawer-item half-border-bottom border-bottom'>
+            <View
+              className='drawer-item half-border-bottom border-bottom'
+              onClick={this.jumpToDiscovery}
+            >
               发现<View className='at-icon at-icon-eye' />
+            </View>
+            <View
+              className='drawer-item half-border-bottom border-bottom'
+              onClick={this.jumpToCollection}
+            >
+              收藏<View className='at-icon at-icon-star-2' />
             </View>
             <View
               className='drawer-item half-border-bottom border-bottom'

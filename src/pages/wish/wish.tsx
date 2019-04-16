@@ -1,9 +1,10 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View } from '@tarojs/components'
+import {AtModal, AtToast} from "taro-ui";
 import { WishProps, WishState } from './wish.interface'
 import './wish.scss'
 import {MAINHOST} from "../../config";
-import {AtModal, AtToast} from "taro-ui";
+
 
 class Wish extends Component<WishProps,WishState > {
   config:Config = {
