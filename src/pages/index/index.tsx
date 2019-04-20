@@ -44,6 +44,7 @@ class Index extends Component<IndexProps,IndexState > {
       // budget: parseFloat(urlBudget), // 预算
       uid: '',
       specialDataObj: {},
+      itemNum: 0,
     }
   }
 
@@ -93,6 +94,7 @@ class Index extends Component<IndexProps,IndexState > {
     const endTime = `${year}-12-31`;
     const prevYear = parseInt(year, 10) - 1;
     const startTime = `${prevYear}-12-31`;
+    let item_num = 0;
     // 先获取账本的信息，再根据账本信息查询内容
     let result:any = await Taro.request({
       method: 'GET',
@@ -105,6 +107,7 @@ class Index extends Component<IndexProps,IndexState > {
     let allCount = 0; // 用于记录笔数
     let tmpArr = []; // 用于存放每个账本记录
     for (const item of result.book) { // 遍历每个内置账本，获取账本数据
+      item_num += 1
       let innerBookData:any = await Taro.request({ // 获取内置账本信息
         method: 'GET',
         url: `${MAINHOST}/api/getBookList?book_id=` + item
@@ -144,6 +147,7 @@ class Index extends Component<IndexProps,IndexState > {
     }
     // 这里需要注意setState需要执行两次，不然刷新不出来
     this.setState({
+      itemNum: item_num,
       specialDataObj: {
         specialBookId: book_id,
         expense: expenseCount,
@@ -235,6 +239,7 @@ class Index extends Component<IndexProps,IndexState > {
             onDateState={this.onDateChange.bind(this)}
             navBarData={navBarData}
             navBookType={navBarType}
+            itemNum={this.state.itemNum}
           />
         </View>
         { hasRecord && <View className='index-content'>

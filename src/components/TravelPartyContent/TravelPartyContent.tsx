@@ -1,5 +1,5 @@
 import Taro, {Component} from '@tarojs/taro'
-import {Swiper, SwiperItem, View} from '@tarojs/components'
+import {Swiper, SwiperItem, View, Image} from '@tarojs/components'
 import {TravelPartyContentProps, TravelPartyContentState} from './TravelPartyContent.interface'
 import './TravelPartyContent.scss'
 // @ts-ignore
@@ -50,6 +50,7 @@ class TravelPartyContent extends Component<TravelPartyContentProps,TravelPartyCo
     return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second
   }
 
+  // @ts-ignore
   refBarChart = node => {this.BarChart = node}
 
   componentWillReceiveProps(nextProps) {
@@ -74,6 +75,7 @@ class TravelPartyContent extends Component<TravelPartyContentProps,TravelPartyCo
           data: data.income.reverse()
         }]
       };
+      // @ts-ignore
       this.BarChart.refresh(chartData);
     }
   }
@@ -82,7 +84,6 @@ class TravelPartyContent extends Component<TravelPartyContentProps,TravelPartyCo
   render() {
     let swiperArr:any;
 
-    console.log(3333, this.props)
     if (this.props.nowBookRecord.bookArr && this.props.nowBookRecord.bookArr.length > 0) {
       swiperArr = this.props.nowBookRecord.bookArr.map((item, key) => {
         const time = this.formatterTime(item.innerBookInfo.create_timestamp)
@@ -103,7 +104,9 @@ class TravelPartyContent extends Component<TravelPartyContentProps,TravelPartyCo
                   </View>
                 </View>
                 <View className='item-content at-row'>
-                  <View className='at-col image-content' />
+                  <View className='at-col image-content'>
+                    <Image src='http://d2f7o8gw4q8bay.cloudfront.net/jordan.jpg' mode='scaleToFill' />
+                  </View>
                   <View className='at-col detail-content' />
                 </View>
               </View>

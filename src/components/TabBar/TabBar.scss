@@ -57,9 +57,14 @@
 
   .drawer-top-item {
     height: 230px;
-    padding:40px 110px 0;
+    padding:40px 40px 0;
+    position: relative;
     .username {
-      padding-top: 32px;
+      display:inline-block;
+      padding-top:32px;
+      position:absolute;
+      right:100px;
+      top:60px;
     }
   }
   .drawer-item {

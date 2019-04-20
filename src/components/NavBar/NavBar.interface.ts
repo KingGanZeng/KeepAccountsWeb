@@ -26,4 +26,5 @@ export interface NavBarProps {
     budget: number, // 预算
   },
   navBookType: string, // 账本类型
+  itemNum: number, // 账本项目数量
 }

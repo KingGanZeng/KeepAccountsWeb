@@ -184,7 +184,7 @@ class TravelDetails extends Component<TravelDetailsProps,TravelDetailsState > {
           </ScrollView>
         </View>
         <View className='single-button-footer' onClick={this.jumpToNewRecord}>
-          <Button className='single-button'>新建记录</Button>
+          <Button className='single-button'>新建账目</Button>
         </View>
       </View>
     )

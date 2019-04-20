@@ -83,6 +83,12 @@ class App extends Component {
         pages: [
           'collection', // 发现页面
         ]
+      },
+      {
+        root: 'pages/bookChart',
+        pages: [
+          'bookChart', // 发现页面
+        ]
       }
     ],
     window: {

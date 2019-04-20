@@ -220,7 +220,7 @@ class NewBook extends Component<NewBookProps,NewBookState > {
    */
   async deleteSpecialBook() {
     const bookId = decodeURIComponent(this.$router.params.bookId);
-    const result = await await Taro.request({
+    const result = await Taro.request({
       method: 'DELETE',
       url: `${MAINHOST}/api/changeSpecialBook/${bookId}`,
     });

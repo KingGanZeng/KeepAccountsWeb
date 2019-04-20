@@ -3,6 +3,7 @@ import { View } from '@tarojs/components'
 import { AtDrawer, AtAvatar } from 'taro-ui'
 import { TabBarProps, TabBarState } from './TabBar.interface'
 import './TabBar.scss'
+import {MAINHOST} from "../../config";
 
 class TabBar extends Component<TabBarProps,TabBarState > {
   constructor(props: TabBarProps) {
@@ -84,6 +85,40 @@ class TabBar extends Component<TabBarProps,TabBarState > {
   }
 
   /**
+   * 跳转到图表展示
+   */
+  jumpToChart() {
+    this.setState({
+      showLeftBar: false,
+    })
+    Taro.navigateTo({
+      url: '/pages/bookChart/bookChart'
+    })
+  }
+
+  /**
+   * 删除账本
+   */
+  async deleteBook() {
+    this.setState({
+      showLeftBar: false,
+    })
+    const result = await Taro.request({
+      method: 'DELETE',
+      url: `${MAINHOST}/api/changeSpecialBook/${this.state.bookId}`,
+    });
+    if(result.data.detail) {
+      console.log('删除账本失败');
+    } else {
+      setTimeout(() => {
+        Taro.redirectTo({
+          url: '/pages/accountBook/accountBook'
+        })
+      }, 800)
+    }
+  }
+
+  /**
    * 跳转到发现页
    */
   jumpToDiscovery() {
@@ -150,9 +185,21 @@ class TabBar extends Component<TabBarProps,TabBarState > {
             {/*</View>*/}
             <View
               className='drawer-item half-border-bottom border-bottom'
+              onClick={this.deleteBook}
+            >
+              删除账本<View className='at-icon at-icon-trash' />
+            </View>
+            <View
+              className='drawer-item half-border-bottom border-bottom'
               onClick={this.jumpToWish}
             >
               愿望清单<View className='at-icon at-icon-heart-2' />
+            </View>
+            <View
+              className='drawer-item half-border-bottom border-bottom'
+              onClick={this.jumpToChart}
+            >
+              查看图表<View className='at-icon at-icon-equalizer' />
             </View>
           </AtDrawer>
         </View>

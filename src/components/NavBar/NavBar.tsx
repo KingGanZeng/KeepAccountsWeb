@@ -24,6 +24,7 @@ class NavBar extends Component<NavBarProps,NavBarState > {
       budget: 0,
     },
     navBookType: '',
+    itemNum: 0,
   };
 
   /**
@@ -72,7 +73,7 @@ class NavBar extends Component<NavBarProps,NavBarState > {
     } else if(this.state.bookType == 'travelParty') {
       const mapCount = [
         {title: '支出', value: this.props.navBarData.expenseCount},
-        {title: '笔数', value: this.props.navBarData.count},
+        {title: '项目数', value: this.props.itemNum},
       ];
       content = mapCount.map((item, index) => {
         if (item.title !== '笔数') {
@@ -86,8 +87,8 @@ class NavBar extends Component<NavBarProps,NavBarState > {
               { item.title == '支出' && <Text className='money book-expense'>{item.value}</Text> }
               { item.title == '收入' && <Text className='money book-income'>{item.value}</Text> }
               { item.title == '预算' && <Text className='money book-budget'>{item.value}</Text> }
-              { item.title == '笔数' && <Text className='money book-count'>{item.value}</Text> }
-              { item.title != '笔数' && <Text>￥</Text>}
+              { item.title == '项目数' && <Text className='money book-count'>{item.value}</Text> }
+              { item.title != '项目数' && <Text>￥</Text>}
             </View>
           </View>
         )

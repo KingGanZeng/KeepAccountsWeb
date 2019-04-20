@@ -11,6 +11,7 @@ export interface IndexState {
   // budget: number, // 预算
   uid: string, // 用户openid
   specialDataObj: any, // 用于存放特殊账本数据
+  itemNum: number, // 账本内含的项目数量
 }
 
 /**
