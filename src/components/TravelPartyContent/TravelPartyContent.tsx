@@ -4,6 +4,7 @@ import {TravelPartyContentProps, TravelPartyContentState} from './TravelPartyCon
 import './TravelPartyContent.scss'
 // @ts-ignore
 // import { LineChart } from '../LineChart/LineChart'
+import { BarChart } from '../../components/BarChart/BarChart'
 
 class TravelPartyContent extends Component<TravelPartyContentProps,TravelPartyContentState > {
   constructor(props: TravelPartyContentProps) {
@@ -49,9 +50,39 @@ class TravelPartyContent extends Component<TravelPartyContentProps,TravelPartyCo
     return year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second
   }
 
+  refBarChart = node => {this.BarChart = node}
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.nowBookRecord.bookArr) {
+      const data:any = {
+        itemName: [],
+        income: [],
+        expense: [],
+      }
+      nextProps.nowBookRecord.bookArr.forEach((item) => {
+        data.itemName.push(item.innerBookInfo.book_name)
+        data.income.push(item.innerIncome || 0)
+        data.expense.push(item.innerExpense || 0)
+      });
+      const chartData = {
+        dimensions: {
+          data: data.itemName.reverse()
+        },
+        measures: [{
+          data: data.expense.reverse()
+        },{
+          data: data.income.reverse()
+        }]
+      };
+      this.BarChart.refresh(chartData);
+    }
+  }
+
+
   render() {
-    console.log("组件渲染", this.props);
     let swiperArr:any;
+
+    console.log(3333, this.props)
     if (this.props.nowBookRecord.bookArr && this.props.nowBookRecord.bookArr.length > 0) {
       swiperArr = this.props.nowBookRecord.bookArr.map((item, key) => {
         const time = this.formatterTime(item.innerBookInfo.create_timestamp)
@@ -93,6 +124,10 @@ class TravelPartyContent extends Component<TravelPartyContentProps,TravelPartyCo
         >
           {swiperArr}
         </Swiper>
+        <BarChart
+          ref={this.refBarChart}
+          chartTitle='项目收支情况'
+        />
       </View>
     )
   }

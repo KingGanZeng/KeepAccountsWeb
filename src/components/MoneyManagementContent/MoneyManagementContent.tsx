@@ -23,12 +23,12 @@ class MoneyManagementContent extends Component<MoneyManagementContentProps,Money
    */
   jumpToManagement = (item) => {
     Taro.navigateTo({
-      url: "/pages/index/index?bookId=" + item.bookId +
+      url: "/pages/travelDetails/travelDetails?bookId=" + item.bookId +
         '&bookName=' + item.innerBookInfo.book_name +
-        '&bookType=' + 'moneyManagementInner' +
+        '&bookType=' + 'moneyManagement' +
         '&budget=' + item.innerBookInfo.budget +
-        '&isSpecial=' + 'false' +
-        'sBookId=' + this.props.nowBookRecord.specialBookId
+        '&sBookId=' + this.props.nowBookRecord.specialBookId +
+        '&is_admin=' + true
     })
   };
 

@@ -121,12 +121,13 @@ class Index extends Component<IndexProps,IndexState > {
         }
       });
       let innerExpense = 0;
+      let innerIncome = 0;
       for (const innerItem of itemData) { // 统计数据
         if (innerItem.record_type == 'expense') {
           expenseCount = expenseCount + parseFloat(innerItem.money);
           innerExpense = innerExpense + parseFloat(innerItem.money);
         } else {
-          incomeCount = incomeCount + parseFloat(innerItem.money);
+          innerIncome = innerIncome + parseFloat(innerItem.money);
         }
         allCount += 1;
       }
@@ -134,13 +135,13 @@ class Index extends Component<IndexProps,IndexState > {
         bookId: item,
         innerBookInfo: innerBookData,
         innerExpense: innerExpense,
+        innerIncome: innerIncome,
         recordArr: itemData,
         thumbnail: itemData.slice(0, 3), // 用于展示的缩略数据
       }
       // @ts-ignore
       tmpArr.push(tmpObj) // 每条记录加入内置账本集合中
     }
-    console.log("数据获取完毕", tmpArr);
     // 这里需要注意setState需要执行两次，不然刷新不出来
     this.setState({
       specialDataObj: {
@@ -205,10 +206,6 @@ class Index extends Component<IndexProps,IndexState > {
   }
 
   render() {
-    // const { recordData } = this.props;
-    // const myRecordList = recordData || [];
-    // let hasRecord = myRecordList.length > 0
-
     let renderContentType = '';
     if (this.state.bookType == 'moneyManagement') {
       renderContentType = 'moneyManagement'
@@ -222,31 +219,6 @@ class Index extends Component<IndexProps,IndexState > {
       count: 0,
       budget: 0,
     };
-    //处理收支数据 navBar
-    // let incomeList = [];
-    // let expenseList = [];
-    // let incomeData:any = {};
-    // let expenseData:any = {};
-    // if (myRecordList && renderContentType == 'normal') {
-    //   myRecordList.forEach(item => {
-    //     if (item.record_type === 'income') {
-    //       // @ts-ignore
-    //       incomeList.push(item)
-    //     } else if (item.record_type === 'expense') {
-    //       // @ts-ignore
-    //       expenseList.push(item)
-    //     }
-    //   });
-    //   incomeData = objArrReduce(incomeList);
-    //   expenseData = objArrReduce(expenseList);
-    //   // @ts-ignore
-    //   navBarData = {
-    //     incomeCount: incomeData.moneyAll,
-    //     expenseCount: expenseData.moneyAll,
-    //     count: myRecordList.length,
-    //     budget: this.state.budget || 0
-    //   };
-    // }
 
     // 处理navBar数据
     navBarData.incomeCount = this.state.specialDataObj.income || 0;

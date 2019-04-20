@@ -113,6 +113,7 @@ class NewRecord extends Component<NewRecordProps,NewRecordState > {
         create_timestamp: this.state.inputDate + ' 00:00',
         money: this.state.inputMoney,
         note: this.state.inputNote,
+        book_type: this.state.recordBookType,
       }
     });
     if(this.props.submitSuccess || result.record_id) {
@@ -146,6 +147,7 @@ class NewRecord extends Component<NewRecordProps,NewRecordState > {
         create_timestamp: this.state.inputDate + ' 00:00',
         money: this.state.inputMoney,
         note: this.state.inputNote,
+        book_type: this.state.recordBookType,
       }
     })
     // @ts-ignore

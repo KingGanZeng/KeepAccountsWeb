@@ -136,23 +136,23 @@ class TabBar extends Component<TabBarProps,TabBarState > {
             >
               切换账本<View className='at-icon at-icon-bookmark' />
             </View>
-            <View
-              className='drawer-item half-border-bottom border-bottom'
-              onClick={this.jumpToDiscovery}
-            >
-              发现<View className='at-icon at-icon-eye' />
-            </View>
-            <View
-              className='drawer-item half-border-bottom border-bottom'
-              onClick={this.jumpToCollection}
-            >
-              收藏<View className='at-icon at-icon-star-2' />
-            </View>
+            {/*<View*/}
+            {/*  className='drawer-item half-border-bottom border-bottom'*/}
+            {/*  onClick={this.jumpToDiscovery}*/}
+            {/*>*/}
+            {/*  发现<View className='at-icon at-icon-eye' />*/}
+            {/*</View>*/}
+            {/*<View*/}
+            {/*  className='drawer-item half-border-bottom border-bottom'*/}
+            {/*  onClick={this.jumpToCollection}*/}
+            {/*>*/}
+            {/*  收藏<View className='at-icon at-icon-star-2' />*/}
+            {/*</View>*/}
             <View
               className='drawer-item half-border-bottom border-bottom'
               onClick={this.jumpToWish}
             >
-              愿望记账<View className='at-icon at-icon-heart-2' />
+              愿望清单<View className='at-icon at-icon-heart-2' />
             </View>
           </AtDrawer>
         </View>
