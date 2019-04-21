@@ -95,6 +95,12 @@ class App extends Component {
         pages: [
           'recordChart', // 账目图表页面
         ]
+      },
+      {
+        root: 'pages/recommendInfo',
+        pages: [
+          'recommendInfo', // 账目图表页面
+        ]
       }
     ],
     window: {

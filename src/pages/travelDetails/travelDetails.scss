@@ -6,6 +6,8 @@ $content_color: #2b364e;
 $second_color: #05e4ab;
 $border_color: #05e4ab;
 $content_border_color: #2b364e10;
+$income_color: #f65858;
+$expense_color: #4ffa93;
 
 .travelDetails-wrap {
   ::-webkit-scrollbar{
@@ -115,6 +117,8 @@ $content_border_color: #2b364e10;
         top: 0;
         right: 0;
         padding: 14px;
+        color:#979797;
+        font-size:24px;
       }
     }
     .detail-item {
@@ -161,6 +165,35 @@ $content_border_color: #2b364e10;
         font-size: 20px;
         color: #979797;
       }
+    }
+    .more-recommend {
+      color: #979797;
+      padding: 20px 0;
+      font-size: 24px;
+      text-align: right;
+    }
+    .detail-popular {
+      color: #979797;
+      letter-spacing: 1px;
+      text-align: right;
+      .popular-num {
+        color: $income_color;
+      }
+      .add-to-myItem {
+        margin-bottom: 10px;
+        text-align: right;
+        .at-button--primary {
+          background: $income_color;
+          display: inline-block;
+          border: none;
+        }
+      }
+    }
+    .check-more {
+      color: #979797;
+      font-size: 28px;
+      text-align: center;
+      padding: 30px 0 0;
     }
   }
   .travelDetails-footer {

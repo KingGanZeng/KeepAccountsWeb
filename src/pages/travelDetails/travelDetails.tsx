@@ -106,6 +106,15 @@ class TravelDetails extends Component<TravelDetailsProps,TravelDetailsState > {
     })
   }
 
+  /**
+   * 跳转到推荐
+   */
+  jumpToRecommend() {
+    Taro.navigateTo({
+      url: '/pages/recommendInfo/recommendInfo?bookType=' + this.state.bookType
+    })
+  }
+
   componentDidShow() {
     Taro.setNavigationBarTitle({ // 设置标题栏账本名
       title: decodeURIComponent(this.$router.params.bookName)
@@ -150,6 +159,43 @@ class TravelDetails extends Component<TravelDetailsProps,TravelDetailsState > {
       )
     })
 
+    const recommendList = [
+      {icon_name: 'icon-icon-test', record_type: 'expense', popular: 80},
+      {icon_name: 'icon-qiubingqilin', record_type: 'expense', popular: 77},
+      {icon_name: 'icon-wukong1', record_type: 'income', popular: 60},
+    ]
+    const recommendContent = recommendList.map((item, index) => {
+      let name = globalData.categoryList[this.state.bookType][item.record_type].map((categoryItem) => {
+        if (categoryItem.icon == item.icon_name) {
+          return categoryItem
+        }
+      });
+      name = name.filter((nameItem) => {return nameItem})[0];
+      const note = item.record_type == 'expense' ? '支出' : '收入'
+      return (
+        <View
+          key={'recommend-' + index}
+          className='detail-item at-row at-row__justify--between at-row__align--center'
+        >
+          <View className='detail-name-date at-col at-col-1 at-col--auto'>
+            <View className='icon-wrapper'>
+              <View
+                style={name.bgColor}
+                className={`icon-item iconfont ${item.icon_name}`}
+              />
+            </View>
+            <View className='text-wrapper'>
+              <View className='detail-name'>{name.title}</View>
+              <View className='detail-note'>类型:{note}</View>
+            </View>
+          </View>
+          <View className='detail-popular at-col at-col-1 at-col--auto'>
+            有:<Text className='popular-num'>{item.popular}</Text>人使用
+          </View>
+        </View>
+      )
+    })
+
     return (
       <View className='travelDetails-wrap'>
         <View className='header-wrapper'>
@@ -180,10 +226,10 @@ class TravelDetails extends Component<TravelDetailsProps,TravelDetailsState > {
             </View>
           </View>
         </View>
-        <View className='travelDetails-container'>
+        {this.state.bookData.length > 0 && <View className='travelDetails-container'>
           <View className='container-title'>
             开销记录
-            <View onClick={this.jumpToChart} className='at-icon at-icon-filter' />
+            <View onClick={this.jumpToChart} className='at-icon at-icon-filter'>查看账单分析</View>
           </View>
           <ScrollView
             className='scroll-view'
@@ -193,8 +239,20 @@ class TravelDetails extends Component<TravelDetailsProps,TravelDetailsState > {
             <View className='details-content'>
               {nowItem}
             </View>
+            <View onClick={this.jumpToRecommend} className='more-recommend'>
+              查看推荐模板<View className='at-icon at-icon-chevron-right' />
+            </View>
           </ScrollView>
-        </View>
+        </View> }
+        {this.state.bookData.length === 0 && <View className='travelDetails-container'>
+          <View className='recommend-wrapper'>
+            <View className='container-title'>看看大家都在记录什么</View>
+            <View className='recommend-content'>
+              {recommendContent}
+            </View>
+            <View onClick={this.jumpToRecommend} className='check-more'>查看更多</View>
+          </View>
+        </View>}
         <View className='single-button-footer' onClick={this.jumpToNewRecord}>
           <Button className='single-button'>新建账目</Button>
         </View>
