@@ -75,7 +75,6 @@ class TravelPartyContent extends Component<TravelPartyContentProps,TravelPartyCo
           data: data.income.reverse()
         }]
       };
-      // @ts-ignore
       this.BarChart.refresh(chartData);
     }
   }

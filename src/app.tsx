@@ -87,7 +87,13 @@ class App extends Component {
       {
         root: 'pages/bookChart',
         pages: [
-          'bookChart', // 发现页面
+          'bookChart', // 图表页面
+        ]
+      },
+      {
+        root: 'pages/recordChart',
+        pages: [
+          'recordChart', // 账目图表页面
         ]
       }
     ],

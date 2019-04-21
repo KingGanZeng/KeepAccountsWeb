@@ -97,6 +97,15 @@ class TravelDetails extends Component<TravelDetailsProps,TravelDetailsState > {
     })
   }
 
+  /**
+   * 跳转到账单图标页
+   */
+  jumpToChart() {
+    Taro.navigateTo({
+      url: '/pages/recordChart/recordChart?itemId=' + this.state.bookId
+    })
+  }
+
   componentDidShow() {
     Taro.setNavigationBarTitle({ // 设置标题栏账本名
       title: decodeURIComponent(this.$router.params.bookName)
@@ -174,7 +183,7 @@ class TravelDetails extends Component<TravelDetailsProps,TravelDetailsState > {
         <View className='travelDetails-container'>
           <View className='container-title'>
             开销记录
-            <View className='at-icon at-icon-filter' />
+            <View onClick={this.jumpToChart} className='at-icon at-icon-filter' />
           </View>
           <ScrollView
             className='scroll-view'

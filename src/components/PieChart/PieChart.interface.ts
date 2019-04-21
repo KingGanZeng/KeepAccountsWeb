@@ -13,4 +13,6 @@ export interface PieChartState {}
  * @export
  * @interface PieChartProps
  */
-export interface PieChartProps {}
+export interface PieChartProps {
+  chartTitle: string
+}

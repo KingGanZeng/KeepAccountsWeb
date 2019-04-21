@@ -2,7 +2,7 @@ import Taro, { Component } from "@tarojs/taro";
 import {View} from "@tarojs/components";
 import * as echarts from "../ec-canvas/echarts";
 import './BarChart.scss'
-import {PieChartProps} from "../PieChart/PieChart.interface";
+import { BarChartProps, BarChartState } from "./BarChart.interface";
 
 function setChartData(chart, data, propNameList) {
   const colorList = [
@@ -97,7 +97,7 @@ function setChartData(chart, data, propNameList) {
   chart.setOption(option);
 }
 
-export default class BarChart extends Component {
+export default class BarChart extends Component<BarChartProps,BarChartState > {
   config = {
     usingComponents: {
       "ec-canvas": "../ec-canvas/ec-canvas"
@@ -114,7 +114,7 @@ export default class BarChart extends Component {
     }
   };
 
-  static defaultProps:PieChartProps = {
+  static defaultProps:BarChartProps = {
     chartTitle: '',
     legend: ['项目', '金额(元)']
   }

@@ -6,13 +6,12 @@ $expense_color: #4ffa93;
 
 .fx-PieChart-wrap {
   height: 800px;
-  background: linear-gradient(120deg, $main_color, $item-background);
-  padding: 32px 0;
-  box-sizing: border-box;
-  border-radius: 20px;
-  margin: 20px 52px;
+  //background: linear-gradient(120deg, $main_color, $item-background);
+  //border-radius: 20px;
+  margin: 0 0 40px;
+  padding: 60px 20px 20px;
   color: #ffffff;
-  border: 1px solid $border_color;
+  //border: 1px solid $border_color;
 
   .charts-title {
     padding: 0 0 20px;

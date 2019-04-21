@@ -15,4 +15,5 @@ export interface BarChartState {}
  */
 export interface BarChartProps {
   chartTitle: string,
+  legend: any,
 }
