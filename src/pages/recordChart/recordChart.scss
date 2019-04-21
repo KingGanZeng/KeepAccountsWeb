@@ -1,0 +1,11 @@
+$main_color: #2b364e;
+$border_color: #05e4ab60;
+$item-background: #4a556c60;
+$income_color: #f65858;
+$expense_color: #4ffa93;
+
+.recordChart-wrap {
+  width: 100%;
+  min-height: 100vh;
+  background: $main_color;
+}
