@@ -246,6 +246,14 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
     await this.getAuthorized()
   }
 
+  jumpToShare() {
+    Taro.redirectTo({
+      url: '/pages/sharePage/sharePage?groupId=' + 'hsIwOsxwKv6lrg42y7cvdpfelBR4XBgH' +
+        '&inviteUser=' + '多心没肺' +
+        '&projectName=' + '香港游'
+    })
+  }
+
   render() {
     // const { data } = this.props;
     // @ts-ignore
@@ -344,8 +352,8 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
           />
         </AtCard>
         { hasBook && <BookList title='我创建的' date={date} list={myBookList} />}
-        { hasGroupProjects && <BookList title='我参与的' date={date} list={this.state.groupProjectList} />
-        }
+        { hasGroupProjects && <BookList title='我参与的' date={date} list={this.state.groupProjectList} /> }
+        {/*<View onClick={this.jumpToShare}>跳转共享</View>*/}
       </View>
     )
   }

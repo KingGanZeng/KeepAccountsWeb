@@ -7,26 +7,51 @@ $expense_color: #4ffa93;
 .sharePage-wrap {
   width: 100%;
   min-height: 100vh;
+  padding: 100px 0;
+  background: $main_color;
+  color: #ccc;
   .shareInfo {
     text-align: center;
-    font-size: 28px;
-    color: #333333;
-    padding: 100px 200px;
+    font-size: 32px;
+    .share-content {
+      margin-bottom: 30px;
+      font-size: 36px;
+      &.highlight {
+        color: $expense_color;
+      }
+    }
+  }
+  .check-info {
+    text-align: center;
   }
   .at-form {
     width: 100%;
     margin: 200px auto 0;
     box-sizing: border-box;
     text-align: center;
+    background: $main_color;
+    position: static;
+    button {
+      font-size: 30px;
+      line-height: 2;
+    }
+    .at-form:before, .at-form:after {
+      width: 0;
+      height: 0;
+      border: none;
+      background: $main_color;
+    }
     .button-check-item.at-button--primary {
       background: $income_color;
       display: inline-block;
       margin: 0 40px;
+      border: none;
     }
     .button-trash-item.at-button--primary {
       background: $expense_color;
       display: inline-block;
       margin: 0 40px;
+      border: none;
     }
   }
 }

@@ -219,13 +219,15 @@ class SharePage extends Component<SharePageProps,SharePageState > {
           </AtModalAction>
         </AtModal>
         <View className='shareInfo'>
-          【{this.state.inviteUser}】邀请您加入【{this.state.projectName}】
+          <View className='share-content highlight'>【{this.state.inviteUser}】</View>
+          <View className='share-content'>邀请您加入</View>
+          <View className='share-content highlight'>【{this.state.projectName}】</View>
         </View>
         { !this.state.hasAdd && <AtForm>
           <AtButton type='primary' className='button-check-item' onClick={this.confirmJoin}>确认加入</AtButton>
           <AtButton type='primary' className='button-trash-item' onClick={this.refuseJoin}>拒绝</AtButton>
         </AtForm>}
-        <View className='shareInfo'>
+        <View className='check-info'>
           {this.state.confirmMsg}
         </View>
       </View>
