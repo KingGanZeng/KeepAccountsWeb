@@ -68,7 +68,7 @@ export const bookNameTranslate = (toLanguage, bookName) => {
     if(bookName === 'dayLife') {
       return '日常开销';
     } else if(bookName === 'travelParty') {
-      return '出游聚会'
+      return '旅游'
     } else if(bookName === 'homeDecoration') {
       return '居家装修'
     } else if(bookName === 'socialRelation') {

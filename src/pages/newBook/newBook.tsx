@@ -24,7 +24,7 @@ class NewBook extends Component<NewBookProps,NewBookState > {
     const defBookName = decodeURIComponent(this.$router.params.bookName);
     this.state = {
       bookType: defBookType,
-      bookCategory: ['日常开销', '出游聚会', '居家装修', '人情往来', '投资理财', '租房居住', '借还记录'],
+      bookCategory: ['日常开销', '旅游', '居家装修', '人情往来', '投资理财', '租房居住', '借还记录'],
       bookCategoryChecked: bookNameTranslate('Chinese', defBookType) || '日常开销',
       bookName: defBookName==='undefined' ? '新建账本' : defBookName,
       budget: 0, // 账本预算
@@ -331,7 +331,7 @@ class NewBook extends Component<NewBookProps,NewBookState > {
    */
   onReset () {
     // 是否是特殊账本
-    if (this.$router.params.bookId && ( this.state.bookCategoryChecked == '出游聚会' || this.state.bookCategoryChecked == '投资理财')) {
+    if (this.$router.params.bookId && ( this.state.bookCategoryChecked == '旅游' || this.state.bookCategoryChecked == '投资理财')) {
       this.deleteSpecialBook();
     }
     if(this.$router.params.bookId) {
@@ -425,12 +425,12 @@ class NewBook extends Component<NewBookProps,NewBookState > {
             inputName='bookName'
             placeholder='账本名称*'
           />
-          <ContentInput
-            value={this.state.budget.toString()}
-            onInput={this.onInputChange.bind(this)}
-            inputName='bookBudget'
-            placeholder='账本预算(元)'
-          />
+          {/*<ContentInput*/}
+          {/*  value={this.state.budget.toString()}*/}
+          {/*  onInput={this.onInputChange.bind(this)}*/}
+          {/*  inputName='bookBudget'*/}
+          {/*  placeholder='账本预算(元)'*/}
+          {/*/>*/}
           <Picker
             mode='selector'
             range={this.state.bookCategory}

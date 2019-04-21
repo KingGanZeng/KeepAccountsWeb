@@ -172,7 +172,10 @@ class TravelDetails extends Component<TravelDetailsProps,TravelDetailsState > {
           </View>
         </View>
         <View className='travelDetails-container'>
-          <View className='container-title'>开销记录</View>
+          <View className='container-title'>
+            开销记录
+            <View className='at-icon at-icon-filter' />
+          </View>
           <ScrollView
             className='scroll-view'
             scrollY

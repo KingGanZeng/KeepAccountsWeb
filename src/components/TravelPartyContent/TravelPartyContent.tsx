@@ -116,6 +116,8 @@ class TravelPartyContent extends Component<TravelPartyContentProps,TravelPartyCo
       });
     }
 
+    const legend = ['项目', '金额(元)']
+
     return (
       <View className='fx-TravelPartyContent-wrap'>
         <Swiper
@@ -130,6 +132,7 @@ class TravelPartyContent extends Component<TravelPartyContentProps,TravelPartyCo
         <BarChart
           ref={this.refBarChart}
           chartTitle='项目收支情况'
+          legend={legend}
         />
       </View>
     )

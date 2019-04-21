@@ -4,8 +4,7 @@ import * as echarts from "../ec-canvas/echarts";
 import './BarChart.scss'
 import {PieChartProps} from "../PieChart/PieChart.interface";
 
-function setChartData(chart, data) {
-  console.log(2333, chart, data)
+function setChartData(chart, data, propNameList) {
   const colorList = [
     ['#4ffa93', '#dd6a66'],
     ['#f65858', '#625cbd'],
@@ -35,7 +34,7 @@ function setChartData(chart, data) {
       {
         type: 'value',
         position: 'top',
-        name: '金额(元)',
+        name: propNameList[1],
         axisLine: {
           lineStyle: {
             type: 'solid',
@@ -60,7 +59,7 @@ function setChartData(chart, data) {
     yAxis : [
       {
         type: 'category',
-        name: '项目',
+        name: propNameList[0],
         data: [],
         axisLine: {
           lineStyle: {
@@ -117,6 +116,7 @@ export default class BarChart extends Component {
 
   static defaultProps:PieChartProps = {
     chartTitle: '',
+    legend: ['项目', '金额(元)']
   }
 
   refresh(data) {
@@ -126,7 +126,7 @@ export default class BarChart extends Component {
         width: width,
         height: height
       });
-      setChartData(chart, data);
+      setChartData(chart, data, this.props.legend);
       return chart;
     });
   }
