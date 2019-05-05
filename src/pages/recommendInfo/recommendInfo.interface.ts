@@ -8,6 +8,7 @@
 export interface RecommendInfoState {
   current: number, // 面板index
   myUsageList: any, // 我的最爱列表
+  recommendList: any, // 热门列表
   hasError: boolean,
   hasErrorMsg: string,
   hasErrorIcon: string,
