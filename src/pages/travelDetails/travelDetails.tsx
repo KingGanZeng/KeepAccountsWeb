@@ -110,8 +110,11 @@ class TravelDetails extends Component<TravelDetailsProps,TravelDetailsState > {
    * 跳转到推荐
    */
   jumpToRecommend() {
+    const bookId = decodeURIComponent(this.$router.params.sBookId) // 账本id
     Taro.navigateTo({
-      url: '/pages/recommendInfo/recommendInfo?bookType=' + this.state.bookType
+      url: '/pages/recommendInfo/recommendInfo?bookType=' + this.state.bookType +
+        '&bookId=' + bookId +
+        '&itemId=' + this.state.bookId
     })
   }
 
@@ -190,7 +193,7 @@ class TravelDetails extends Component<TravelDetailsProps,TravelDetailsState > {
             </View>
           </View>
           <View className='detail-popular at-col at-col-1 at-col--auto'>
-            有:<Text className='popular-num'>{item.popular}</Text>人使用
+            人气值：<Text className='popular-num'>{item.popular}</Text>
           </View>
         </View>
       )

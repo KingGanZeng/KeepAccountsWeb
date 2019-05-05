@@ -2,6 +2,27 @@
   width: 100%;
   min-height: 100vh;
   .travelDetails-container {
-    margin-top: 20px;
+    margin-top: 20px!important;
+  }
+  //样式覆写
+  .at-tabs__header {
+    background: #2b364e;
+  }
+  .at-tabs__item {
+    color: #ffffff;
+    margin: 0 60px;
+  }
+  .at-tabs__item--active {
+    color:#cabe16;
+    font-weight:bold;
+
+  }
+  .at-tabs__item-underline {
+    background-color: #cabe16;
+    height: 6px;
+  }
+  .at-tabs__underline {
+    width: 0!important;
+    height: 0!important;
   }
 }
