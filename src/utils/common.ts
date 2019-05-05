@@ -272,9 +272,11 @@ export const globalData: any = {
         {title: '景点门票', icon: 'icon-icon-test1', bgColor: 'background-color:rgb(89,175,193)'},
         {title: '演艺演出', icon: 'icon-icon-test2', bgColor: 'background-color:rgb(77,135,237)'},
         {title: '休闲娱乐', icon: 'icon-music', bgColor: 'background-color:rgb(162,135,242)'},
-        {title: '购物', icon: 'icon-kouhong', bgColor: 'background-color:rgb(236,100,94)'},
+        {title: '纪念品', icon: 'icon-kouhong', bgColor: 'background-color:rgb(236,100,94)'},
         {title: '旅行团费', icon: 'icon-tubiao_ditu', bgColor: 'background-color:rgb(134,192,67)'},
-        {title: '其他杂费', icon: 'icon-icon-test3', bgColor: 'background-color:rgb(89,175,193)'},
+        {title: '过路费', icon: 'icon-icon-test3', bgColor: 'background-color:rgb(89,175,193)'},
+        {title: '帮忙代购', icon: 'icon-huodong', bgColor: 'background-color:rgb(236,100,94)'},
+        {title: '应急药箱', icon: 'icon-yiyuan', bgColor: 'background-color:rgb(236,100,94)'},
       ],
       income: [
         {title: '退款', icon: 'icon-wukong1', bgColor: 'background-color:rgb(236,100,94)'},

@@ -12,6 +12,8 @@
 		"autoAudits": true
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.6.5",
+	"libVersion": "2.6.6",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
 	"condition": {}
 }

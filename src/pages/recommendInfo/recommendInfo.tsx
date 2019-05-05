@@ -23,11 +23,15 @@ class RecommendInfo extends Component<RecommendInfoProps,RecommendInfoState > {
 
   render() {
     const recommendList = [
-      {icon_name: 'icon-icon-test', record_type: 'expense', popular: 80},
-      {icon_name: 'icon-qiubingqilin', record_type: 'expense', popular: 77},
-      {icon_name: 'icon-icon-test4', record_type: 'expense', popular: 67},
-      {icon_name: 'icon-kouhong', record_type: 'expense', popular: 65},
-      {icon_name: 'icon-wukong1', record_type: 'income', popular: 60},
+      {icon_name: 'icon-Hotel', record_type: 'expense', popular: 94},
+      {icon_name: 'icon-icon-test1', record_type: 'expense', popular: 87},
+      {icon_name: 'icon-icon-test2', record_type: 'expense', popular: 80},
+      {icon_name: 'icon-kouhong', record_type: 'expense', popular: 80},
+      {icon_name: 'icon-icon-test3', record_type: 'expense', popular: 76},
+      {icon_name: 'icon-huodong', record_type: 'expense', popular: 73},
+      {icon_name: 'icon-wukong1', record_type: 'income', popular: 69},
+      {icon_name: 'icon-yiyuan', record_type: 'expense', popular: 67},
+      {icon_name: 'icon-icon-test', record_type: 'expense', popular: 62},
     ]
     const recommendContent = recommendList.map((item, index) => {
       let name = globalData.categoryList['travelParty'][item.record_type].map((categoryItem) => {
@@ -58,7 +62,7 @@ class RecommendInfo extends Component<RecommendInfoProps,RecommendInfoState > {
             <View className='add-to-myItem'>
               <AtButton type='primary' size='small'>加到我的项目</AtButton>
             </View>
-            有:<Text className='popular-num'>{item.popular}</Text>人使用
+            人气值：<Text className='popular-num'>{item.popular}</Text>
           </View>
         </View>
       )

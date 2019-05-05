@@ -23,6 +23,12 @@ $expense_color: #4ffa93;
         color: #e3e3e3;
       }
     }
+    .at-image-picker {
+      height: 250px;
+      .at-image-picker__flex-box {
+        height: 250px;
+      }
+    }
   }
   .button-wrapper {
     width: 100%;

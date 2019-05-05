@@ -5,7 +5,9 @@
  * @export
  * @interface TravelPartyContentState
  */
-export interface TravelPartyContentState {}
+export interface TravelPartyContentState {
+  tempImageUrl: any, // 用于存放解析后的图片链接
+}
 
 /**
  * TravelPartyContent.props 参数类型

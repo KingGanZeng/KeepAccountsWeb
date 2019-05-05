@@ -1,5 +1,5 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { AtInput, AtButton, AtToast } from 'taro-ui'
+import { AtInput, AtButton, AtToast, AtImagePicker } from 'taro-ui'
 import { View } from '@tarojs/components'
 import { connect } from '@tarojs/redux'
 import Tips from '../../utils/tips'
@@ -33,6 +33,8 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
       groupIdInfo: '',
       groupMembers: [],
       firstShare: false,
+      files: [],
+      hasImage: true, // 是否有一张图片
     }
   }
 
@@ -69,29 +71,41 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
       if (result.is_shared) {
         // 用户已开启共享，获取小组成员信息
         const groupMemberInfoList:any = await this.getGroupMembers(result.uid);
-        this.setState({
-          hasBookId: true,
-          bookType: result.book_type,
-          titleInput: result.book_name,
-          budget: parseFloat(result.budget), // 账本预算
-          is_shared: result.is_shared, // 是否为共享账本
-          groupIdInfo: result.uid,
-          groupMembers: groupMemberInfoList,
-        }, () => {
-          console.log("共享，数据获取完毕", this.state)
-        })
+        await this.getTempImageUrl(result.image_url || '')
+          .then(value => {
+            this.setState({
+              hasBookId: true,
+              bookType: result.book_type,
+              titleInput: result.book_name,
+              budget: parseFloat(result.budget), // 账本预算
+              is_shared: result.is_shared, // 是否为共享账本
+              groupIdInfo: result.uid,
+              groupMembers: groupMemberInfoList,
+              image_url: result.image_url || '',
+              files: [{url: value.fileList[0].tempFileURL}],
+              hasImage: value.fileList[0].tempFileURL === '',
+            }, async () => {
+              console.log("共享，数据获取完毕", this.state)
+            })
+          })
       } else {
         // 用户未开启共享，标注firstShare属性
-        this.setState({
-          hasBookId: true,
-          bookType: result.book_type,
-          titleInput: result.book_name,
-          budget: parseFloat(result.budget),
-          is_shared: result.is_shared,
-          firstShare: !result.is_shared,
-        }, () => {
-          console.log("数据获取完毕", this.state)
-        })
+        await this.getTempImageUrl(result.image_url || '')
+          .then(value => {
+            this.setState({
+              hasBookId: true,
+              bookType: result.book_type,
+              titleInput: result.book_name,
+              budget: parseFloat(result.budget),
+              is_shared: result.is_shared,
+              firstShare: !result.is_shared,
+              image_url: result.image_url || '',
+              files: value.fileList[0].tempFileURL === '' ? [] : [{url: value.fileList[0].tempFileURL}],
+              hasImage: value.fileList[0].tempFileURL === '',
+            }, async() => {
+              console.log("数据获取完毕", this.state)
+            })
+          })
       }
     }
   }
@@ -120,6 +134,28 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
         }
       }
     }
+    // 修改项目图片
+    let imageFile = '';
+    let addImage = true;
+    // @ts-ignore
+    await this.uploadImage()
+      .then((value:any) => {
+        if (value.fileID) {
+          imageFile = value.fileID
+        }
+      }, () => {
+        if (this.state.files.length !== 0) {
+          this.setState({
+            hasError: true,
+            hasErrorMsg: '添加项目封面失败',
+            hasErrorIcon: 'close-circle',
+          })
+          addImage = false;
+        }
+      })
+    if (!addImage) {
+      return;
+    }
     // 修改项目信息
     const result = await Taro.request({
       method: 'PUT',
@@ -131,6 +167,7 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
         book_type: this.state.bookType,
         budget: this.state.budget,
         is_shared: this.state.is_shared,
+        image_url: imageFile,
       }
     });
     // @ts-ignore
@@ -231,6 +268,28 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
    * 生成新账本并跳转
    */
   async jumpToNewBook() {
+    let imageFile = '';
+    let addImage = true;
+    // @ts-ignore
+    await this.uploadImage()
+      .then((value:any) => {
+        if (value.fileID) {
+          imageFile = value.fileID
+        }
+      }, () => {
+        if (this.state.files.length !== 0) {
+          this.setState({
+            hasError: true,
+            hasErrorMsg: '添加项目封面失败',
+            hasErrorIcon: 'close-circle',
+          })
+          addImage = false;
+        }
+      })
+    if (!addImage) {
+      return;
+    }
+
     let result:any = await Taro.request({
       method: 'POST',
       url: `${MAINHOST}/api/createBook`,
@@ -241,6 +300,7 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
         book_type: this.state.bookType,
         budget: this.state.budget,
         is_shared: this.state.is_shared,
+        image_url: imageFile,
       }
     });
     result = result.data;
@@ -335,6 +395,86 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
     }
   }
 
+  // 图片处理相关
+  /**
+   * 图片本地上传
+   * @param files
+   * @param operation
+   */
+  onChange (files, operation) {
+    console.log(2333, files);
+    if (operation === 'add') {
+      this.setState({
+        files: files,
+        hasImage: false,
+      })
+    } else {
+      this.setState({
+        files: [],
+        hasImage: true,
+      })
+    }
+  }
+
+  /**
+   * 上传图片
+   */
+  uploadImage() {
+    const image = this.state.files;
+    return new Promise(((resolve, reject) => {
+      if (image.length === 0) {
+        this.deleteImage()
+        reject()
+        return
+      }
+      let cloudPathEnd = image[0].url.split('.')
+      cloudPathEnd = `${cloudPathEnd[cloudPathEnd.length - 2]}.${cloudPathEnd[cloudPathEnd.length - 1]}`
+      const data =  Taro.cloud.uploadFile({
+        cloudPath: `project/${cloudPathEnd}`,
+        filePath: image[0].url,
+      })
+      if (!data) {
+        reject()
+        return
+      }
+      resolve(data)
+    }))
+  }
+
+  /**
+   * 删除云端图片
+   */
+  deleteImage() {
+    return new Promise(((resolve, reject) => {
+      const imageID:any = this.state.image_url
+      const data = Taro.cloud.deleteFile({
+        fileList: [imageID],
+      })
+      if (!data) {
+        reject()
+        return
+      }
+      resolve()
+    }))
+  }
+
+  /**
+   * 根据imageId换取临时url
+   * @param imageId
+   */
+  getTempImageUrl(imageId) {
+    return new Promise(((resolve, reject) => {
+      const data = Taro.cloud.getTempFileURL({
+        fileList: [imageId],
+      })
+      if (!data) {
+        reject()
+        return
+      }
+      resolve(data)
+    }))
+  }
+
   // 页面挂载时执行
   async componentDidMount() {
     Tips.loading()
@@ -351,6 +491,11 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
       });
     }
     Tips.loaded()
+    // 云开发
+    Taro.cloud.init({
+      env: 'dev-envir-a058cd',
+      traceUser: true,
+    })
   }
 
   render() {
@@ -365,6 +510,12 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
           hasMask
         />
         <View className='input-wrapper'>
+          <AtImagePicker
+            length={1}
+            files={this.state.files}
+            showAddBtn={this.state.hasImage}
+            onChange={this.onChange.bind(this)}
+          />
           <AtInput
             name='value'
             value={this.state.titleInput}
