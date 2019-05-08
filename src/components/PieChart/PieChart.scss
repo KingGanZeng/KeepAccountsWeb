@@ -12,6 +12,7 @@ $expense_color: #4ffa93;
   padding: 60px 20px 20px;
   color: #ffffff;
   //border: 1px solid $border_color;
+  position: relative;
 
   .charts-title {
     padding: 0 0 20px;
@@ -19,5 +20,15 @@ $expense_color: #4ffa93;
     font-size: 28px;
     border-bottom: 1px solid $border_color;
     margin: 0 52px 15px;
+  }
+
+  .empty-chart-wrapper {
+    position: absolute;
+    top: 150px;
+    right: 0;
+    left: 0;
+    text-align: center;
+    padding: 60px 0;
+    color: #999999;
   }
  }

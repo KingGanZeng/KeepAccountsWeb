@@ -20,6 +20,7 @@ Component({
   },
 
   ready: function () {
+    setTimeout(() => {
     if (!this.data.ec) {
       console.warn('组件需绑定 ec 变量，例：<ec-canvas id="mychart-dom-bar" '
         + 'canvas-id="mychart-bar" ec="{{ ec }}"></ec-canvas>');
@@ -28,7 +29,7 @@ Component({
 
     if (!this.data.ec.lazyLoad) {
       this.init();
-    }
+    }}, 10)
   },
 
   methods: {

@@ -5,6 +5,7 @@ import './travelDetails.scss'
 import {MAINHOST} from "../../config";
 import '../../assets/iconfont/iconfont.scss'
 import { dateFormatter, globalData } from '../../utils/common'
+import Tips from "../../utils/tips";
 
 class TravelDetails extends Component<TravelDetailsProps,TravelDetailsState > {
   config:Config = {
@@ -21,6 +22,7 @@ class TravelDetails extends Component<TravelDetailsProps,TravelDetailsState > {
       bookId: decodeURIComponent(this.$router.params.bookId),
       budget: budget,
       bookType: decodeURIComponent((this.$router.params.bookType)),
+      recommendList: [],
       bookData: [],
       expenseNum: 0,
       incomeNum: 0,
@@ -118,6 +120,42 @@ class TravelDetails extends Component<TravelDetailsProps,TravelDetailsState > {
     })
   }
 
+  /**
+   * 获取推荐信息
+   */
+  async getHotRecord() {
+    const bookType = decodeURIComponent(this.$router.params.bookType) // 场景类型
+    try {
+      Tips.loading()
+      const result = await Taro.request({
+        method: "GET",
+        url: `${MAINHOST}/api/getRecordRecommendList`,
+      })
+      const recommendList:any = []
+      let tmpList = [] // 临时list
+      result.data.results.forEach((item, key) => {
+        if (item.book_type === bookType && item.record_recommend !== '') {
+          tmpList = JSON.parse(item.record_recommend)
+        }
+      })
+      tmpList.forEach(item => {
+        recommendList.push({
+          icon_name: item[0],
+          record_type: 'expense',
+          popular: item[1],
+        })
+      })
+      console.log(recommendList)
+      this.setState({
+        recommendList: recommendList
+      })
+      Tips.loaded()
+    } catch (e) {
+      console.log(e)
+      Tips.loaded()
+    }
+  }
+
   componentDidShow() {
     Taro.setNavigationBarTitle({ // 设置标题栏账本名
       title: decodeURIComponent(this.$router.params.bookName)
@@ -127,6 +165,7 @@ class TravelDetails extends Component<TravelDetailsProps,TravelDetailsState > {
 
   render() {
     const nowItem = this.state.bookData.map((item, key) => {
+      console.log(1, this.state.bookType, item)
       const formatTime = dateFormatter(item.create_timestamp) // 格式化时间
       const moneyType = item.record_type == 'expense' ? '-' : '+'
       let name = globalData.categoryList[this.state.bookType][item.record_type].map((categoryItem) => {
@@ -135,6 +174,7 @@ class TravelDetails extends Component<TravelDetailsProps,TravelDetailsState > {
         }
       });
       name = name.filter((nameItem) => {return nameItem})[0];
+      console.log(2, name)
       return (
         <View
           key={key}
@@ -162,11 +202,12 @@ class TravelDetails extends Component<TravelDetailsProps,TravelDetailsState > {
       )
     })
 
-    const recommendList = [
-      {icon_name: 'icon-icon-test', record_type: 'expense', popular: 80},
-      {icon_name: 'icon-qiubingqilin', record_type: 'expense', popular: 77},
-      {icon_name: 'icon-wukong1', record_type: 'income', popular: 60},
-    ]
+    // const recommendList = [
+    //   {icon_name: 'icon-icon-test', record_type: 'expense', popular: 80},
+    //   {icon_name: 'icon-qiubingqilin', record_type: 'expense', popular: 77},
+    //   {icon_name: 'icon-wukong1', record_type: 'income', popular: 60},
+    // ]
+    const recommendList = this.state.recommendList
     const recommendContent = recommendList.map((item, index) => {
       let name = globalData.categoryList[this.state.bookType][item.record_type].map((categoryItem) => {
         if (categoryItem.icon == item.icon_name) {

@@ -82,7 +82,7 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
               groupIdInfo: result.uid,
               groupMembers: groupMemberInfoList,
               image_url: result.image_url || '',
-              files: [{url: value.fileList[0].tempFileURL}],
+              files: value.fileList[0].tempFileURL === '' ? [] : [{url: value.fileList[0].tempFileURL}],
               hasImage: value.fileList[0].tempFileURL === '',
             }, async () => {
               console.log("共享，数据获取完毕", this.state)
@@ -478,6 +478,11 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
   // 页面挂载时执行
   async componentDidMount() {
     Tips.loading()
+    // 云开发
+    Taro.cloud.init({
+      env: 'dev-envir-a058cd',
+      traceUser: true,
+    })
     const username = Taro.getStorageSync('username');
     const uid = Taro.getStorageSync('uid');
     this.setState({
@@ -491,11 +496,6 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
       });
     }
     Tips.loaded()
-    // 云开发
-    Taro.cloud.init({
-      env: 'dev-envir-a058cd',
-      traceUser: true,
-    })
   }
 
   render() {

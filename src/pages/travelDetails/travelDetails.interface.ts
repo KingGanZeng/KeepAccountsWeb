@@ -14,6 +14,7 @@ export interface TravelDetailsState {
   incomeNum: number,
   countNum: number,
   budget: string, // 预算
+  recommendList: any, // 推荐列表
 }
 
 /**

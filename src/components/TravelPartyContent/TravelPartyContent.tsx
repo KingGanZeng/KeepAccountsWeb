@@ -115,7 +115,7 @@ class TravelPartyContent extends Component<TravelPartyContentProps,TravelPartyCo
     })
     // 先进行图片url读取
     const imageIdList:any = [] // 存储图片id
-    if (nextProps.nowBookRecord.bookArr.length !== this.state.tempImageUrl.length) {
+    if (nextProps.nowBookRecord.bookArr && nextProps.nowBookRecord.bookArr.length !== this.state.tempImageUrl.length) {
       nextProps.nowBookRecord.bookArr.map((item) => {
         imageIdList.push(item.innerBookInfo.image_url)
       })
@@ -132,6 +132,9 @@ class TravelPartyContent extends Component<TravelPartyContentProps,TravelPartyCo
         const bookId = item.bookId
         const bookName = item.innerBookInfo.book_name
         const budget = item.innerBookInfo.budget
+        console.log(233, this.state.tempImageUrl)
+        const hasImage = this.state.tempImageUrl.length > 0 && this.state.tempImageUrl[length-key-1].tempFileURL
+        const imageUrl = hasImage ? this.state.tempImageUrl[length-key-1].tempFileURL : 'http://d1quwfaqaf63s5.cloudfront.net/IMG_1305.JPG'
         return (
           <SwiperItem key={key}>
             <View
@@ -151,7 +154,7 @@ class TravelPartyContent extends Component<TravelPartyContentProps,TravelPartyCo
                 <View className='item-content at-row'>
                   <View className='at-col image-content'>
                     <Image
-                      src={this.state.tempImageUrl[length-key-1].tempFileURL || 'http://d1quwfaqaf63s5.cloudfront.net/IMG_1305.JPG'}
+                      src={imageUrl}
                       style='width:160px;height:110px;'
                       mode='aspectFill'
                     />

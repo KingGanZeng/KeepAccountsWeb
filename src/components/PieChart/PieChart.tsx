@@ -55,7 +55,8 @@ export default class PieChart extends Component<PieChartProps, PieChartState > {
   state = {
     ec: {
       lazyLoad: true
-    }
+    },
+    hasData: false,
   };
 
   static defaultProps:PieChartProps = {
@@ -64,6 +65,9 @@ export default class PieChart extends Component<PieChartProps, PieChartState > {
 
   refresh(data) {
     console.log(55555, data)
+    this.setState({
+      hasData: data.chartData.length > 0,
+    })
     this.Chart.init((canvas, width, height) => {
       const chart = echarts.init(canvas, null, {
         width: width,
@@ -77,14 +81,16 @@ export default class PieChart extends Component<PieChartProps, PieChartState > {
   refChart = node => (this.Chart = node);
 
   render() {
+    const hasData = this.state.hasData
     return (
       <View className='fx-PieChart-wrap'>
         <View className='charts-title'>{this.props.chartTitle}</View>
-          <ec-canvas
+        <ec-canvas
           ref={this.refChart}
           canvas-id="mychart-area"
           ec={this.state.ec}
         />
+        { !hasData && <View className='empty-chart-wrapper'>暂无数据</View>}
       </View>
     );
   }
