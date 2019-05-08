@@ -131,6 +131,7 @@ class Index extends Component<IndexProps,IndexState > {
           innerExpense = innerExpense + parseFloat(innerItem.money);
         } else {
           innerIncome = innerIncome + parseFloat(innerItem.money);
+          incomeCount = incomeCount + parseFloat(innerItem.money);
         }
         allCount += 1;
       }
@@ -146,6 +147,7 @@ class Index extends Component<IndexProps,IndexState > {
       tmpArr.push(tmpObj) // 每条记录加入内置账本集合中
     }
     // 这里需要注意setState需要执行两次，不然刷新不出来
+    console.log(1111, expenseCount, incomeCount)
     this.setState({
       itemNum: item_num,
       specialDataObj: {

@@ -34,7 +34,8 @@ class MoneyManagementContent extends Component<MoneyManagementContentProps,Money
 
   render() {
     const recordArr = this.props.nowBookRecord;
-    const content = recordArr.bookArr.map(item => {
+    const bookArr = recordArr.bookArr ? recordArr.bookArr : []
+    const content = bookArr.map(item => {
       let income = 0;
       let expense = 0;
       item.recordArr.forEach( recordItem => {

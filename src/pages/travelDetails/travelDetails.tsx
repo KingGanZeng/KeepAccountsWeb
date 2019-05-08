@@ -145,7 +145,6 @@ class TravelDetails extends Component<TravelDetailsProps,TravelDetailsState > {
           popular: item[1],
         })
       })
-      console.log(recommendList)
       this.setState({
         recommendList: recommendList
       })

@@ -126,19 +126,19 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
       return ;
     }
     let type = '';
-    if(item.value === '日常开销') {
+    if(item.value === '日常') {
       type = 'dayLife'
-    } else if(item.value === '出游聚会' || item.value === '旅游') {
+    } else if(item.value === '旅游') {
       type = 'travelParty'
-    } else if(item.value === '居家装修') {
+    } else if(item.value === '装修') {
       type = 'homeDecoration'
-    } else if(item.value === '人情往来') {
+    } else if(item.value === '聚会') {
       type = 'socialRelation'
-    } else if(item.value === '投资理财') {
+    } else if(item.value === '理财') {
       type = 'moneyManagement'
-    } else if(item.value === '租房居住') {
+    } else if(item.value === '租房') {
       type = 'rent'
-    } else if(item.value === '借还记录') {
+    } else if(item.value === '汽车') {
       type = 'others'
     }
     Taro.navigateTo({
@@ -244,14 +244,6 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
    */
   async componentWillMount() {
     await this.getAuthorized()
-  }
-
-  jumpToShare() {
-    Taro.redirectTo({
-      url: '/pages/sharePage/sharePage?groupId=' + 'hsIwOsxwKv6lrg42y7cvdpfelBR4XBgH' +
-        '&inviteUser=' + '多心没肺' +
-        '&projectName=' + '香港游'
-    })
   }
 
   render() {
