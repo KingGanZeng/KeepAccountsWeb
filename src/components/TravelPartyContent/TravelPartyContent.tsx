@@ -115,7 +115,7 @@ class TravelPartyContent extends Component<TravelPartyContentProps,TravelPartyCo
     })
     // 先进行图片url读取
     const imageIdList:any = [] // 存储图片id
-    if (nextProps.nowBookRecord.bookArr && nextProps.nowBookRecord.bookArr.length !== this.state.tempImageUrl.length) {
+    if (nextProps.nowBookRecord.bookArr) {
       nextProps.nowBookRecord.bookArr.map((item) => {
         imageIdList.push(item.innerBookInfo.image_url)
       })

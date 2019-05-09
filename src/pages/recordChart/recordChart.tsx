@@ -1,8 +1,9 @@
 import Taro, { Component, Config } from '@tarojs/taro'
 import { View, Picker } from '@tarojs/components'
-import {AtToast, AtCard} from "taro-ui";
+import {AtToast} from "taro-ui";
 import { RecordChartProps, RecordChartState } from './recordChart.interface'
 import './recordChart.scss'
+// @ts-ignore
 import { PieChart } from "../../components/PieChart/PieChart";
 import Tips from '../../utils/tips'
 import {MAINHOST} from "../../config";
@@ -21,12 +22,11 @@ class RecordChart extends Component<RecordChartProps,RecordChartState > {
       hasError: false,
       hasErrorMsg: '数据获取失败',
       hasErrorIcon: 'close-circle',
-      recordList: [],
       selectorChecked: '',
     }
   }
 
-  async getRecord(year, month) {
+  async getRecord(year) {
     Tips.loading()
     let startTime;
     let endTime;
@@ -65,7 +65,7 @@ class RecordChart extends Component<RecordChartProps,RecordChartState > {
         }
       }
     })
-    const recordExpenseList = []
+    const recordExpenseList:any = []
     const recordIncomeList = []
     const recordExpenseLegend:any = []
     const recordIncomeLegend:any = []
@@ -93,12 +93,6 @@ class RecordChart extends Component<RecordChartProps,RecordChartState > {
         recordIncomeLegend.push(name.title)
       }
     }
-    this.setState({
-      recordList: {
-        income: recordIncomeList,
-        expense: recordExpenseList
-      }
-    })
     // const ExpensePieChartData = [
     //   {value:200, name:'餐饮'},
     //   {value:138, name:'零食饮料'},
@@ -112,10 +106,13 @@ class RecordChart extends Component<RecordChartProps,RecordChartState > {
     //   {value:200, name:'退款'},
     //   {value:100, name:'退税'},
     // ]
+
+    // @ts-ignore
     this.ExpensePieChart.refresh({
       chartData: recordExpenseList,
       legend: recordExpenseLegend || [],
     });
+    // @ts-ignore
     this.IncomePieChart.refresh({
       chartData: recordIncomeList,
       legend: recordIncomeLegend || [],
@@ -131,18 +128,16 @@ class RecordChart extends Component<RecordChartProps,RecordChartState > {
 
   onChange = e => {
     const year = e.detail.value.split('-')[0]
-    const month = e.detail.value.split('-')[1]
     this.setState({
       selectorChecked: `${year}年`,
     }, () => {
-      this.getRecord(year, month)
+      this.getRecord(year)
     })
   }
 
   componentDidMount() {
     const year = new Date().getFullYear()
-    const month = new Date().getMonth() + 1
-    this.getRecord(year, month)
+    this.getRecord(year)
     this.setState({
       selectorChecked: `${year}年`,
     })
@@ -163,6 +158,7 @@ class RecordChart extends Component<RecordChartProps,RecordChartState > {
             fields='year'
             className='picker-wrapper'
             onChange={this.onChange}
+            value={this.state.selectorChecked}
           >
             <View className='picker'>
               当前选择：{this.state.selectorChecked}

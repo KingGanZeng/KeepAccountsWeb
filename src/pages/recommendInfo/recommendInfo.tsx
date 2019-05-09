@@ -112,7 +112,7 @@ class RecommendInfo extends Component<RecommendInfoProps,RecommendInfoState > {
       })
       const recommendList:any = []
       let tmpList = [] // 临时list
-      result.data.results.forEach((item, key) => {
+      result.data.results.forEach((item) => {
         if (item.book_type === bookType && item.record_recommend !== '') {
           tmpList = JSON.parse(item.record_recommend)
         }

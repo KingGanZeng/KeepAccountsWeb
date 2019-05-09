@@ -10,7 +10,6 @@ export interface RecordChartState {
   hasError: boolean,
   hasErrorMsg: string,
   hasErrorIcon: string,
-  recordList: any,
   selectorChecked: string,
 }
 

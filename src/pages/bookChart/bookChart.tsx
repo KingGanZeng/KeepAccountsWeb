@@ -136,6 +136,7 @@ class BookChart extends Component<BookChartProps,BookChartState > {
             fields='year'
             className='picker-wrapper'
             onChange={this.onChange}
+            value={this.state.selectorChecked}
           >
             <View className='picker'>
               当前选择：{this.state.selectorChecked}
