@@ -23,6 +23,7 @@ export interface NewTravelState {
   firstShare: boolean, // 判断是否是第一次共享，用于在用户首次开启共享时创建小组
   files: any, // 图片
   hasImage: boolean, // 是否有一张图片
+  imageHasChange: boolean, // 图片是否被修改
 }
 
 /**

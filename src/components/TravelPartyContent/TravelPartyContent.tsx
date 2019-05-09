@@ -63,7 +63,7 @@ class TravelPartyContent extends Component<TravelPartyContentProps,TravelPartyCo
   getUrlPromise(imageIds) {
     return new Promise((resolve, reject) => {
       const result = Taro.cloud.getTempFileURL({
-        fileList: [...imageIds]
+        fileList: [imageIds]
       })
       if (!result) {
         reject()
@@ -75,16 +75,21 @@ class TravelPartyContent extends Component<TravelPartyContentProps,TravelPartyCo
 
   /**
    * 根据imageId换取临时url
-   * @param imageId
+   * @param imageIdObj
    */
-  async getTempImageUrl(imageIdList) {
-    const data = await this.getUrlPromise(imageIdList)
+  async getTempImageUrl(imageIdObj) {
+    const imgObj:any = {}
+    for (const item in imageIdObj) {
+      const data:any = await this.getUrlPromise(imageIdObj[item])
+      imgObj[item] = data.fileList[0]
+    }
     this.setState({
-      tempImageUrl: data.fileList
+      tempImageUrl: imgObj
     })
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log(11111)
     if (nextProps.nowBookRecord.bookArr) {
       const data:any = {
         itemName: [],
@@ -108,33 +113,36 @@ class TravelPartyContent extends Component<TravelPartyContentProps,TravelPartyCo
       };
       this.BarChart.refresh(chartData);
     }
+    // 先进行图片url读取
+    const imageIdObj:any = {} // 存储图片id
+    if (nextProps.nowBookRecord.bookArr && nextProps.nowBookRecord.bookArr.length > 0) {
+      nextProps.nowBookRecord.bookArr.map((item) => {
+        imageIdObj[item.bookId] = item.innerBookInfo.image_url
+      })
+      this.getTempImageUrl(imageIdObj) // id更换链接
+    }
+  }
+
+  componentWillMount(): void {
     // 云开发
     Taro.cloud.init({
       env: 'dev-envir-a058cd',
       traceUser: true,
     })
-    // 先进行图片url读取
-    const imageIdList:any = [] // 存储图片id
-    if (nextProps.nowBookRecord.bookArr) {
-      nextProps.nowBookRecord.bookArr.map((item) => {
-        imageIdList.push(item.innerBookInfo.image_url)
-      })
-      this.getTempImageUrl(imageIdList) // id更换链接
-    }
   }
 
   render() {
     let swiperArr:any; // 轮播图效果
     if (this.props.nowBookRecord.bookArr && this.props.nowBookRecord.bookArr.length > 0) {
-      const length = this.props.nowBookRecord.bookArr.length
       swiperArr = this.props.nowBookRecord.bookArr.map((item, key) => {
+        console.log(item)
         const time = this.formatterTime(item.innerBookInfo.create_timestamp);
         const bookId = item.bookId
         const bookName = item.innerBookInfo.book_name
         const budget = item.innerBookInfo.budget
-        console.log(233, this.state.tempImageUrl)
-        const hasImage = this.state.tempImageUrl.length > 0 && this.state.tempImageUrl[length-key-1].tempFileURL
-        const imageUrl = hasImage ? this.state.tempImageUrl[length-key-1].tempFileURL : 'http://d1quwfaqaf63s5.cloudfront.net/IMG_1305.JPG'
+        console.log(233, this.state.tempImageUrl[item.bookId])
+        const hasImage = this.state.tempImageUrl[item.bookId] && this.state.tempImageUrl[item.bookId].tempFileURL
+        const imageUrl = hasImage ? this.state.tempImageUrl[item.bookId].tempFileURL : 'http://d1quwfaqaf63s5.cloudfront.net/IMG_1305.JPG'
         return (
           <SwiperItem key={key}>
             <View

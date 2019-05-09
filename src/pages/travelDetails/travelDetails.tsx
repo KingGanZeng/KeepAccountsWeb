@@ -76,8 +76,7 @@ class TravelDetails extends Component<TravelDetailsProps,TravelDetailsState > {
   jumpToChangeRecord() {
     console.log(3333, decodeURIComponent(this.$router.params.is_admin));
     Taro.navigateTo({
-      url: '/pages/newTravel/newTravel?projectId=' +
-        this.state.bookId +
+      url: '/pages/newTravel/newTravel?projectId=' + this.state.bookId +
         '&is_admin=' + decodeURIComponent(this.$router.params.is_admin)
     })
   }
@@ -164,7 +163,6 @@ class TravelDetails extends Component<TravelDetailsProps,TravelDetailsState > {
 
   render() {
     const nowItem = this.state.bookData.map((item, key) => {
-      console.log(1, this.state.bookType, item)
       const formatTime = dateFormatter(item.create_timestamp) // 格式化时间
       const moneyType = item.record_type == 'expense' ? '-' : '+'
       let name = globalData.categoryList[this.state.bookType][item.record_type].map((categoryItem) => {
@@ -173,7 +171,7 @@ class TravelDetails extends Component<TravelDetailsProps,TravelDetailsState > {
         }
       });
       name = name.filter((nameItem) => {return nameItem})[0];
-      console.log(2, name)
+
       return (
         <View
           key={key}

@@ -35,6 +35,7 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
       firstShare: false,
       files: [],
       hasImage: true, // 是否有一张图片
+      imageHasChange: false,
     }
   }
 
@@ -114,9 +115,9 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
    * 修改账本信息
    */
   async changeBook() {
+    Tips.loading()
     const bookId = decodeURIComponent(this.$router.params.projectId); // 获取项目id
     let createId = this.state.uid; // 先设定修改人uid
-    console.log("修改账本信息", this.state.is_shared, this.state.firstShare)
     if (this.state.is_shared) {
       createId = this.state.groupIdInfo // 修改人更新为group
       console.log(this.state.firstShare)
@@ -125,6 +126,7 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
         const result = await this.createNewGroup();
         console.log("创建小组", result);
         if (!result.group_id) {
+          Tips.loaded()
           this.setState({
             hasError: true,
             hasErrorMsg: '开启共享失败，请稍后再试',
@@ -135,25 +137,28 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
       }
     }
     // 修改项目图片
-    let imageFile = '';
+    let imageFile = this.state.image_url;
     let addImage = true;
     // @ts-ignore
-    await this.uploadImage()
-      .then((value:any) => {
-        if (value.fileID) {
-          imageFile = value.fileID
-        }
-      }, () => {
-        if (this.state.files.length !== 0) {
-          this.setState({
-            hasError: true,
-            hasErrorMsg: '添加项目封面失败',
-            hasErrorIcon: 'close-circle',
-          })
-          addImage = false;
-        }
-      })
+    if (this.state.imageHasChange) {
+      await this.uploadImage()
+        .then((value:any) => {
+          if (value.fileID) {
+            imageFile = value.fileID
+          }
+        }, () => {
+          if (this.state.files.length !== 0) {
+            this.setState({
+              hasError: true,
+              hasErrorMsg: '添加项目封面失败',
+              hasErrorIcon: 'close-circle',
+            })
+            addImage = false;
+          }
+        })
+    }
     if (!addImage) {
+      Tips.loaded()
       return;
     }
     // 修改项目信息
@@ -171,6 +176,7 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
       }
     });
     // @ts-ignore
+    Tips.loaded()
     if(result.data.book_id) {
       this.setState({
         hasError: true,
@@ -179,14 +185,17 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
       }, () => {
         // 跳转回账本页面
         setTimeout(() => {
-          Taro.redirectTo({
-            url: "/pages/travelDetails/travelDetails?bookId=" + result.data.book_id +
-              '&bookName=' + this.state.titleInput +
-              '&bookType=' + this.state.bookType +
-              '&budget=' + this.state.budget +
-              '&sBookId=' + this.state.sBookId +
-              '&is_admin=' + true
+          Taro.navigateBack({
+            delta: 1
           })
+          // Taro.redirectTo({
+          //   url: "/pages/travelDetails/travelDetails?bookId=" + result.data.book_id +
+          //     '&bookName=' + this.state.titleInput +
+          //     '&bookType=' + this.state.bookType +
+          //     '&budget=' + this.state.budget +
+          //     '&sBookId=' + this.state.sBookId +
+          //     '&is_admin=' + true
+          // })
         }, 800)
       })
     } else {
@@ -402,16 +411,17 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
    * @param operation
    */
   onChange (files, operation) {
-    console.log(2333, files);
     if (operation === 'add') {
       this.setState({
         files: files,
         hasImage: false,
+        imageHasChange: true,
       })
     } else {
       this.setState({
         files: [],
         hasImage: true,
+        imageHasChange: true,
       })
     }
   }
