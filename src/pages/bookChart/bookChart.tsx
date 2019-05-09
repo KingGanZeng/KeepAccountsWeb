@@ -1,5 +1,5 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import {Picker, View} from '@tarojs/components'
 import {AtToast} from "taro-ui";
 import { BookChartProps, BookChartState } from './bookChart.interface'
 import './bookChart.scss'
@@ -7,6 +7,7 @@ import './bookChart.scss'
 import { BarChart } from '../../components/BarChart/BarChart'
 import Tips from '../../utils/tips'
 import { MAINHOST } from "../../config";
+import {bookNameTranslate} from "../../utils/common";
 
 
 class BookChart extends Component<BookChartProps,BookChartState > {
@@ -19,7 +20,7 @@ class BookChart extends Component<BookChartProps,BookChartState > {
       hasError: false,
       hasErrorMsg: '数据获取失败',
       hasErrorIcon: 'close-circle',
-      bookDataObj: {},
+      selectorChecked: '',
     }
   }
 
@@ -30,49 +31,48 @@ class BookChart extends Component<BookChartProps,BookChartState > {
   // @ts-ignore
   refBarChart = node => {this.BarChart = node}
 
-  /**
-   * 获取用户所有账本信息
-   */
-  async getBook() {
-    const uid = await Taro.getStorageSync('uid')
-    try {
-      const result = await Taro.request({
-        method: 'GET',
-        url: `${MAINHOST}/api/getSpecialBookList`,
-        data: {
-          uid: uid,
-        }
-      })
-      return result.data.results
-    } catch (e) {
-      console.log(e)
-      return false
+  async getBookMoney(year) {
+    const min_time = `${year}-1-1`
+    const max_time = `${year}-12-31`
+    const uid = Taro.getStorageSync('uid')
+    let chartData:any = {
+      dimensions: {
+        data: []
+      },
+      measures: [{
+        data: [], // 支出
+      },{
+        data: []
+      }]
     }
-  }
-
-  async getRecords(itemId) {
     try {
-      const result = await Taro.request({
-        method: 'GET',
-        url: `${MAINHOST}/api/recordDataApi`,
-        data: {
-          book_id: itemId,
-        }
+      const getUrl = `${MAINHOST}/api/getAllBookMoneyList?uid=${uid}&min_time=${min_time}&max_time=${max_time}`
+      let result:any = await Taro.request({
+        method: "GET",
+        url: getUrl,
       })
-      return result.data.results
+      result = result.data
+      for(const book in result.book_type_money_set) {
+        const title = bookNameTranslate('Chinese', result.book_type_money_set[book].title)
+        const income = result.book_type_money_set[book].income
+        const expense = result.book_type_money_set[book].expense
+        chartData.dimensions.data.push(title)
+        chartData.measures[0].data.push(expense)
+        chartData.measures[1].data.push(income)
+      }
+      return chartData
     } catch (e) {
       console.log(e)
-      return false
     }
   }
 
   /**
    * 按照场景进行分类，
    */
-  async getAllData() {
+  async getAllData(year) {
     Tips.loading()
-    const bookList = await this.getBook()
-    if (!bookList) {
+    const chartData = await this.getBookMoney(year)
+    if (!chartData) {
       // 如果链接报错，则直接退出
       this.setState({
         hasError: true,
@@ -83,60 +83,40 @@ class BookChart extends Component<BookChartProps,BookChartState > {
       return;
     }
 
-    for(const book of bookList) {
-      // 遍历某一账本内的所有账单信息
-      for (const itemId of book.book) {
-        let itemRecordList:any = await this.getRecords(itemId) // 获取某一项目的所有账目信息
-        let singleBookMoney = {
-          income: 0,
-          expense:0,
-        } // 用于存储单个账本的复杂度信息
-        console.log(23333, itemRecordList)
-        let itemExpense = 0;
-        let itemIncome = 0;
-        // 遍历某一项目内的所有构件
-        for (const record of itemRecordList) {
-          if (record.record_type === 'expense') {
-            itemExpense += parseFloat(record.money)
-            singleBookMoney.expense = itemExpense
-          } else {
-            itemIncome += parseFloat(record.money)
-            singleBookMoney.income = itemIncome
-          }
-        }
-        if (this.state.bookDataObj[book.book_type]) {
-          const tmpExpense = this.state.bookDataObj[book.book_type].expense + singleBookMoney.expense
-          const tmpIncome = this.state.bookDataObj[book.book_type].income + singleBookMoney.income
-          this.state.bookDataObj[book.book_type]= {
-            income: tmpIncome,
-            expense: tmpExpense,
-          }
-        } else {
-          this.state.bookDataObj[book.boo_type]= {
-            income: singleBookMoney.income,
-            expense: singleBookMoney.expense,
-          }
-        }
-      }
-    }
-    console.log(this.state);
-    const chartData = {
-      dimensions: {
-        data: ['日常', '旅游', '租房', '聚会', '装修', '理财', '生意', '汽车', '育儿']
-      },
-      measures: [{
-        data: [2000, 1333, 1588, 1000, 1000, 200, 300, 0, 200], // 支出
-      },{
-        data: [1999, 0, 200, 0, 300, 2000, 1000, 0, 200]
-      }]
-    }
+    // const chartData = {
+    //   dimensions: {
+    //     data: ['日常', '旅游', '租房', '聚会', '装修', '理财', '生意', '汽车', '育儿']
+    //   },
+    //   measures: [{
+    //     data: [2000, 1333, 1588, 1000, 1000, 200, 300, 0, 200], // 支出
+    //   },{
+    //     data: [1999, 0, 200, 0, 300, 2000, 1000, 0, 200]
+    //   }]
+    // }
     // @ts-ignore
     this.BarChart.refresh(chartData);
     Tips.loaded()
   }
 
+  /**
+   * 时间选择器
+   * @param e
+   */
+  onChange = e => {
+    const year = e.detail.value.split('-')[0]
+    this.setState({
+      selectorChecked: `${year}年`,
+    }, () => {
+      this.getAllData(year)
+    })
+  }
+
   componentDidMount() {
-    this.getAllData()
+    const year = new Date().getFullYear()
+    this.setState({
+      selectorChecked: `${year}年`,
+    })
+    this.getAllData(year)
   }
 
   render() {
@@ -150,6 +130,18 @@ class BookChart extends Component<BookChartProps,BookChartState > {
           icon={this.state.hasErrorIcon}
           hasMask
         />
+        <View>
+          <Picker
+            mode='date'
+            fields='year'
+            className='picker-wrapper'
+            onChange={this.onChange}
+          >
+            <View className='picker'>
+              当前选择：{this.state.selectorChecked}
+            </View>
+          </Picker>
+        </View>
         <BarChart
           ref={this.refBarChart}
           chartTitle='总收支情况'

@@ -176,7 +176,7 @@ class ShareComponent extends Component<ShareComponentProps,ShareComponentState >
             disabled={this.props.projectName === '' || !this.props.isAdmin || this.props.firstCreate}
             title='是否开启小组'
           />
-          {this.props.firstCreate && <View className='open-group-toast'>开启小组需先完成账本创建</View>}
+          {this.props.firstCreate && <View className='open-group-toast'>开启小组需先完成项目创建</View>}
         </AtForm>
         {this.state.groupState && <View className='at-row at-row--wrap group-wrapper'>
           {this.state.groupMembers.length > 0 && memberList}

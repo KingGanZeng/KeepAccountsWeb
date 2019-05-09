@@ -8,4 +8,14 @@ $expense_color: #4ffa93;
   width: 100%;
   min-height: 100vh;
   background: $main_color;
+  .picker-wrapper {
+    margin:0 66px;
+    color: $expense_color;
+    font-size:36px;
+    border:2px solid $border_color;
+    box-sizing:border-box;
+    padding:20px;
+    border-radius:8px;
+
+  }
 }

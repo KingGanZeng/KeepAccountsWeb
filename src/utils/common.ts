@@ -65,35 +65,43 @@ export const objArrReduce = arr => {
 
 export const bookNameTranslate = (toLanguage, bookName) => {
   if (toLanguage === 'Chinese') {
-    if(bookName === 'dayLife') {
-      return '日常开销';
+    if(bookName == 'dayLife') {
+      return '日常'
     } else if(bookName === 'travelParty') {
       return '旅游'
     } else if(bookName === 'homeDecoration') {
-      return '居家装修'
+      return '装修'
     } else if(bookName === 'socialRelation') {
-      return '人情往来'
+      return '聚会'
     } else if(bookName === 'moneyManagement') {
-      return '投资理财'
+      return '理财'
     } else if(bookName === 'rent') {
-      return '租房居住'
+      return '租房'
+    } else if(bookName === 'car') {
+      return '汽车'
+    } else if(bookName === 'child') {
+      return '育儿'
     } else if(bookName === 'others') {
-      return '借还记录'
+      return '生意'
     }
   } else if (toLanguage === 'English') {
-    if(bookName === '日常开销') {
-      return 'dayLife';
-    } else if(bookName === '出游聚会') {
-      return'travelParty'
-    } else if(bookName === '居家装修') {
+    if(bookName === '日常') {
+      return 'dayLife'
+    } else if(bookName === '旅游') {
+      return 'travelParty'
+    } else if(bookName === '装修') {
       return 'homeDecoration'
-    } else if(bookName === '人情往来') {
+    } else if(bookName === '聚会') {
       return 'socialRelation'
-    } else if(bookName === '投资理财') {
+    } else if(bookName === '理财') {
       return 'moneyManagement'
-    } else if(bookName === '租房居住') {
+    } else if(bookName === '租房') {
       return 'rent'
-    } else if(bookName === '借还记录') {
+    } else if(bookName === '汽车') {
+      return 'car'
+    } else if(bookName === '育儿') {
+      return 'child'
+    } else if(bookName === '生意') {
       return 'others'
     }
   }
@@ -420,6 +428,47 @@ export const globalData: any = {
         {title: '退税', icon: 'icon-zuanjie', bgColor: 'background-color:rgb(236,100,94)'},
         {title: '其他收入', icon: 'icon-icon-', bgColor: 'background-color:rgb(236,100,94)'},
       ]
+    },
+    car: {
+      expense: [
+        {title: '保修', icon: 'icon-3genghuanzhouqi', bgColor: 'background-color:rgb(134,192,67)'},
+        {title: '服务费', icon: 'icon-1fuwu', bgColor: 'background-color:rgb(236,100,94)'},
+        {title: '空调滤芯', icon: 'icon-2kongdiaolvxin', bgColor: 'background-color:rgb(236,100,94)'},
+        {title: '轮胎维修更换', icon: 'icon-2luntai', bgColor: 'background-color:rgb(89,175,193)'},
+        {title: '空调滤芯空调滤芯', icon: 'icon-2kongqilvxin', bgColor: 'background-color:rgb(77,135,237)'},
+        {title: '机油滤芯', icon: 'icon-2jiyoulvxin', bgColor: 'background-color:rgb(162,135,242)'},
+        {title: '加油', icon: 'icon-2jiyou', bgColor: 'background-color:rgb(134,192,67)'},
+        {title: '火花塞更换', icon: 'icon-2huohuasai', bgColor: 'background-color:rgb(89,175,193)'},
+        {title: '防冻液', icon: 'icon-2fangdongye', bgColor: 'background-color:rgb(89,175,193)'},
+        {title: '电瓶', icon: 'icon-2dianping', bgColor: 'background-color:rgb(77,135,237)'},
+        {title: '刹车油', icon: 'icon-2shacheyou', bgColor: 'background-color:rgb(162,135,242)'},
+        {title: '变速箱油', icon: 'icon-2biansuxiangyou', bgColor: 'background-color:rgb(236,100,94)'},
+      ],
+      income: [
+        {title: '退款', icon: 'icon-wukong1', bgColor: 'background-color:rgb(236,100,94)'},
+        {title: '退税', icon: 'icon-zuanjie', bgColor: 'background-color:rgb(236,100,94)'},
+        {title: '其他收入', icon: 'icon-icon-', bgColor: 'background-color:rgb(236,100,94)'},
+      ],
+    },
+    child: {
+      expense: [
+        {title: '奶粉', icon: 'icon-naiping-muying', bgColor: 'background-color:rgb(77,135,237)'},
+        {title: '纸尿裤', icon: 'icon-zhiniaoku-muying', bgColor: 'background-color:rgb(162,135,242)'},
+        {title: '婴儿床', icon: 'icon-yingerchuang-muying', bgColor: 'background-color:rgb(134,192,67)'},
+        {title: '婴儿车', icon: 'icon-yingerche-muying', bgColor: 'background-color:rgb(89,175,193)'},
+        {title: '益智玩具', icon: 'icon-yizhiwanju-muying', bgColor: 'background-color:rgb(134,192,67)'},
+        {title: '衣服', icon: 'icon-yifu-muying', bgColor: 'background-color:rgb(89,175,193)'},
+        {title: '玩具', icon: 'icon-wanou-muying', bgColor: 'background-color:rgb(89,175,193)'},
+        {title: '电瓶', icon: 'icon-2dianping', bgColor: 'background-color:rgb(77,135,237)'},
+        {title: '医疗相关', icon: 'icon-yiliaoqixie-muying', bgColor: 'background-color:rgb(162,135,242)'},
+        {title: '日常护理', icon: 'icon-richanghuli-muying', bgColor: 'background-color:rgb(236,100,94)'},
+        {title: '辅食', icon: 'icon-nanbaobao-muying', bgColor: 'background-color:rgb(134,192,67)'},
+      ],
+      income: [
+        {title: '退款', icon: 'icon-wukong1', bgColor: 'background-color:rgb(236,100,94)'},
+        {title: '退税', icon: 'icon-zuanjie', bgColor: 'background-color:rgb(236,100,94)'},
+        {title: '其他收入', icon: 'icon-icon-', bgColor: 'background-color:rgb(236,100,94)'},
+      ],
     },
     others: {
       expense: [

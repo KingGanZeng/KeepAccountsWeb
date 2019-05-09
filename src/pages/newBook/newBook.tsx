@@ -24,8 +24,8 @@ class NewBook extends Component<NewBookProps,NewBookState > {
     const defBookName = decodeURIComponent(this.$router.params.bookName);
     this.state = {
       bookType: defBookType,
-      bookCategory: ['日常开销', '旅游', '居家装修', '人情往来', '投资理财', '租房居住', '借还记录'],
-      bookCategoryChecked: bookNameTranslate('Chinese', defBookType) || '日常开销',
+      bookCategory: ['日常', '旅游', '租房', '聚会', '装修', '理财', '生意', '汽车', '育儿'],
+      bookCategoryChecked: bookNameTranslate('Chinese', defBookType) || '日常',
       bookName: defBookName==='undefined' ? '新建账本' : defBookName,
       budget: 0, // 账本预算
       loading: false,

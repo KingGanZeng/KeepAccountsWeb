@@ -139,6 +139,10 @@ class AccountBook extends Component<AccountBookProps,AccountBookState> {
     } else if(item.value === '租房') {
       type = 'rent'
     } else if(item.value === '汽车') {
+      type = 'car'
+    } else if(item.value === '育儿') {
+      type = 'child'
+    } else if(item.value === '生意') {
       type = 'others'
     }
     Taro.navigateTo({
