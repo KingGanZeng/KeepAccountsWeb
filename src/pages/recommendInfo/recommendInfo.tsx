@@ -158,7 +158,7 @@ class RecommendInfo extends Component<RecommendInfoProps,RecommendInfoState > {
     //   {icon_name: 'icon-icon-test', record_type: 'expense', popular: 62},
     // ]
     const bookType = this.state.bookType
-    const recommendList = this.state.recommendList
+    const recommendList = this.state.recommendList.slice(0, 10)
     const recommendContent = recommendList.map((item, index) => {
       let name = globalData.categoryList[bookType][item.record_type].map((categoryItem) => {
         if (categoryItem.icon == item.icon_name) {

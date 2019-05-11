@@ -94,68 +94,28 @@ class Index extends Component<IndexProps,IndexState > {
     const endTime = `${year}-12-31`;
     const prevYear = parseInt(year, 10) - 1;
     const startTime = `${prevYear}-12-31`;
-    let item_num = 0;
     // 先获取账本的信息，再根据账本信息查询内容
     let result:any = await Taro.request({
-      method: 'GET',
-      url: `${MAINHOST}/api/getSpecialBookList?s_book_id=` + book_id,
+      method: 'POST',
+      url: `${MAINHOST}/api/getAllBookMoneyList`,
+      header: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8'
+      },
+      data: {
+        book_id: parseInt(book_id, 10),
+        create_timestamp_min: startTime,
+        create_timestamp_max: endTime,
+      }
     });
-    result = result.data.results[0];
-
-    let expenseCount = 0; // 用于记录支出
-    let incomeCount = 0;
-    let allCount = 0; // 用于记录笔数
-    let tmpArr = []; // 用于存放每个账本记录
-    for (const item of result.book) { // 遍历每个内置账本，获取账本数据
-      item_num += 1
-      let innerBookData:any = await Taro.request({ // 获取内置账本信息
-        method: 'GET',
-        url: `${MAINHOST}/api/getBookList?book_id=` + item
-      });
-      innerBookData = innerBookData.data.results[0];
-
-      const itemData = await this.props.dispatch({ // 获取账单信息
-        type: 'index/getRecordData',
-          payload: {
-          uid: this.state.uid, // 这里需要localstorage中获取
-          create_timestamp_min: startTime,
-          create_timestamp_max: endTime,
-          book_id: item
-        }
-      });
-      let innerExpense = 0;
-      let innerIncome = 0;
-      for (const innerItem of itemData) { // 统计数据
-        if (innerItem.record_type == 'expense') {
-          expenseCount = expenseCount + parseFloat(innerItem.money);
-          innerExpense = innerExpense + parseFloat(innerItem.money);
-        } else {
-          innerIncome = innerIncome + parseFloat(innerItem.money);
-          incomeCount = incomeCount + parseFloat(innerItem.money);
-        }
-        allCount += 1;
-      }
-      const tmpObj:any = {
-        bookId: item,
-        innerBookInfo: innerBookData,
-        innerExpense: innerExpense,
-        innerIncome: innerIncome,
-        recordArr: itemData,
-        thumbnail: itemData.slice(0, 3), // 用于展示的缩略数据
-      }
-      // @ts-ignore
-      tmpArr.push(tmpObj) // 每条记录加入内置账本集合中
-    }
-    // 这里需要注意setState需要执行两次，不然刷新不出来
-    console.log(1111, expenseCount, incomeCount)
+    result = result.data;
     this.setState({
-      itemNum: item_num,
+      itemNum: result.item_count,
       specialDataObj: {
         specialBookId: book_id,
-        expense: expenseCount,
-        income: incomeCount,
-        count: allCount,
-        bookArr: tmpArr
+        expense: result.expense,
+        income: result.income,
+        count: result.record_count,
+        bookArr: result.bookArr,
       }
     }, () => {
       Tips.loaded()
