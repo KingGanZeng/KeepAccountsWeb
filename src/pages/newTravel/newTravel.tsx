@@ -7,6 +7,7 @@ import { NewTravelProps, NewTravelState } from './newTravel.interface'
 import './newTravel.scss'
 import { MAINHOST } from "../../config";
 import ShareComponent from "../../components/ShareComponent/ShareComponent";
+import {randomWord} from "../../utils/common";
 
 @connect(({ newTravel }) => ({
     ...newTravel,
@@ -148,6 +149,7 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
           }
         }, () => {
           if (this.state.files.length !== 0) {
+            console.log(222222222222)
             this.setState({
               hasError: true,
               hasErrorMsg: '添加项目封面失败',
@@ -279,14 +281,18 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
   async jumpToNewBook() {
     let imageFile = '';
     let addImage = true;
+    Tips.loading()
     // @ts-ignore
     await this.uploadImage()
       .then((value:any) => {
         if (value.fileID) {
           imageFile = value.fileID
         }
+        Tips.loaded()
       }, () => {
+        Tips.loaded()
         if (this.state.files.length !== 0) {
+          console.log(1111111)
           this.setState({
             hasError: true,
             hasErrorMsg: '添加项目封面失败',
@@ -296,6 +302,7 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
         }
       })
     if (!addImage) {
+      Tips.loaded()
       return;
     }
 
@@ -323,6 +330,7 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
         }
       });
       if (addToMain.data.hasAdd) {
+        Tips.loaded()
         Taro.redirectTo({
           url: "/pages/travelDetails/travelDetails?bookId=" + result.book_id +
             '&bookName=' + this.state.titleInput +
@@ -333,6 +341,7 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
         })
       }
     }
+    Tips.loaded()
   }
 
   /**
@@ -437,12 +446,14 @@ class NewTravel extends Component<NewTravelProps,NewTravelState > {
         reject()
         return
       }
-      let cloudPathEnd = image[0].url.split('.')
-      cloudPathEnd = `${cloudPathEnd[cloudPathEnd.length - 2]}.${cloudPathEnd[cloudPathEnd.length - 1]}`
+      // @ts-ignore
+      let cloudPathEnd = randomWord(false, 32);
+      console.log(333333, image[0].url)
       const data =  Taro.cloud.uploadFile({
         cloudPath: `project/${cloudPathEnd}`,
         filePath: image[0].url,
       })
+      console.log(444444, data)
       if (!data) {
         reject()
         return

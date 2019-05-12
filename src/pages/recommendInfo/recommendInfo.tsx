@@ -158,8 +158,8 @@ class RecommendInfo extends Component<RecommendInfoProps,RecommendInfoState > {
     //   {icon_name: 'icon-icon-test', record_type: 'expense', popular: 62},
     // ]
     const bookType = this.state.bookType
-    const recommendList = this.state.recommendList.slice(0, 10)
-    const recommendContent = recommendList.map((item, index) => {
+    const nowRecommendList = this.state.recommendList.slice(0, 10)
+    const recommendContent = nowRecommendList.map((item, index) => {
       let name = globalData.categoryList[bookType][item.record_type].map((categoryItem) => {
         if (categoryItem.icon == item.icon_name) {
           return categoryItem
@@ -177,6 +177,12 @@ class RecommendInfo extends Component<RecommendInfoProps,RecommendInfoState > {
         item.record_type = 'income'
       }
       const note = item.record_type == 'expense' ? '支出' : '收入'
+
+      // 随机数
+      const length = this.state.recommendList.length
+      const max = length
+      const min = length - index + 1
+      const addNum = Math.floor(Math.random()*(max-min+1)+min) * 18;
       return (
         <View
           key={'recommend-' + index}
@@ -202,7 +208,7 @@ class RecommendInfo extends Component<RecommendInfoProps,RecommendInfoState > {
                 onClick={this.addToProject.bind(this, name, item.record_type)}
               >加到我的项目</AtButton>
             </View>
-            人气值：<Text className='popular-num'>{item.popular}</Text>
+            人气值：<Text className='popular-num'>{item.popular + addNum}</Text>
           </View>
         </View>
       )

@@ -7,7 +7,7 @@
   box-sizing: border-box;
   background-color: #4a5d6c;
   color: #E3E3E3;
-  z-index: 998;
+  z-index: 20;
 
   .at-icon {
     font-size: 1.3rem;
@@ -18,6 +18,11 @@
     font-size: 32px;
     text-align: left;
     padding: 18px 36px 20px;
+    z-index: 21;
+    .list-image-wrapper {
+      width: 70px;
+      height: 70px;
+    }
   }
 
   .diagram-button {
@@ -27,24 +32,20 @@
   }
 
   .add-button {
+    background:#f54552;
+    margin:11px 0;
+    -webkit-box-sizing:border-box;
+    box-sizing:border-box;
+    border-radius:8px;
+    padding:15px;
+    border:1px solid #555e71;
     text-align: center;
-    position: relative;
     .rotate-button {
-      background-color:#f54552;
-      height:auto;
-      -webkit-transform:rotate(45deg);
-      -ms-transform:rotate(45deg);
-      transform:rotate(45deg);
+      width: 40px;
       font-size:23px;
-      padding:30px;
-      position:relative;
-      top:-37rpx;
-      -webkit-box-shadow:0 0 18px 12px #555e71;
-      box-shadow:0 0 18px 12px #555e71;
-      border:1px solid #555e71;
-      &:active {
-        background-color: #f3a97c;
-      }
+    }
+    &:active {
+      background-color: #f3a97c;
     }
   }
 

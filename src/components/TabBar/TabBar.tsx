@@ -1,5 +1,5 @@
 import Taro, { Component } from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import {View, CoverView, CoverImage} from '@tarojs/components'
 import { AtDrawer, AtAvatar } from 'taro-ui'
 import { TabBarProps, TabBarState } from './TabBar.interface'
 import './TabBar.scss'
@@ -146,11 +146,11 @@ class TabBar extends Component<TabBarProps,TabBarState > {
     const portrait = Taro.getStorageSync('portrait')
     const username = Taro.getStorageSync('username')
     return (
-      <View className='fx-TabBar-wrap at-row at-row__justify--between'>
-        <View className='at-col at-col-3 menu-button'>
-          <View
-            className='at-icon at-icon-list'
-            onClick={this.showLeftBar}
+      <CoverView className='fx-TabBar-wrap at-row at-row__justify--between'>
+        <CoverView className='at-col at-col-3 menu-button' onClick={this.showLeftBar}>
+          <CoverImage
+            className='at-icon list-image-wrapper'
+            src='http://d1quwfaqaf63s5.cloudfront.net/stream-list.png'
           />
           <AtDrawer
             show={this.state.showLeftBar}
@@ -202,21 +202,21 @@ class TabBar extends Component<TabBarProps,TabBarState > {
               查看图表<View className='at-icon at-icon-equalizer' />
             </View>
           </AtDrawer>
-        </View>
-        <View className='at-col at-col-3 at-row at-row__align-content--center'>
-          <View
+        </CoverView>
+        <CoverView className='at-col at-col-3 at-row at-row__align-content--center'>
+          <CoverView
             className='at-col add-button'
             onClick={this.showRecordWay}
           >
-            <View className='at-icon at-icon-close rotate-button' />
-          </View>
-        </View>
-        <View className='at-col at-col-3 chart-button'>
-          <View
+            <CoverImage src='http://d1quwfaqaf63s5.cloudfront.net/add.png' className='at-icon rotate-button' />
+          </CoverView>
+        </CoverView>
+        <CoverView className='at-col at-col-3 chart-button'>
+          <CoverView
             className='at-icon at-icon-list'
           />
-        </View>
-      </View>
+        </CoverView>
+      </CoverView>
     )
   }
 }

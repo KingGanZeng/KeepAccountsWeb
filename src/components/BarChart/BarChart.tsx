@@ -1,5 +1,5 @@
 import Taro, { Component } from "@tarojs/taro";
-import {View} from "@tarojs/components";
+import {CoverView, View} from "@tarojs/components";
 import * as echarts from "../ec-canvas/echarts";
 import './BarChart.scss'
 import { BarChartProps, BarChartState } from "./BarChart.interface";

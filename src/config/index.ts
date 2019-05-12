@@ -3,8 +3,8 @@
  * 为了方便测试，使用的是聚合数据免费接口
  * 网址：https://www.juhe.cn/
  */
-// export const ONLINEHOST = 'http://54.174.159.64:8000'
-export const ONLINEHOST = 'http://127.0.0.1:8000'
+export const ONLINEHOST = 'http://54.174.159.64:8000'
+// export const ONLINEHOST = 'http://127.0.0.1:8000'
 
 /**
  * 测试环境
